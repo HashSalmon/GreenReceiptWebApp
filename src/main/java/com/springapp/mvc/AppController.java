@@ -24,7 +24,7 @@ public class AppController {
 
         ModelAndView model = new ModelAndView();
         model.addObject("title", "Spring Security 3.2.3 Hello World Application");
-        model.addObject("message", "Welcome Page !");
+        model.addObject("message", "Welcome Page !!!!!");
         model.setViewName("helloworld");
         return model;
 
