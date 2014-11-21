@@ -15,7 +15,7 @@
 <p>Click <a href="/restStuff">Here</a></p>
 <c:if test="${pageContext.request.userPrincipal.name != null}">
   <h2>Welcome : ${pageContext.request.userPrincipal.name}
-    | <a href="<c:url value="/logout" />" > Logout</a></h2>
+    | <a href="<c:url value="/login?logout" />" > Logout</a></h2>
 </c:if>
 </body>
 </html>
