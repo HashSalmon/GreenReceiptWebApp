@@ -24,9 +24,20 @@ public class AppController {
     public ModelAndView welcomePage() {
 
         ModelAndView model = new ModelAndView();
-        model.addObject("title", "Spring Security 3.2.3 Hello World Application");
+        model.addObject("title", "Green Receipt");
         model.addObject("message", "Welcome Page !!!!!");
         model.setViewName("helloworld");
+        return model;
+
+    }
+
+    @RequestMapping(value = { "/createAccount" }, method = RequestMethod.GET)
+    public ModelAndView hello() {
+
+        ModelAndView model = new ModelAndView();
+        model.addObject("title", "Green Receipt");
+        model.addObject("message", "Create Your Account");
+        model.setViewName("createAccount");
         return model;
 
     }
@@ -40,25 +51,6 @@ public class AppController {
         model.setViewName("protected");
         return model;
 
-    }
-
-    @RequestMapping(value = "/confidential**", method = RequestMethod.GET)
-    public ModelAndView superAdminPage() {
-
-        ModelAndView model = new ModelAndView();
-        model.addObject("title", "Spring Security 3.2.3 Hello World");
-        model.addObject("message", "This is confidential page - Need Super Admin Role !");
-        model.setViewName("protected");
-
-        return model;
-
-    }
-
-    @RequestMapping(value = "/protectedTester", method = RequestMethod.GET)
-    public ModelAndView tester() {
-        ModelAndView model = new ModelAndView();
-        model.addObject("message", "ollo");
-        return model;
     }
 
     @RequestMapping(value="/restStuff", method = RequestMethod.GET)

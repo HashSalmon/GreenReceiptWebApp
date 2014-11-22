@@ -5,40 +5,36 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import provider.TestAuthenticationProvider;
+import CustomAuthentication.CustomAuthenticationProvider;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan(basePackages = "provider")
+@ComponentScan(basePackages = "CustomAuthentication")
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    public void configureGlobal(TestAuthenticationProvider authenticationProvider, AuthenticationManagerBuilder auth) throws Exception {
+    public void configureGlobal(CustomAuthenticationProvider authenticationProvider, AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-//        http.authorizeRequests()
-//                .antMatchers("/login").permitAll()
-//                .antMatchers("/protected/**").access("hasRole('ROLE_USER')")
-//                .and()
-//                .formLogin().loginPage("/login").failureUrl("/login?error")
-//                .usernameParameter("username").passwordParameter("password")
-//                .and()
-//                .logout().logoutSuccessUrl("/login?logout")
-//                .and()
-//                .csrf();
         http.authorizeRequests()
+                .antMatchers("/createAccount").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
                 .permitAll();
 
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/resources/**");
     }
 
 }
