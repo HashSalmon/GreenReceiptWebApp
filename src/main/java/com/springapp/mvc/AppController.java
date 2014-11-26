@@ -3,22 +3,31 @@ package com.springapp.mvc;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.nio.charset.Charset;
 import java.util.Base64;
 
 @Controller
+@Scope("request")
 public class AppController {
+
+    @Autowired
+    private User user;
 
     @RequestMapping(value = { "/", "/helloworld**" }, method = RequestMethod.GET)
     public ModelAndView welcomePage() {
@@ -27,17 +36,6 @@ public class AppController {
         model.addObject("title", "Green Receipt");
         model.addObject("message", "Welcome Page !!!!!");
         model.setViewName("helloworld");
-        return model;
-
-    }
-
-    @RequestMapping(value = { "/createAccount" }, method = RequestMethod.GET)
-    public ModelAndView hello() {
-
-        ModelAndView model = new ModelAndView();
-        model.addObject("title", "Green Receipt");
-        model.addObject("message", "Create Your Account");
-        model.setViewName("createAccount");
         return model;
 
     }
@@ -87,6 +85,29 @@ public class AppController {
         return model;
 
     }
+
+    @ModelAttribute("createAccountObject")
+    public CreateAccount getCreateAccountForm() {
+        return new CreateAccount();
+    }
+    @RequestMapping(value = "/createAccountForm", method = RequestMethod.GET)
+    public ModelAndView createAccount(ModelAndView model) {
+        model.setViewName("createAccountForm");
+        return model;
+
+    }
+    
+    @RequestMapping(value="/createAccountForm", method=RequestMethod.POST)
+    public ModelAndView validateForm(@ModelAttribute("createAccountObject") @Valid CreateAccount createAccount, BindingResult bindingResult, ModelAndView model) {
+        if (bindingResult.hasErrors()) {
+            model.setViewName("createAccountForm");
+            return model;
+        }
+        user.setUsername(createAccount.getUsername());
+        model.setViewName("redirect:/login");
+        return model;
+    }
+
 
     HttpHeaders createHeaders( final String username, final String password ){
         return new HttpHeaders(){

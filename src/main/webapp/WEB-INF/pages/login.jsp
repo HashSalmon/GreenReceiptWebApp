@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@include file="mainHead.jsp"%>
 
 <html>
 <head>
@@ -17,6 +16,7 @@
     </div>
   </div>
 </nav>
+<%@include file="exteriorNavBar.jsp"%>
 <div class="container">
   <c:url value="/login" var="loginUrl"/>
   <form class="form-signin" role="form" action="${loginUrl}" method="post">
@@ -39,7 +39,7 @@
            name="${_csrf.parameterName}"
            value="${_csrf.token}"/>
     <div>
-      Don't have an account?<a href="/createAccount"> Create one here!</a>
+      Don't have an account?<a href="/createAccountForm"> Create one here!</a>
     </div>
     <button class="btn btn-lg btn-success btn-block" type="submit">Sign in</button>
   </form>
