@@ -1,4 +1,4 @@
-package com.springapp.mvc;
+package Forms;
 
 import org.hibernate.validator.constraints.Email;
 

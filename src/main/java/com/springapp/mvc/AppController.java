@@ -1,6 +1,7 @@
 package com.springapp.mvc;
 
 
+import Forms.CreateAccount;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,9 +60,9 @@ public class AppController {
         String password = "test";
         ResponseEntity responseEntity = restTemplate.exchange("http://192.168.1.114/MarketingRest/api/authorize", HttpMethod.GET, new HttpEntity<Object>(createHeaders(username, password)), String.class);
         Gson gson = new Gson();
-        Page page = gson.fromJson((String) responseEntity.getBody(), new TypeToken<Page>(){}.getType());
-        model.addObject("authToken", page.AuthToken);
-        model.addObject("refreshToken", page.RefreshToken);
+        User user = gson.fromJson((String) responseEntity.getBody(), new TypeToken<User>(){}.getType());
+        model.addObject("authToken", user.getAuthToken());
+        model.addObject("refreshToken", user.getRefreshToken());
         model.addObject("message", responseEntity.getBody());
         return model;
     }
@@ -108,6 +109,12 @@ public class AppController {
         return model;
     }
 
+    @RequestMapping(value="/dashboard", method = RequestMethod.GET)
+    public ModelAndView initializeDashboard() {
+        ModelAndView model = new ModelAndView();
+        model.setViewName("dashboard");
+        return model;
+    }
 
     HttpHeaders createHeaders( final String username, final String password ){
         return new HttpHeaders(){
