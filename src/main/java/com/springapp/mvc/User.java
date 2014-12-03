@@ -10,10 +10,11 @@ public class User {
     public String lastName;
     public String username;
     public String email;
-    public String authToken;
-    public String refreshToken;
-    public String expirationDate;
-    public String issuedDate;
+    public String access_token;
+    public String token_type;
+    public String expires_in;
+    public String userName;
+
 
     public String getFirstName() {
         return firstName;
@@ -47,35 +48,35 @@ public class User {
         this.email = email;
     }
 
-    public String getAuthToken() {
-        return authToken;
+    public String getAccess_token() {
+        return access_token;
     }
 
-    public void setAuthToken(String authToken) {
-        this.authToken = authToken;
+    public void setAccess_token(String access_token) {
+        this.access_token = access_token;
     }
 
-    public String getRefreshToken() {
-        return refreshToken;
+    public String getToken_type() {
+        return token_type;
     }
 
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
+    public void setToken_type(String token_type) {
+        this.token_type = token_type;
     }
 
-    public String getExpirationDate() {
-        return expirationDate;
+    public String getExpires_in() {
+        return expires_in;
     }
 
-    public void setExpirationDate(String expirationDate) {
-        this.expirationDate = expirationDate;
+    public void setExpires_in(String expires_in) {
+        this.expires_in = expires_in;
     }
 
-    public String getIssuedDate() {
-        return issuedDate;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setIssuedDate(String issuedDate) {
-        this.issuedDate = issuedDate;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

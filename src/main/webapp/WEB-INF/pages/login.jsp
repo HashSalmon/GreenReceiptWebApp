@@ -31,10 +31,8 @@
       </div>
     </c:if>
     <h2 class="form-signin-heading">Please, Sign In</h2>
-    <label for="username" class="sr-only">username</label>
-    <input type="text" id="username" class="form-control" placeholder="Username" required="" autofocus="">
-    <label for="password" class="sr-only">Password</label>
-    <input type="password" id="password" class="form-control" placeholder="Password" required="">
+    <input type="text" name="username" class="form-control" placeholder="Username" required="" autofocus="">
+    <input type="password" name="password" class="form-control" placeholder="Password" required="">
     <input type="hidden"
            name="${_csrf.parameterName}"
            value="${_csrf.token}"/>

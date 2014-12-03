@@ -42,3 +42,19 @@ body {
 .form-signin input {
     margin-bottom: 10px;
 }
+
+.receiptLine {
+    border-bottom: 1px solid black;
+}
+
+.receiptTable {
+    width: 100%;
+}
+
+.centerText {
+    text-align: center;
+}
+
+.rightText {
+    text-align: right;
+}

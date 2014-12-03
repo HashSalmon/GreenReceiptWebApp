@@ -6,12 +6,12 @@ public class MVCInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] { ViewConfig.class };
+        return new Class[] { AppSecurityConfig.class };
     }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return null;
+        return new Class[] { ViewConfig.class };
     }
 
     @Override

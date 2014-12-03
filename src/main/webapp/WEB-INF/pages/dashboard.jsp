@@ -51,7 +51,7 @@
           Recent Activity<br/><br/>
           <ul>
             <li>
-              <span class="glyphicon glyphicon-barcode"></span><a href="#"> Smiths</a>
+              <span class="glyphicon glyphicon-barcode"></span><a href="/receipt?receiptId=receipt1"> Smiths</a>
             </li>
             <li>
               <span class="glyphicon glyphicon-barcode"></span><a href="#"> Gamestop</a>
