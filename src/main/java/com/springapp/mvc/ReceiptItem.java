@@ -1,8 +1,5 @@
 package com.springapp.mvc;
 
-/**
- * Created by jordanwanlass on 12/3/14.
- */
 public class ReceiptItem {
     private String name;
     private String price;

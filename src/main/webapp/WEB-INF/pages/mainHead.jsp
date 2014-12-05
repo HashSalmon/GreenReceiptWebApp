@@ -14,8 +14,8 @@
   <link href="<c:url value="/resources/styles/main.css"/>" rel="stylesheet">
 
 
+  <script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
   <script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="<c:url value="/resources/js/jquery.min.js" />"></script>
   <script src="<c:url value="/resources/js/kendo.dataviz.min.js" />"></script>
   <script src="<c:url value="/resources/js/kendo.web.min.js" />"></script>

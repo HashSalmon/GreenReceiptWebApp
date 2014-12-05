@@ -122,6 +122,7 @@ public class AppController {
         //TODO
         // Add in "Hello (Username)"
         ModelAndView model = new ModelAndView();
+        model.addObject("dashboardActive", "active");
         model.setViewName("dashboard");
         return model;
     }
@@ -129,6 +130,7 @@ public class AppController {
     @RequestMapping(value="/receipt", method = RequestMethod.GET)
     public ModelAndView displayReceipt(@RequestParam(defaultValue = "") String receiptId) {
         ModelAndView model = new ModelAndView();
+        model.addObject("receiptActive", "active");
 
         // This code will be replaced by an API call using the passed in ReceiptId
         if("receipt1".equals(receiptId)){
@@ -147,14 +149,61 @@ public class AppController {
             receipt.setItems(receiptItems);
             receipt.setStore("Smith's");
             receipt.setTotal("$5.00");
+            receipt.setReturnDate(null);
             model.addObject("receipt", receipt);
         } else if("receipt2".equals(receiptId)) {
+            List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
 
+            ReceiptItem item1 = new ReceiptItem();
+            item1.setName("Samsung TV");
+            item1.setPrice("$500.00");
+
+            receiptItems.add(item1);
+            receipt.setItems(receiptItems);
+            receipt.setStore("Best Buy");
+            receipt.setTotal("$500.00");
+            receipt.setReturnDate(null);
+            model.addObject("receipt", receipt);
         } else if("receipt3".equals(receiptId)) {
+            List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
 
+            ReceiptItem item1 = new ReceiptItem();
+            item1.setName("Dakine Backpack");
+            item1.setPrice("$75.00");
+
+            receiptItems.add(item1);
+            receipt.setItems(receiptItems);
+            receipt.setStore("Zumiez");
+            receipt.setTotal("$75.00");
+            receipt.setReturnDate("December 8, 2014");
+            model.addObject("receipt", receipt);
         }
 
         model.setViewName("receipt");
+        return model;
+    }
+
+    @RequestMapping(value="/trending", method = RequestMethod.GET)
+    public ModelAndView displayTrendingReport(){
+        ModelAndView model = new ModelAndView();
+        model.addObject("reportActive", "active");
+        model.setViewName("trending");
+        return model;
+    }
+
+    @RequestMapping(value="/category", method = RequestMethod.GET)
+    public ModelAndView displayCategoryReport(){
+        ModelAndView model = new ModelAndView();
+        model.addObject("reportActive", "active");
+        model.setViewName("category");
+        return model;
+    }
+
+    @RequestMapping(value="/budget", method = RequestMethod.GET)
+    public ModelAndView displayBudget(){
+        ModelAndView model = new ModelAndView();
+        model.addObject("budgetActive", "active");
+        model.setViewName("budget");
         return model;
     }
 }

@@ -11,6 +11,7 @@ public class Receipt {
     private String store;
     private List<ReceiptItem> items;
     private String total;
+    private String returnDate;
 
     public String getStore() {
         return store;
@@ -34,5 +35,13 @@ public class Receipt {
 
     public void setTotal(String total) {
         this.total = total;
+    }
+
+    public String getReturnDate() {
+        return returnDate;
+    }
+
+    public void setReturnDate(String returnDate) {
+        this.returnDate = returnDate;
     }
 }

@@ -6,17 +6,20 @@
   <%@include file="mainHead.jsp"%>
 </head>
 <body>
-<%@include file="exteriorNavBar.jsp"%>
+<%@include file="interiorNavBar.jsp"%>
   <div class="container">
     <div class="row">
       <div class="col-md-4 col-md-offset-4">
         <div class="panel panel-defualt">
           <div class="panel-body">
+            <c:if test="${receipt.returnDate != null && receipt.returnDate != ''}">
+              <div class="alert alert-danger centerText">
+                Your Return Date is coming up soon!<br> ${receipt.returnDate}
+              </div>
+            </c:if>
             <table class="receiptTable">
               <tr class="receiptLine">
-                <td></td>
-                <td class="centerText"><h2>${receipt.store}</h2></td>
-                <td></td>
+                <td colspan="3" class="centerText"><h2>${receipt.store}</h2></td>
               </tr>
               <c:forEach items="${receipt.items}" var="item">
                 <tr>
@@ -27,7 +30,7 @@
               </c:forEach>
               <tr>
                 <td>
-                  Total:
+                  Total
                 </td>
                 <td></td>
                 <td class="rightText"> ${receipt.total}</td>
@@ -40,3 +43,9 @@
   </div>
 </body>
 </html>
+<script type="text/javascript">
+  $('.nav.navbar-nav > li').on('click', function(e) {
+    $('.nav.navbar-nav > li').removeClass('active');
+    $(this).addClass('active');
+  });
+</script>

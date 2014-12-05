@@ -6,7 +6,7 @@
   <%@include file="mainHead.jsp"%>
 </head>
 <body>
-<%@include file="exteriorNavBar.jsp"%>
+<%@include file="interiorNavBar.jsp"%>
 <div class="container">
   <div class="row">
     <div class="col-md-10">
@@ -41,7 +41,7 @@
           Notifications <span class="badge">1</span><br/><br/>
           <ul>
             <li>
-              <span class="glyphicon glyphicon-warning-sign"></span><a href="#"> Upcoming Return</a>
+              <span class="glyphicon glyphicon-warning-sign"></span><a href="/receipt?receiptId=receipt3"> Upcoming Return</a>
             </li>
           </ul>
         </div>
@@ -54,16 +54,7 @@
               <span class="glyphicon glyphicon-barcode"></span><a href="/receipt?receiptId=receipt1"> Smiths</a>
             </li>
             <li>
-              <span class="glyphicon glyphicon-barcode"></span><a href="#"> Gamestop</a>
-            </li>
-            <li>
-              <span class="glyphicon glyphicon-barcode"></span><a href="#"> Best Buy</a>
-            </li>
-            <li>
-              <span class="glyphicon glyphicon-barcode"></span><a href="#"> Best Buy</a>
-            </li>
-            <li>
-              <span class="glyphicon glyphicon-barcode"></span><a href="#"> Chevron</a>
+              <span class="glyphicon glyphicon-barcode"></span><a href="/receipt?receiptId=receipt2"> Best Buy</a>
             </li>
           </ul>
         </div>
