@@ -34,6 +34,9 @@ public class AppController {
     @Autowired
     private Receipt receipt;
 
+    @Autowired
+    private Budget budget;
+
     @RequestMapping(value = "/protected**", method = RequestMethod.GET)
     public ModelAndView protectedPage() {
 
@@ -203,7 +206,20 @@ public class AppController {
     public ModelAndView displayBudget(){
         ModelAndView model = new ModelAndView();
         model.addObject("budgetActive", "active");
+        model.addObject("budget", budget);
+
+
         model.setViewName("budget");
+        return model;
+    }
+
+    @RequestMapping(value="/editBudget", method = RequestMethod.GET)
+    public ModelAndView displayEditBudget(){
+        ModelAndView model = new ModelAndView();
+        model.addObject("budgetActive", "active");
+
+
+        model.setViewName("editBudget");
         return model;
     }
 }
