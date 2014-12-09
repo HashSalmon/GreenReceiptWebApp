@@ -8,10 +8,6 @@ import javax.validation.constraints.Size;
 public class CreateAccount {
 
     @NotNull
-    @Size(min=4, max=30)
-    private String Username;
-
-    @NotNull
     @Size(min=6, max=30)
     private String Password;
 
@@ -32,7 +28,6 @@ public class CreateAccount {
     private String Email;
 
     public CreateAccount() {
-        this.Username = "";
         this.Password = "";
         this.FirstName = "";
         this.LastName = "";
@@ -53,14 +48,6 @@ public class CreateAccount {
 
     public void setConfirmPassword(String confirmPassword) {
         ConfirmPassword = confirmPassword;
-    }
-
-    public String getUsername() {
-        return this.Username;
-    }
-
-    public void setUsername(String username) {
-        this.Username = username;
     }
 
     public String getFirstName() {
@@ -86,9 +73,4 @@ public class CreateAccount {
     public void setEmail(String email) {
         this.Email = email;
     }
-
-    public String toString() {
-        return "Create Account (username: " + this.Username + ", Password: " + this.Password + ")";
-    }
-
 }

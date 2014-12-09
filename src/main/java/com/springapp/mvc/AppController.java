@@ -3,12 +3,10 @@ package com.springapp.mvc;
 
 import Forms.CreateAccount;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.*;
-import org.springframework.http.client.HttpComponentsAsyncClientHttpRequestFactory;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,12 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.net.Inet4Address;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Base64;
-import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -50,16 +45,18 @@ public class AppController {
 
     }
 
+    //used to test api calls
     @RequestMapping(value="/restStuff", method = RequestMethod.GET)
     public ModelAndView restStuff() {
         ModelAndView model = new ModelAndView();
         RestTemplate restTemplate = new RestTemplate();
-        String username = "jordan";
-        String password = "test";
-//        ResponseEntity responseEntity = restTemplate.exchange("http://192.168.1.114/MarketingRest/api/authorize", HttpMethod.GET, new HttpEntity<Object>(createHeaders(username, password)), String.class);
-//        Gson gson = new Gson();
-//        User user = gson.fromJson((String) responseEntity.getBody(), new TypeToken<User>(){}.getType());
-//        model.addObject("message", responseEntity.getBody());
+        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
+        ResponseEntity responseEntity = restTemplate.exchange("https://greenreceipt.net/api/values",
+                HttpMethod.GET, new HttpEntity<Object>(headers), String.class);
+        model.addObject("message", responseEntity.getBody());
         return model;
     }
 
@@ -107,12 +104,9 @@ public class AppController {
         String createAccountJson = gson.toJson(createAccount);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-//        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
-//        restTemplate.setRequestFactory(requestFactory);
-        ResponseEntity responseEntity = restTemplate.exchange("http://10.0.0.22/api/Account/Register", HttpMethod.POST, new HttpEntity<Object>(createAccountJson, headers), ResponseEntity.class);
-//        ResponseEntity responseEntity = restTemplate.postForObject("http://10.0.0.22/api/Account/Register", createAccountJson, ResponseEntity.class);
+        ResponseEntity responseEntity = restTemplate.exchange("http://greenreceipt.net/api/Account/Register", HttpMethod.POST, new HttpEntity<Object>(createAccountJson, headers), ResponseEntity.class);
         if(responseEntity.getStatusCode().value() == 200) {
-            model.addObject("creationSuccessful", "You have successfully created your account! Log In now to continue.");
+            //TODO: MAKE IT SO THE USER KNOWS THEY HAVE SUCCESSFULLY CREATED THEIR ACCOUNT
             model.setViewName("redirect:/login");
             return model;
         } else {
@@ -122,11 +116,13 @@ public class AppController {
 
     }
 
-    @RequestMapping(value="/dashboard", method = RequestMethod.GET)
-    public ModelAndView initializeDashboard() {
-        //TODO
-        // Add in "Hello (Username)"
+    @RequestMapping(value={"/dashboard", "/"}, method = RequestMethod.GET)
+    public ModelAndView initializeDashboard(HttpSession session) {
+        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ModelAndView model = new ModelAndView();
+        if(session.getAttribute("username") == null) {
+            session.setAttribute("username", userInfo.getUserName());
+        }
         model.addObject("dashboardActive", "active");
         model.setViewName("dashboard");
         return model;

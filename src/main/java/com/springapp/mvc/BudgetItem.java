@@ -1,10 +1,13 @@
 package com.springapp.mvc;
 
+import javax.validation.constraints.NotNull;
 import java.text.NumberFormat;
 
 public class BudgetItem {
     private String category;
     private Double amountUsed;
+
+    @NotNull
     private Double amountAllowed;
 
     public BudgetItem(double amountAllowed, String category, double amountUsed) {

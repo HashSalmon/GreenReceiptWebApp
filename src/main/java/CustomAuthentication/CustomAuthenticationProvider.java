@@ -2,9 +2,7 @@ package CustomAuthentication;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.springapp.mvc.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
+import com.springapp.mvc.UserInfo;
 import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,9 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 @Component
@@ -30,19 +26,20 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.setContentType(MediaType.APPLICATION_JSON);
         try {
             String encodedName = URLEncoder.encode(username,"UTF-8");
             String encodedPassword = URLEncoder.encode(password, "UTF-8");
-            String body = "grant_type=passoword&username=" + encodedName + "&passord=" + encodedPassword;
+            String body = "grant_type=password&username=" + encodedName + "&password=" + encodedPassword;
 
-            ResponseEntity responseEntity = restTemplate.exchange("http://10.0.0.22/Token", HttpMethod.POST, new HttpEntity<Object>(body, headers), ResponseEntity.class);
+            ResponseEntity responseEntity = restTemplate.exchange("https://greenreceipt.net/Token", HttpMethod.POST, new HttpEntity<Object>(body, headers), String.class);
             if (responseEntity.getStatusCode().value() == 200) {
                 Gson gson = new Gson();
-//                user = gson.fromJson((String) responseEntity.getBody(), new TypeToken<User>(){}.getType());
+                UserInfo userInfo = gson.fromJson((String) responseEntity.getBody(), new TypeToken<UserInfo>(){}.getType());
                 List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
+                //TODO: GRANT DIFFERENT LEVELS OF ACCESS TO USERS
                 grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
-                Authentication auth = new UsernamePasswordAuthenticationToken(username, password, grantedAuths);
+                Authentication auth = new UsernamePasswordAuthenticationToken(userInfo, password, grantedAuths);
                 return auth;
             } else {
                 return null;

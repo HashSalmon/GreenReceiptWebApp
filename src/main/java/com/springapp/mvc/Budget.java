@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Component
@@ -14,6 +13,7 @@ public class Budget {
 
     public List<BudgetItem> getBudgetItems() {
         if(this.budgetItems == null) {
+            //TODO: REPLACE THIS WITH THE API CALL
             BudgetItem item1 = new BudgetItem(300.00, "Food", 100.00);
             BudgetItem item2 = new BudgetItem(150.00, "Clothing", 75.00);
             BudgetItem item3 = new BudgetItem(250.00, "Gas", 200.00);
