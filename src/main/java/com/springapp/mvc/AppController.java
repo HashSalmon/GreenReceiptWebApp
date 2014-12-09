@@ -19,9 +19,11 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.net.Inet4Address;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -217,9 +219,30 @@ public class AppController {
     public ModelAndView displayEditBudget(){
         ModelAndView model = new ModelAndView();
         model.addObject("budgetActive", "active");
-
+        Budget editBudget = new Budget();
+        List<BudgetItem> editBudgetItems = new ArrayList<BudgetItem>();
+        for(BudgetItem item : budget.getBudgetItems()) {
+            BudgetItem budgetItem = new BudgetItem(item.getAmountAllowed(), item.getCategory(), item.getAmountUsed());
+            editBudgetItems.add(budgetItem);
+        }
+        editBudget.setBudgetItems(editBudgetItems);
+        model.addObject("editBudget", editBudget);
 
         model.setViewName("editBudget");
+        return model;
+    }
+
+    @RequestMapping(value="/editBudgetForm", method = RequestMethod.POST)
+    public ModelAndView editBudgetFormSubmit(@ModelAttribute("editBudget") Budget editBudget, BindingResult result) {
+        ModelAndView model = new ModelAndView();
+        model.addObject("budgetActive", "active");
+        List<BudgetItem> editBudgetItems = editBudget.getBudgetItems();
+        int index = 0;
+        for(BudgetItem item: budget.getBudgetItems()) {
+            item.setAmountAllowed(editBudgetItems.get(index++).getAmountAllowed());
+        }
+
+        model.setViewName("redirect:/budget");
         return model;
     }
 }

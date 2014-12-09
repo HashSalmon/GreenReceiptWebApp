@@ -4,19 +4,13 @@ import java.text.NumberFormat;
 
 public class BudgetItem {
     private String category;
-    private String percentUsed;
-    private String status;
-    private double amountUsed;
-    private double amountAllowed;
-    private int value;
+    private Double amountUsed;
+    private Double amountAllowed;
 
-    public BudgetItem(double amountAllowed, String category, String percentUsed, String status, double amountUsed, int value) {
+    public BudgetItem(double amountAllowed, String category, double amountUsed) {
         this.amountAllowed = amountAllowed;
         this.category = category;
-        this.percentUsed = percentUsed;
-        this.status = status;
         this.amountUsed = amountUsed;
-        this.value = value;
     }
 
     public BudgetItem() {
@@ -31,20 +25,33 @@ public class BudgetItem {
         this.category = category;
     }
 
-    public String getPercentUsed() {
-        return percentUsed;
+    public String getPercentUsedString() {
+        if(this.amountAllowed != null && this.amountUsed != null) {
+            return NumberFormat.getPercentInstance().format(this.getPercentUsed());
+        }
+        return null;
     }
 
-    public void setPercentUsed(String percentUsed) {
-        this.percentUsed = percentUsed;
+    public Double getPercentUsed() {
+        if(this.amountAllowed != null && this.amountUsed != null) {
+            return this.amountUsed/this.amountAllowed;
+        }
+        return null;
     }
 
     public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+        Integer percentUsed = this.getValue();
+        if(percentUsed != null) {
+            if(percentUsed >= 80 && percentUsed <= 100) {
+                return "warning";
+            } else if(percentUsed < 80) {
+                return "success";
+            } else {
+                return "danger";
+            }
+        } else {
+            return null;
+        }
     }
 
     public double getAmountUsed() {
@@ -63,12 +70,13 @@ public class BudgetItem {
         this.amountAllowed = amountAllowed;
     }
 
-    public int getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
+    public Integer getValue() {
+        if(this.getPercentUsed() != null) {
+            Double percentUsed = this.getPercentUsed() * 100;
+            return percentUsed.intValue();
+        } else {
+            return null;
+        }
     }
 
     public String getAmountAllowedCurrency() {

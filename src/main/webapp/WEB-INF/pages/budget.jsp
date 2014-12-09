@@ -2,7 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
-  <title>Receipt</title>
+  <title>Budget</title>
   <%@include file="mainHead.jsp"%>
 </head>
 <body>
@@ -24,10 +24,11 @@
                   <td class="rightText">Limit: ${item.amountAllowedCurrency}</td>
                 </tr>
               </table>
-
+              <c:set value="${100}" var="max"/>
               <div class="progress">
-                <div class="progress-bar progress-bar-${item.status}" role="progressbar" aria-valuenow="${item.value}" aria-valuemin="0" aria-valuemax="100" style="width: ${item.value}%;">
-                  ${item.percentUsed}
+                <div class="progress-bar progress-bar-${item.status}" role="progressbar" aria-valuenow="${item.value}" aria-valuemin="0"
+                     aria-valuemax="100" style="width: ${item.value <= 100 ? item.value : max}%;">
+                  ${item.percentUsedString}
                 </div>
               </div>
             </div>
