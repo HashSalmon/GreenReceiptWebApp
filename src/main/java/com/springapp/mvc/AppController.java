@@ -131,7 +131,7 @@ public class AppController {
     @RequestMapping(value="/receipt", method = RequestMethod.GET)
     public ModelAndView displayReceipt(@RequestParam(defaultValue = "") String receiptId) {
         ModelAndView model = new ModelAndView();
-        model.addObject("receiptActive", "active");
+        model.addObject("receiptsActive", "active");
 
         // This code will be replaced by an API call using the passed in ReceiptId
         if("receipt1".equals(receiptId)){
@@ -239,6 +239,25 @@ public class AppController {
         }
 
         model.setViewName("redirect:/budget");
+        return model;
+    }
+
+    @RequestMapping(value="/receipts", method = RequestMethod.GET)
+    public ModelAndView displayReceipts(){
+        ModelAndView model = new ModelAndView();
+        model.addObject("receiptsActive", "active");
+
+        List<Receipt> receipts = new ArrayList<Receipt>();
+        Receipt receipt1 = new Receipt("Smiths", null, "$50.00", "12/12/14");
+        Receipt receipt2 = new Receipt("Best Buy", null, "$50.00", "12/12/14");
+        Receipt receipt3 = new Receipt("Costco", null, "$50.00", "12/12/14");
+        Receipt receipt4 = new Receipt("Sephora", null, "$50.00", "12/12/14");
+        receipts.add(receipt1);
+        receipts.add(receipt2);
+        receipts.add(receipt3);
+        receipts.add(receipt4);
+        model.addObject("receipts", receipts);
+        model.setViewName("receipts");
         return model;
     }
 }

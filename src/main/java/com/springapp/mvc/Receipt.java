@@ -13,6 +13,17 @@ public class Receipt {
     private String total;
     private String returnDate;
 
+    public Receipt() {
+        //Default
+    }
+
+    public Receipt(String store, List<ReceiptItem> items, String total, String returnDate) {
+        this.store = store;
+        this.items = items;
+        this.total = total;
+        this.returnDate = returnDate;
+    }
+
     public String getStore() {
         return store;
     }
