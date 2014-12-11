@@ -21,7 +21,7 @@
   <c:url value="/login" var="loginUrl"/>
   <form class="form-signin" role="form" action="${loginUrl}" method="post">
     <c:if test="${param.error != null}">
-      <div class="alert alert-sucess" role="alert">
+      <div class="alert alert-danger" role="alert">
         Invalid username and/or password.
       </div>
     </c:if>

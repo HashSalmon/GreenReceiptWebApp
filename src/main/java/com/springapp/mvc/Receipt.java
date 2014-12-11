@@ -8,6 +8,7 @@ import java.util.List;
 @Component
 @Scope("session")
 public class Receipt {
+    private String receiptId;
     private String store;
     private List<ReceiptItem> items;
     private String total;
@@ -17,11 +18,20 @@ public class Receipt {
         //Default
     }
 
-    public Receipt(String store, List<ReceiptItem> items, String total, String returnDate) {
+    public Receipt(String receiptId, String store, List<ReceiptItem> items, String total, String returnDate) {
+        this.receiptId = receiptId;
         this.store = store;
         this.items = items;
         this.total = total;
         this.returnDate = returnDate;
+    }
+
+    public String getReceiptId() {
+        return receiptId;
+    }
+
+    public void setReceiptId(String receiptId) {
+        this.receiptId = receiptId;
     }
 
     public String getStore() {

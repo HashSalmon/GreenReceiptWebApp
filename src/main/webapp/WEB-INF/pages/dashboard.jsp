@@ -39,9 +39,12 @@
       <div class="panel panel-default">
         <div class="panel-body">
           Notifications <span class="badge">1</span><br/><br/>
-          <ul>
+          <ul style="list-style: none; padding-left: 0;">
             <li>
-              <span class="glyphicon glyphicon-warning-sign"></span><a href="/receipt?receiptId=receipt3"> Upcoming Return</a>
+              <span class="glyphicon glyphicon-warning-sign"></span><a href="/receipt?receiptId=7"> Upcoming Return</a>
+            </li>
+            <li>
+              <span class="glyphicon glyphicon-random"></span><a href="/receipt?receiptId=3"> Exchange</a>
             </li>
           </ul>
         </div>
@@ -49,12 +52,18 @@
       <div class="panel panel-default">
         <div class="panel-body">
           Recent Activity<br/><br/>
-          <ul>
+          <ul style="list-style: none; padding-left: 0;">
             <li>
               <span class="glyphicon glyphicon-barcode"></span><a href="/receipt?receiptId=receipt1"> Smiths</a>
             </li>
             <li>
-              <span class="glyphicon glyphicon-barcode"></span><a href="/receipt?receiptId=receipt2"> Best Buy</a>
+              <span class="glyphicon glyphicon-barcode"></span><a href="/receipt?receiptId=2"> Smiths</a>
+            </li>
+            <li>
+              <span class="glyphicon glyphicon-barcode"></span><a href="/receipt?receiptId=3"> Smiths</a>
+            </li>
+            <li>
+              <span class="glyphicon glyphicon-barcode"></span><a href="/receipt?receiptId=4"> Best Buy</a>
             </li>
           </ul>
         </div>

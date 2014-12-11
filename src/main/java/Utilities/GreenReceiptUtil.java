@@ -6,22 +6,15 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
+
+
 import java.nio.charset.Charset;
 import java.util.Base64;
 
 public class GreenReceiptUtil {
-
-    static HttpHeaders createHeaders( final String username, final String password ){
-        return new HttpHeaders(){
-            {
-                String auth = username + password;
-                byte[] encodedAuth = Base64.getEncoder().encode(
-                        auth.getBytes(Charset.forName("US-ASCII")));
-                String authHeader = new String( encodedAuth );
-                set( "Authorization", authHeader );
-            }
-        };
-    }
 
     public static Object restWrapper() {
         Object o = null;

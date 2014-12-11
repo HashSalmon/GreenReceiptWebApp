@@ -2,17 +2,17 @@ package com.springapp.mvc;
 
 
 import Forms.CreateAccount;
+import Utilities.MailUtility;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -134,7 +134,7 @@ public class AppController {
         model.addObject("receiptsActive", "active");
 
         // This code will be replaced by an API call using the passed in ReceiptId
-        if("receipt1".equals(receiptId)){
+        if("1".equals(receiptId)){
             List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
 
             ReceiptItem item1 = new ReceiptItem();
@@ -147,12 +147,56 @@ public class AppController {
 
             receiptItems.add(item1);
             receiptItems.add(item2);
+            receipt.setReceiptId(receiptId);
             receipt.setItems(receiptItems);
             receipt.setStore("Smith's");
             receipt.setTotal("$5.00");
             receipt.setReturnDate(null);
             model.addObject("receipt", receipt);
-        } else if("receipt2".equals(receiptId)) {
+        } else if("2".equals(receiptId)) {
+            List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
+
+            ReceiptItem item1 = new ReceiptItem();
+            item1.setName("Chicken");
+            item1.setPrice("$20.00");
+
+            ReceiptItem item2 = new ReceiptItem();
+            item2.setName("Cake");
+            item2.setPrice("$20.00");
+
+            ReceiptItem item3 = new ReceiptItem();
+            item2.setName("Cereal");
+            item2.setPrice("$20.00");
+
+            receiptItems.add(item1);
+            receiptItems.add(item2);
+            receiptItems.add(item3);
+            receipt.setReceiptId(receiptId);
+            receipt.setItems(receiptItems);
+            receipt.setStore("Smith's");
+            receipt.setTotal("$60.00");
+            receipt.setReturnDate(null);
+            model.addObject("receipt", receipt);
+        } else if("3".equals(receiptId)) {
+            List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
+
+            ReceiptItem item1 = new ReceiptItem();
+            item1.setName("Bagels");
+            item1.setPrice("$15.00");
+
+            ReceiptItem item2 = new ReceiptItem();
+            item2.setName("Chips");
+            item2.setPrice("$20.00");
+
+            receiptItems.add(item1);
+            receiptItems.add(item2);
+            receipt.setReceiptId(receiptId);
+            receipt.setItems(receiptItems);
+            receipt.setStore("Smith's");
+            receipt.setTotal("$35.00");
+            receipt.setReturnDate(null);
+            model.addObject("receipt", receipt);
+        } else if("4".equals(receiptId)) {
             List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
 
             ReceiptItem item1 = new ReceiptItem();
@@ -160,12 +204,49 @@ public class AppController {
             item1.setPrice("$500.00");
 
             receiptItems.add(item1);
+            receipt.setReceiptId(receiptId);
             receipt.setItems(receiptItems);
             receipt.setStore("Best Buy");
             receipt.setTotal("$500.00");
             receipt.setReturnDate(null);
             model.addObject("receipt", receipt);
-        } else if("receipt3".equals(receiptId)) {
+        } else if("5".equals(receiptId)) {
+            List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
+
+            ReceiptItem item1 = new ReceiptItem();
+            item1.setName("Adult Ticket");
+            item1.setPrice("$8.00");
+
+            receiptItems.add(item1);
+            receiptItems.add(item1);
+            receiptItems.add(item1);
+            receiptItems.add(item1);
+            receiptItems.add(item1);
+            receiptItems.add(item1);
+            receipt.setReceiptId(receiptId);
+            receipt.setItems(receiptItems);
+            receipt.setStore("Megaplex");
+            receipt.setTotal("$48.00");
+            receipt.setReturnDate(null);
+            model.addObject("receipt", receipt);
+        } else if("6".equals(receiptId)) {
+            List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
+
+            ReceiptItem item1 = new ReceiptItem();
+            item1.setName("Dinner Meal");
+            item1.setPrice("$50.00");
+
+            receiptItems.add(item1);
+            receiptItems.add(item1);
+            receiptItems.add(item1);
+
+            receipt.setReceiptId(receiptId);
+            receipt.setItems(receiptItems);
+            receipt.setStore("Rodizio's Grill");
+            receipt.setTotal("$150.00");
+            receipt.setReturnDate(null);
+            model.addObject("receipt", receipt);
+        } else if("7".equals(receiptId)) {
             List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
 
             ReceiptItem item1 = new ReceiptItem();
@@ -173,10 +254,42 @@ public class AppController {
             item1.setPrice("$75.00");
 
             receiptItems.add(item1);
+
+            receipt.setReceiptId(receiptId);
             receipt.setItems(receiptItems);
             receipt.setStore("Zumiez");
             receipt.setTotal("$75.00");
-            receipt.setReturnDate("December 8, 2014");
+            receipt.setReturnDate("December 12, 2014");
+            model.addObject("receipt", receipt);
+        } else if("8".equals(receiptId)) {
+            List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
+
+            ReceiptItem item1 = new ReceiptItem();
+            item1.setName("Unleaded Gas");
+            item1.setPrice("$100.00");
+
+            receiptItems.add(item1);
+
+            receipt.setReceiptId(receiptId);
+            receipt.setItems(receiptItems);
+            receipt.setStore("Chevron");
+            receipt.setTotal("$100.00");
+            receipt.setReturnDate(null);
+            model.addObject("receipt", receipt);
+        } else if("8".equals(receiptId)) {
+            List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
+
+            ReceiptItem item1 = new ReceiptItem();
+            item1.setName("Unleaded Gas");
+            item1.setPrice("$100.00");
+
+            receiptItems.add(item1);
+
+            receipt.setReceiptId(receiptId);
+            receipt.setItems(receiptItems);
+            receipt.setStore("Chevron");
+            receipt.setTotal("$100.00");
+            receipt.setReturnDate(null);
             model.addObject("receipt", receipt);
         }
 
@@ -248,16 +361,177 @@ public class AppController {
         model.addObject("receiptsActive", "active");
 
         List<Receipt> receipts = new ArrayList<Receipt>();
-        Receipt receipt1 = new Receipt("Smiths", null, "$50.00", "12/12/14");
-        Receipt receipt2 = new Receipt("Best Buy", null, "$50.00", "12/12/14");
-        Receipt receipt3 = new Receipt("Costco", null, "$50.00", "12/12/14");
-        Receipt receipt4 = new Receipt("Sephora", null, "$50.00", "12/12/14");
+        Receipt receipt1 = new Receipt("1", "Smiths", null, "$5.00", "");
+        Receipt receipt2 = new Receipt("2", "Smiths", null, "$60.00", "");
+        Receipt receipt3 = new Receipt("3", "Smiths", null, "$35.00", "");
+        Receipt receipt4 = new Receipt("4", "Best Buy", null, "$500.00", "12/21/14");
+        Receipt receipt5 = new Receipt("5", "Megaplex", null, "$48.00", "");
+        Receipt receipt6 = new Receipt("6", "Rodizio's Grill", null, "$150.00", "");
+        Receipt receipt7 = new Receipt("7", "Zumiez", null, "$75.00", "12/12/14");
+        Receipt receipt8 = new Receipt("8", "Chevron", null, "$100.00", "");
+        Receipt receipt9 = new Receipt("9", "Chevron", null, "$100.00", "");
         receipts.add(receipt1);
         receipts.add(receipt2);
         receipts.add(receipt3);
         receipts.add(receipt4);
+        receipts.add(receipt5);
+        receipts.add(receipt6);
+        receipts.add(receipt7);
+        receipts.add(receipt8);
+        receipts.add(receipt9);
         model.addObject("receipts", receipts);
         model.setViewName("receipts");
         return model;
+    }
+
+    @RequestMapping(value="/sendEmail", method = RequestMethod.GET)
+    @ResponseBody
+    public String sendEmail(@RequestParam(defaultValue = "") String receiptId) {
+
+       //TODO: ADD REST OF THE RECEIPTS
+        Receipt receipt1 = new Receipt();
+
+        if("1".equals(receiptId)){
+            List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
+
+            ReceiptItem item1 = new ReceiptItem();
+            item1.setName("Milk");
+            item1.setPrice("$3.00");
+
+            ReceiptItem item2 = new ReceiptItem();
+            item2.setName("Eggs");
+            item2.setPrice("$2.00");
+
+            receiptItems.add(item1);
+            receiptItems.add(item2);
+            receipt1.setItems(receiptItems);
+            receipt1.setStore("Smith's");
+            receipt1.setTotal("$5.00");
+            receipt1.setReturnDate("");
+        } else if("2".equals(receiptId)) {
+            List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
+
+            ReceiptItem item1 = new ReceiptItem();
+            item1.setName("Chicken");
+            item1.setPrice("$20.00");
+
+            ReceiptItem item2 = new ReceiptItem();
+            item2.setName("Cake");
+            item2.setPrice("$20.00");
+
+            ReceiptItem item3 = new ReceiptItem();
+            item2.setName("Cereal");
+            item2.setPrice("$20.00");
+
+            receiptItems.add(item1);
+            receiptItems.add(item2);
+            receiptItems.add(item3);
+            receipt1.setItems(receiptItems);
+            receipt1.setStore("Smith's");
+            receipt1.setTotal("$60.00");
+            receipt1.setReturnDate("");
+        } else if("3".equals(receiptId)) {
+            List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
+
+            ReceiptItem item1 = new ReceiptItem();
+            item1.setName("Bagels");
+            item1.setPrice("$15.00");
+
+            ReceiptItem item2 = new ReceiptItem();
+            item2.setName("Chips");
+            item2.setPrice("$20.00");
+
+            receiptItems.add(item1);
+            receiptItems.add(item2);
+            receipt1.setItems(receiptItems);
+            receipt1.setStore("Smith's");
+            receipt1.setTotal("$35.00");
+            receipt1.setReturnDate("");
+        } else if("4".equals(receiptId)) {
+            List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
+
+            ReceiptItem item1 = new ReceiptItem();
+            item1.setName("Samsung TV");
+            item1.setPrice("$500.00");
+
+            receiptItems.add(item1);
+            receipt1.setItems(receiptItems);
+            receipt1.setStore("Best Buy");
+            receipt1.setTotal("$500.00");
+            receipt1.setReturnDate("12/21/14");
+        } else if("5".equals(receiptId)) {
+            List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
+
+            ReceiptItem item1 = new ReceiptItem();
+            item1.setName("Adult Ticket");
+            item1.setPrice("$8.00");
+
+            receiptItems.add(item1);
+            receiptItems.add(item1);
+            receiptItems.add(item1);
+            receiptItems.add(item1);
+            receiptItems.add(item1);
+            receiptItems.add(item1);
+            receipt1.setItems(receiptItems);
+            receipt1.setStore("Megaplex");
+            receipt1.setTotal("$48.00");
+            receipt1.setReturnDate("");
+        } else if("6".equals(receiptId)) {
+            List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
+
+            ReceiptItem item1 = new ReceiptItem();
+            item1.setName("Dinner Meal");
+            item1.setPrice("$50.00");
+
+            receiptItems.add(item1);
+            receiptItems.add(item1);
+            receiptItems.add(item1);
+
+            receipt1.setItems(receiptItems);
+            receipt1.setStore("Rodizio's Grill");
+            receipt1.setTotal("$150.00");
+            receipt1.setReturnDate("");
+        } else if("7".equals(receiptId)) {
+            List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
+
+            ReceiptItem item1 = new ReceiptItem();
+            item1.setName("Dakine Backpack");
+            item1.setPrice("$75.00");
+
+            receiptItems.add(item1);
+            receipt1.setItems(receiptItems);
+            receipt1.setStore("Zumiez");
+            receipt1.setTotal("$75.00");
+            receipt1.setReturnDate("12/12/14");
+        } else if("8".equals(receiptId)) {
+            List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
+
+            ReceiptItem item1 = new ReceiptItem();
+            item1.setName("Unleaded Gas");
+            item1.setPrice("$100.00");
+
+            receiptItems.add(item1);
+            receipt1.setItems(receiptItems);
+            receipt1.setStore("Chevron");
+            receipt1.setTotal("$100.00");
+            receipt1.setReturnDate("");
+        } else if("8".equals(receiptId)) {
+            List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
+
+            ReceiptItem item1 = new ReceiptItem();
+            item1.setName("Unleaded Gas");
+            item1.setPrice("$100.00");
+
+            receiptItems.add(item1);
+            receipt1.setItems(receiptItems);
+            receipt1.setStore("Chevron");
+            receipt1.setTotal("$100.00");
+            receipt1.setReturnDate("");
+        }
+
+        MailUtility mailUtility = new MailUtility();
+        mailUtility.sendMail("Green Receipt", receipt1);
+        return "Receipt successfully sent!";
+
     }
 }

@@ -38,14 +38,27 @@
             </table>
           </div>
         </div>
+        <button id="sendEmail" class="btn btn-success col-md-offset-4" onclick="sendEmail();">Send Email</button>
       </div>
     </div>
   </div>
 </body>
 </html>
 <script type="text/javascript">
-  $('.nav.navbar-nav > li').on('click', function(e) {
-    $('.nav.navbar-nav > li').removeClass('active');
-    $(this).addClass('active');
-  });
+
+  function sendEmail() {
+    $.ajax({
+      url : "/sendEmail",
+      data : "receiptId=" + "${receipt.receiptId}",
+      type : "GET",
+
+      success : function(response) {
+        alert( response );
+      },
+      error : function(xhr, status, error) {
+        alert(xhr.responseText);
+      }
+    });
+  }
+
 </script>

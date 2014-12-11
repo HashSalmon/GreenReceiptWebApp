@@ -11,6 +11,7 @@
   <div class="col-md-12">
     <div id="grid"></div>
   </div>
+  <div id="test" style="display: none;"></div>
 </div>
 </body>
 <script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
@@ -24,22 +25,34 @@
 <script src="<c:url value="/resources/js/console.js" />"></script>
 <script src="<c:url value="/resources/js/prettify.js" />"></script>
 <script>
+  function onChange(arg) {
+    var selected = $.map(this.select(), function(item) {
+      $('#test').html($(item).html());
+      window.location.href = "/receipt?receiptId=" + $('#test td:first-child').text();
+    });
+
+    kendoConsole.log("Selected: " + selected.length + " item(s), [" + selected.join(", ") + "]");
+  }
+
   $(document).ready(function () {
     var receipts = [];
     <c:forEach var="receipt" items="${receipts}" varStatus="status">
+      var id = "${receipt.receiptId}";
       var store = "${receipt.store}";
       var total = "${receipt.total}";
       var returnDate = "${receipt.returnDate}";
-      receipts.push({Store: store, Total: total, ReturnDate: returnDate});
+      receipts.push({Id: id, Store: store, Total: total, ReturnDate: returnDate});
     </c:forEach>
 //    alert(receipts);
 
     $("#grid").kendoGrid({
       dataSource: {
         data: receipts,
-        pageSize: 20
+        pageSize: 10
       },
-      height: 550,
+      height: 525,
+      change: onChange,
+      selectable: "row",
       groupable: true,
       sortable: true,
       columnMenu: true,
@@ -59,10 +72,13 @@
         }
       },
       columns: [{
+        field: "Id",
+        title: "Id"
+      },{
         field: "Store",
         title: "Store Name",
         filterable: true,
-        width: 200
+        width: 400
       }, {
         field: "Total",
         title: "Total"

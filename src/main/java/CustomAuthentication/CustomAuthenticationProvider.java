@@ -31,9 +31,13 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             String encodedName = URLEncoder.encode(username,"UTF-8");
             String encodedPassword = URLEncoder.encode(password, "UTF-8");
             String body = "grant_type=password&username=" + encodedName + "&password=" + encodedPassword;
-
-            ResponseEntity responseEntity = restTemplate.exchange("https://greenreceipt.net/Token", HttpMethod.POST, new HttpEntity<Object>(body, headers), String.class);
-            if (responseEntity.getStatusCode().value() == 200) {
+            ResponseEntity responseEntity = null;
+            try {
+                responseEntity = restTemplate.exchange("https://greenreceipt.net/Token", HttpMethod.POST, new HttpEntity<Object>(body, headers), String.class);
+            } catch (Exception e) {
+                return null;
+            }
+            if (responseEntity != null && responseEntity.getStatusCode().value() == 200) {
                 Gson gson = new Gson();
                 UserInfo userInfo = gson.fromJson((String) responseEntity.getBody(), new TypeToken<UserInfo>(){}.getType());
                 List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
