@@ -13,23 +13,27 @@
         <div class="col-sm-12 col-md-6">
           <div class="panel panel-default">
             <div class="panel-body">
-              Trending Chart
-              <div id="chart1"></div>
+              <span class="label label-success" style="font-size: large;">Trending Chart</span>
+              <%--Trending Chart--%>
+              <div id="chart1" style="margin-top: 11px;"></div>
             </div>
           </div>
         </div>
         <div class="col-sm-12 col-md-6">
           <div class="panel panel-default">
             <div class="panel-body">
-              Category Chart
-              <div id="chart"></div>
+              <span class="label label-success" style="font-size: large;">Category Chart</span>
+              <%--Category Chart--%>
+              <div id="chart" style="margin-top: 11px;"></div>
             </div>
           </div>
         </div>
         <div class="col-sm-12 col-md-12">
           <div class="panel panel-default">
             <div class="panel-body">
-              Current Budget
+              <span class="label label-success" style="font-size: large;">Current Budget</span>
+
+              <%--Current Budget--%>
               <div id="chart2"></div>
             </div>
           </div>
@@ -37,8 +41,9 @@
         <div class="col-sm-12">
           <div class="panel panel-default">
             <div class="panel-body">
-              Purchase Locations<br>
-              <div id="map_container" style="width: 100%; height: 350px;"></div>
+              <span class="label label-success" style="font-size: large;">Recent Purchase Locations</span>
+              <%--Recent Purchase Locations<br>--%>
+              <div id="map_container" style="width: 100%; height: 350px; margin-top: 11px;"></div>
             </div>
           </div>
         </div>
