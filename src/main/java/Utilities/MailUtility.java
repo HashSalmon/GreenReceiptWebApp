@@ -41,7 +41,7 @@ public class MailUtility {
             content += "Total: " + receipt.getTotal();
             helper.setText(content);
 
-            FileSystemResource file = new FileSystemResource("/Users/jordanwanlass/Desktop/test.png");
+            FileSystemResource file = new FileSystemResource(getAttatchmentUrl(receipt.getStore(), receipt.getTotal()));
             helper.addAttachment(file.getFilename(), file);
             mailSender1.send(message);
             System.out.println("Mail sent successfully.");
@@ -49,5 +49,29 @@ public class MailUtility {
             throw new MailParseException(e);
         }
 
+    }
+
+    public String getAttatchmentUrl(String storeName, String total) {
+
+        String url = "/Users/jordanwanlass/Desktop/receiptpics/";
+
+        if("Smiths".equals(storeName) && "$5.00".equals(total)) {
+            url += "smiths5.png";
+        } else if ("Smiths".equals(storeName) && "$60.00".equals(total)) {
+            url += "smiths60.png";
+        } else if ("Smiths".equals(storeName) && "$35.00".equals(total)) {
+            url += "smiths35.png";
+        } else if ("Best Buy".equals(storeName)) {
+            url += "bestbuy.png";
+        } else if ("Megaplex".equals(storeName)) {
+            url += "megaplex.png";
+        } else if ("Rodizio's Grill".equals(storeName)) {
+            url += "rodizios.png";
+        } else if ("Zumiez".equals(storeName)) {
+            url += "zumiez.png";
+        } else if ("Chevron".equals(storeName)) {
+            url += "chevron.png";
+        }
+        return url;
     }
 }

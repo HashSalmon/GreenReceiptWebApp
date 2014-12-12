@@ -60,3 +60,11 @@ div.k-grouping-header {
 .rightText {
     text-align: right;
 }
+
+table.receiptTable tr td.receiptItem {
+    padding-bottom: 5em !important;
+}
+
+table.receiptTable tr td.receiptHeader {
+    padding-bottom: 1em !important;
+}

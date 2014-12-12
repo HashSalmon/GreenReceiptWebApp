@@ -11,7 +11,7 @@
   <div class="col-md-12">
     <div id="grid"></div>
   </div>
-  <div id="test" style="display: none;"></div>
+  <div id="receiptRow" style="display: none;"></div>
 </div>
 </body>
 <script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
@@ -27,8 +27,8 @@
 <script>
   function onChange(arg) {
     var selected = $.map(this.select(), function(item) {
-      $('#test').html($(item).html());
-      window.location.href = "/receipt?receiptId=" + $('#test td:first-child').text();
+      $('#receiptRow').html($(item).html());
+      window.location.href = "/receipt?receiptId=" + $('#receiptRow td:first-child').text();
     });
 
     kendoConsole.log("Selected: " + selected.length + " item(s), [" + selected.join(", ") + "]");
@@ -96,78 +96,5 @@
 
 </html>
 
-<%--<script>--%>
-  <%--$(document).ready(function() {--%>
-    <%--$("#grid").kendoGrid({--%>
-      <%--dataSource: {--%>
-        <%--data: createRandomData(50),--%>
-        <%--schema: {--%>
-          <%--model: {--%>
-            <%--fields: {--%>
-              <%--City: { type: "string" },--%>
-              <%--Title: { type: "string" },--%>
-              <%--BirthDate: { type: "date" }--%>
-            <%--}--%>
-          <%--}--%>
-        <%--},--%>
-        <%--pageSize: 15--%>
-      <%--},--%>
-      <%--height: 550,--%>
-      <%--scrollable: true,--%>
-      <%--filterable: {--%>
-        <%--extra: false,--%>
-        <%--operators: {--%>
-          <%--string: {--%>
-            <%--startswith: "Starts with",--%>
-            <%--eq: "Is equal to",--%>
-            <%--neq: "Is not equal to"--%>
-          <%--}--%>
-        <%--}--%>
-      <%--},--%>
-      <%--pageable: true,--%>
-      <%--columns: [--%>
-        <%--{--%>
-          <%--title: "Name",--%>
-          <%--width: 160,--%>
-          <%--filterable: false,--%>
-          <%--template: "#=FirstName# #=LastName#"--%>
-        <%--},--%>
-        <%--{--%>
-          <%--field: "City",--%>
-          <%--width: 130,--%>
-          <%--filterable: {--%>
-            <%--ui: cityFilter--%>
-          <%--}--%>
-        <%--},--%>
-        <%--{--%>
-          <%--field: "Title",--%>
-          <%--filterable: {--%>
-            <%--ui: titleFilter--%>
-          <%--}--%>
-        <%--},--%>
-        <%--{--%>
-          <%--field: "BirthDate",--%>
-          <%--title: "Birth Date",--%>
-          <%--format: "{0:MM/dd/yyyy HH:mm tt}",--%>
-          <%--filterable: {--%>
-            <%--ui: "datetimepicker"--%>
-          <%--}--%>
-        <%--}--%>
-      <%--]--%>
-    <%--});--%>
-  <%--});--%>
 
-  <%--function titleFilter(element) {--%>
-    <%--element.kendoAutoComplete({--%>
-      <%--dataSource: titles--%>
-    <%--});--%>
-  <%--}--%>
 
-  <%--function cityFilter(element) {--%>
-    <%--element.kendoDropDownList({--%>
-      <%--dataSource: cities,--%>
-      <%--optionLabel: "--Select Value--"--%>
-    <%--});--%>
-  <%--}--%>
-
-<%--</script>--%>

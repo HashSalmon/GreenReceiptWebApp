@@ -165,8 +165,8 @@ public class AppController {
             item2.setPrice("$20.00");
 
             ReceiptItem item3 = new ReceiptItem();
-            item2.setName("Cereal");
-            item2.setPrice("$20.00");
+            item3.setName("Cereal");
+            item3.setPrice("$20.00");
 
             receiptItems.add(item1);
             receiptItems.add(item2);
@@ -405,7 +405,7 @@ public class AppController {
             receiptItems.add(item1);
             receiptItems.add(item2);
             receipt1.setItems(receiptItems);
-            receipt1.setStore("Smith's");
+            receipt1.setStore("Smiths");
             receipt1.setTotal("$5.00");
             receipt1.setReturnDate("");
         } else if("2".equals(receiptId)) {
@@ -420,14 +420,14 @@ public class AppController {
             item2.setPrice("$20.00");
 
             ReceiptItem item3 = new ReceiptItem();
-            item2.setName("Cereal");
-            item2.setPrice("$20.00");
+            item3.setName("Cereal");
+            item3.setPrice("$20.00");
 
             receiptItems.add(item1);
             receiptItems.add(item2);
             receiptItems.add(item3);
             receipt1.setItems(receiptItems);
-            receipt1.setStore("Smith's");
+            receipt1.setStore("Smiths");
             receipt1.setTotal("$60.00");
             receipt1.setReturnDate("");
         } else if("3".equals(receiptId)) {
@@ -444,7 +444,7 @@ public class AppController {
             receiptItems.add(item1);
             receiptItems.add(item2);
             receipt1.setItems(receiptItems);
-            receipt1.setStore("Smith's");
+            receipt1.setStore("Smiths");
             receipt1.setTotal("$35.00");
             receipt1.setReturnDate("");
         } else if("4".equals(receiptId)) {

@@ -14,26 +14,26 @@
           <div class="panel-body">
             <c:if test="${receipt.returnDate != null && receipt.returnDate != ''}">
               <div class="alert alert-danger centerText">
-                Your Return Date is coming up soon!<br> ${receipt.returnDate}
+                The last day to return these items is coming up soon!<br> ${receipt.returnDate}
               </div>
             </c:if>
             <table class="receiptTable">
               <tr class="receiptLine">
-                <td colspan="3" class="centerText"><h2>${receipt.store}</h2></td>
+                <td colspan="3" class="centerText receiptHeader"><h2>${receipt.store}</h2></td>
               </tr>
-              <c:forEach items="${receipt.items}" var="item">
+              <c:forEach items="${receipt.items}" var="item" varStatus="status">
                 <tr>
-                  <td>${item.name}</td>
-                  <td></td>
-                  <td class="rightText">${item.price}</td>
+                  <td class="receiptItem" style="${status.first ? 'padding-top: 1em;' : ''}">${item.name}:</td>
+                  <td class="receiptItem" style="${status.first ? 'padding-top: 1em;' : ''}"></td>
+                  <td class="rightText receiptItem" style="${status.first ? 'padding-top: 1em;' : ''}">${item.price}</td>
                 </tr>
               </c:forEach>
               <tr>
                 <td>
-                  Total
+                  Total:
                 </td>
                 <td></td>
-                <td class="rightText"> ${receipt.total}</td>
+                <td class="rightText">${receipt.total}</td>
               </tr>
             </table>
           </div>
