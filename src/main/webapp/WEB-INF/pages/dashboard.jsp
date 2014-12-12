@@ -38,13 +38,13 @@
     <div class="col-md-2">
       <div class="panel panel-default">
         <div class="panel-body">
-          Notifications <span class="badge">1</span><br/><br/>
+          Notifications <span class="badge">2</span><br/><br/>
           <ul style="list-style: none; padding-left: 0;">
             <li>
               <span class="glyphicon glyphicon-warning-sign"></span><a href="/receipt?receiptId=7"> Upcoming Return</a>
             </li>
             <li>
-              <span class="glyphicon glyphicon-random"></span><a href="/receipt?receiptId=3"> Exchange</a>
+              <span class="glyphicon glyphicon-random"></span><a href="/receipt?receiptId=4&exchange=true"> Exchange</a>
             </li>
           </ul>
         </div>

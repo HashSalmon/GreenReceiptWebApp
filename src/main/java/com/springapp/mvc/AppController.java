@@ -129,7 +129,7 @@ public class AppController {
     }
 
     @RequestMapping(value="/receipt", method = RequestMethod.GET)
-    public ModelAndView displayReceipt(@RequestParam(defaultValue = "") String receiptId) {
+    public ModelAndView displayReceipt(@RequestParam(defaultValue = "") String receiptId, @RequestParam(defaultValue = "") String exchange) {
         ModelAndView model = new ModelAndView();
         model.addObject("receiptsActive", "active");
 
@@ -292,7 +292,7 @@ public class AppController {
             receipt.setReturnDate(null);
             model.addObject("receipt", receipt);
         }
-
+        model.addObject("exchange", exchange);
         model.setViewName("receipt");
         return model;
     }

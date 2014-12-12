@@ -17,6 +17,14 @@
                 The last day to return these items is coming up soon!<br> ${receipt.returnDate}
               </div>
             </c:if>
+            <c:if test="${exchange != null && exchange != ''}">
+              <div class="alert alert-warning centerText">
+                Another user has recently purchased this item for less than you did!<br>
+                You may want to consider returning this item.<br><br>
+                From:  Amazon<br>
+                Price: $450.00
+              </div>
+            </c:if>
             <table class="receiptTable">
               <tr class="receiptLine">
                 <td colspan="3" class="centerText receiptHeader"><h2>${receipt.store}</h2></td>
