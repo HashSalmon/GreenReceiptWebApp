@@ -73,7 +73,8 @@
       },
       columns: [{
         field: "Id",
-        title: "Id"
+        title: "Id",
+        width: 100
       },{
         field: "Store",
         title: "Store Name",

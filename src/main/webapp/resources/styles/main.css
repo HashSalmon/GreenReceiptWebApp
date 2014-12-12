@@ -68,3 +68,7 @@ table.receiptTable tr td.receiptItem {
 table.receiptTable tr td.receiptHeader {
     padding-bottom: 1em !important;
 }
+
+table.k-selectable tr {
+    cursor: pointer !important;
+}
