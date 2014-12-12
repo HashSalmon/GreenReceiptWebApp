@@ -44,14 +44,25 @@
                 <td class="rightText">${receipt.total}</td>
               </tr>
             </table>
+            <button id="sendEmail" style="margin-top: 20px;;" class="btn btn-success col-md-offset-4" onclick="sendEmail();">Send Email</button>
           </div>
         </div>
-        <button id="sendEmail" class="btn btn-success col-md-offset-4" onclick="sendEmail();">Send Email</button>
+      </div>
+    </div>
+    <div class="row" style="margin-top: 15px;">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div id="map_container" style="width: 100%; height: 250px;"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </body>
 </html>
+<script type="text/javascript"
+        src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript">
 
   function sendEmail() {
@@ -68,5 +79,45 @@
       }
     });
   }
+
+  function loadMap() {
+    var latlng = new google.maps.LatLng(<c:out value="${receipt.lat}"/> ,<c:out value="${receipt.lon}"/>);
+    var myOptions = {
+      zoom: 12,
+      center: latlng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("map_container"),myOptions);
+    var marker = new google.maps.Marker({
+      position: latlng,
+      map: map,
+      title:"Smiths $5.00"
+    });
+    var store = "${receipt.store}";
+    var total = "${receipt.total}";
+    var contentString = '<div id="content">'+
+            '<div id="siteNotice">'+
+            '</div>'+
+            '<h1 id="firstHeading" class="firstHeading">' + store + ': ' +  total + '</h1>'+
+            '<div id="bodyContent">'+
+            '</div>'+
+            '</div>';
+
+    var infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+
+
+    google.maps.event.addListener(marker, 'click', function() {
+      infowindow.open(map,marker);
+    });
+
+    var trafficLayer = new google.maps.TrafficLayer();
+    trafficLayer.setMap(map);
+
+  }
+
+
+  $(document).ready(loadMap());
 
 </script>

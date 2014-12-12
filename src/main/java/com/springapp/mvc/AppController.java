@@ -152,6 +152,8 @@ public class AppController {
             receipt.setStore("Smith's");
             receipt.setTotal("$5.00");
             receipt.setReturnDate(null);
+            receipt.setLat(40.759104);
+            receipt.setLon(-111.875556);
             model.addObject("receipt", receipt);
         } else if("2".equals(receiptId)) {
             List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
@@ -176,6 +178,8 @@ public class AppController {
             receipt.setStore("Smith's");
             receipt.setTotal("$60.00");
             receipt.setReturnDate(null);
+            receipt.setLat(40.759104);
+            receipt.setLon(-111.875556);
             model.addObject("receipt", receipt);
         } else if("3".equals(receiptId)) {
             List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
@@ -195,6 +199,8 @@ public class AppController {
             receipt.setStore("Smith's");
             receipt.setTotal("$35.00");
             receipt.setReturnDate(null);
+            receipt.setLat(40.759104);
+            receipt.setLon(-111.875556);
             model.addObject("receipt", receipt);
         } else if("4".equals(receiptId)) {
             List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
@@ -209,6 +215,8 @@ public class AppController {
             receipt.setStore("Best Buy");
             receipt.setTotal("$500.00");
             receipt.setReturnDate(null);
+            receipt.setLat(40.724399);
+            receipt.setLon(-111.897481);
             model.addObject("receipt", receipt);
         } else if("5".equals(receiptId)) {
             List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
@@ -228,6 +236,8 @@ public class AppController {
             receipt.setStore("Megaplex");
             receipt.setTotal("$48.00");
             receipt.setReturnDate(null);
+            receipt.setLat(40.766076);
+            receipt.setLon(-111.904008);
             model.addObject("receipt", receipt);
         } else if("6".equals(receiptId)) {
             List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
@@ -245,6 +255,8 @@ public class AppController {
             receipt.setStore("Rodizio's Grill");
             receipt.setTotal("$150.00");
             receipt.setReturnDate(null);
+            receipt.setLat(40.756855);
+            receipt.setLon(-111.871826);
             model.addObject("receipt", receipt);
         } else if("7".equals(receiptId)) {
             List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
@@ -260,6 +272,8 @@ public class AppController {
             receipt.setStore("Zumiez");
             receipt.setTotal("$75.00");
             receipt.setReturnDate("December 12, 2014");
+            receipt.setLat(40.767886);
+            receipt.setLon(-111.904174);
             model.addObject("receipt", receipt);
         } else if("8".equals(receiptId)) {
             List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
@@ -275,6 +289,8 @@ public class AppController {
             receipt.setStore("Chevron");
             receipt.setTotal("$100.00");
             receipt.setReturnDate(null);
+            receipt.setLat(40.764777);
+            receipt.setLon(-111.871339);
             model.addObject("receipt", receipt);
         } else if("8".equals(receiptId)) {
             List<ReceiptItem> receiptItems = new ArrayList<ReceiptItem>();
@@ -290,6 +306,8 @@ public class AppController {
             receipt.setStore("Chevron");
             receipt.setTotal("$100.00");
             receipt.setReturnDate(null);
+            receipt.setLat(40.764777);
+            receipt.setLon(-111.871339);
             model.addObject("receipt", receipt);
         }
         model.addObject("exchange", exchange);
