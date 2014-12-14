@@ -67,7 +67,7 @@
           Recent Activity<br/><br/>
           <ul style="list-style: none; padding-left: 0;">
             <li>
-              <span class="glyphicon glyphicon-barcode"></span><a href="/receipt?receiptId=receipt1"> Smiths</a>
+              <span class="glyphicon glyphicon-barcode"></span><a href="/receipt?receiptId=1"> Smiths</a>
             </li>
             <li>
               <span class="glyphicon glyphicon-barcode"></span><a href="/receipt?receiptId=2"> Smiths</a>

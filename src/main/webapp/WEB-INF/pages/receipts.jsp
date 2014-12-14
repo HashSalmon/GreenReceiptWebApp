@@ -28,7 +28,7 @@
   function onChange(arg) {
     var selected = $.map(this.select(), function(item) {
       $('#receiptRow').html($(item).html());
-      window.location.href = "/receipt?receiptId=" + $('#receiptRow td:first-child').text();
+      window.location.href = "/receipt?receiptId=" + $("#receiptRow td[role=gridcell]").first().text();
     });
 
     kendoConsole.log("Selected: " + selected.length + " item(s), [" + selected.join(", ") + "]");
@@ -43,7 +43,6 @@
       var returnDate = "${receipt.returnDate}";
       receipts.push({Id: id, Store: store, Total: total, ReturnDate: returnDate});
     </c:forEach>
-//    alert(receipts);
 
     $("#grid").kendoGrid({
       dataSource: {
