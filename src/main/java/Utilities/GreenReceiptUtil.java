@@ -1,26 +1,58 @@
 package Utilities;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.springapp.mvc.Receipt;
+import com.springapp.mvc.UserInfo;
+import org.springframework.http.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.client.RestTemplate;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-
-
-
-import java.nio.charset.Charset;
-import java.util.Base64;
+import java.util.List;
 
 public class GreenReceiptUtil {
 
-    public static Object restWrapper() {
-        Object o = null;
+    public static List<Receipt> getReceipts() {
         RestTemplate restTemplate = new RestTemplate();
-//        ResponseEntity responseEntity = restTemplate.exchange("http://155.99.160.33/GreenReceipt/api/users", HttpMethod.GET, new HttpEntity<Object>(createHeaders(username, password)), String.class);
+        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Gson gson = new Gson();
 
-        return o;
+
+        headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
+        ResponseEntity responseEntity = null;
+        try {
+            responseEntity = restTemplate.exchange("https://greenreceipt.net/api/Receipt",
+                    HttpMethod.GET, new HttpEntity<Object>(headers), String.class);
+        } catch (Exception e) {
+            return null;
+        }
+
+        List<Receipt> receipts = gson.fromJson((String) responseEntity.getBody(), new TypeToken<List<Receipt>>() {
+        }.getType());
+        return receipts;
+    }
+
+    public static Receipt getReceipt(String recieptId) {
+        RestTemplate restTemplate = new RestTemplate();
+        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Gson gson = new Gson();
+        String apiCall = "https://greenreceipt.net/api/Receipt?id=" + recieptId;
+
+        headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
+        ResponseEntity responseEntity = null;
+        try {
+            responseEntity = restTemplate.exchange(apiCall,
+                    HttpMethod.GET, new HttpEntity<Object>(headers), String.class);
+        } catch (Exception e) {
+            return null;
+        }
+
+        Receipt receipt = gson.fromJson((String) responseEntity.getBody(), new TypeToken<Receipt>() {
+        }.getType());
+        return receipt;
     }
 }

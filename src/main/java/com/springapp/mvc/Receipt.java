@@ -3,18 +3,37 @@ package com.springapp.mvc;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Component
 @Scope("session")
 public class Receipt {
     private String receiptId;
+    private Integer Id;
     private String store;
+    private String Barcode;
+    private String PurchaseDate;
+    private Double Tax;
+    private Double SubTotal;
+    private String CardType;
+    private String LastFourCardNumber;
+    private String MiscMessage;
+    private Store Store;
     private List<ReceiptItem> items;
+    private List<ReceiptItem> ReceiptItems;
     private String total;
+    private Double Total;
     private String returnDate;
+    private String ReturnDate;
+    private String CashierId;
     private Double lat;
     private Double lon;
+    private Double Latitude;
+    private Double Longitude;
     private String address;
 
     public Receipt() {
@@ -37,13 +56,17 @@ public class Receipt {
         this.receiptId = receiptId;
     }
 
-    public String getStore() {
-        return store;
+    public Store getStore() {
+        return Store;
     }
 
-    public void setStore(String store) {
-        this.store = store;
-    }
+    //    public String getStore() {
+//        return store;
+//    }
+//
+//    public void setStore(String store) {
+//        this.store = store;
+//    }
 
     public List<ReceiptItem> getItems() {
         return items;
@@ -53,21 +76,24 @@ public class Receipt {
         this.items = items;
     }
 
-    public String getTotal() {
-        return total;
-    }
+//    public String getTotal() {
+//        return total;
+//    }
+//
+//    public void setTotal(String total) {
+//        this.total = total;
+//    }
 
-    public void setTotal(String total) {
-        this.total = total;
+    public Date getReturnDate() throws ParseException {
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date d = sf.parse(ReturnDate);
+        return d;
+//        return ReturnDate;
     }
-
-    public String getReturnDate() {
-        return returnDate;
-    }
-
-    public void setReturnDate(String returnDate) {
-        this.returnDate = returnDate;
-    }
+//
+//    public void setReturnDate(String returnDate) {
+//        this.returnDate = returnDate;
+//    }
 
     public Double getLat() {
         return lat;
@@ -91,5 +117,119 @@ public class Receipt {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getBarcode() {
+        return Barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        Barcode = barcode;
+    }
+
+    public Date getPurchaseDate() throws ParseException {
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date d = sf.parse(PurchaseDate);
+        return d;
+    }
+
+    public void setPurchaseDate(String purchaseDate) {
+        PurchaseDate = purchaseDate;
+    }
+
+    public Double getTax() {
+        return Tax;
+    }
+
+    public void setTax(Double tax) {
+        Tax = tax;
+    }
+
+    public Double getSubTotal() {
+        return SubTotal;
+    }
+
+    public void setSubTotal(Double subTotal) {
+        SubTotal = subTotal;
+    }
+
+    public String getCardType() {
+        return CardType;
+    }
+
+    public void setCardType(String cardType) {
+        CardType = cardType;
+    }
+
+    public String getLastFourCardNumber() {
+        return LastFourCardNumber;
+    }
+
+    public void setLastFourCardNumber(String lastFourCardNumber) {
+        LastFourCardNumber = lastFourCardNumber;
+    }
+
+    public String getMiscMessage() {
+        return MiscMessage;
+    }
+
+    public Double getTotal() {
+        return Total;
+    }
+
+    public void setMiscMessage(String miscMessage) {
+        MiscMessage = miscMessage;
+    }
+
+    public void setStore(Store store) {
+        Store = store;
+    }
+
+    public List<ReceiptItem> getReceiptItems() {
+        return ReceiptItems;
+    }
+
+    public void setReceiptItems(List<ReceiptItem> receiptItems) {
+        ReceiptItems = receiptItems;
+    }
+
+    public void setTotal(Double total) {
+        Total = total;
+    }
+
+    public void setReturnDate(String returnDate) {
+        ReturnDate = returnDate;
+    }
+
+    public String getCashierId() {
+        return CashierId;
+    }
+
+    public void setCashierId(String cashierId) {
+        CashierId = cashierId;
+    }
+
+    public Integer getId() {
+        return Id;
+    }
+
+    public void setId(Integer id) {
+        Id = id;
+    }
+
+    public Double getLatitude() {
+        return Latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        Latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return Longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        Longitude = longitude;
     }
 }

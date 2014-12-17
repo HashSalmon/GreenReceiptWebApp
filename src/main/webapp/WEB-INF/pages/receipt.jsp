@@ -27,13 +27,13 @@
             </c:if>
             <table class="receiptTable">
               <tr class="receiptLine">
-                <td colspan="3" class="centerText receiptHeader"><h2>${receipt.store}</h2></td>
+                <td colspan="3" class="centerText receiptHeader"><h2>${receipt.store.company.name}</h2></td>
               </tr>
-              <c:forEach items="${receipt.items}" var="item" varStatus="status">
+              <c:forEach items="${receipt.receiptItems}" var="item" varStatus="status">
                 <tr>
-                  <td class="receiptItem" style="${status.first ? 'padding-top: 1em;' : ''}">${item.name}:</td>
+                  <td class="receiptItem" style="${status.first ? 'padding-top: 1em;' : ''}">${item.itemName}:</td>
                   <td class="receiptItem" style="${status.first ? 'padding-top: 1em;' : ''}"></td>
-                  <td class="rightText receiptItem" style="${status.first ? 'padding-top: 1em;' : ''}">${item.price}</td>
+                  <td class="rightText receiptItem" style="${status.first ? 'padding-top: 1em;' : ''}">$${item.price}</td>
                 </tr>
               </c:forEach>
               <tr>
@@ -41,7 +41,7 @@
                   Total:
                 </td>
                 <td></td>
-                <td class="rightText">${receipt.total}</td>
+                <td class="rightText">$${receipt.total}</td>
               </tr>
             </table>
             <button id="sendEmail" style="margin-top: 20px;;" class="btn btn-success col-md-offset-4" onclick="sendEmail();">Send Email</button>
@@ -68,7 +68,7 @@
   function sendEmail() {
     $.ajax({
       url : "/sendEmail",
-      data : "receiptId=" + "${receipt.receiptId}",
+      data : "receiptId=" + "${receipt.id}",
       type : "GET",
 
       success : function(response) {
@@ -81,7 +81,7 @@
   }
 
   function loadMap() {
-    var latlng = new google.maps.LatLng(<c:out value="${receipt.lat}"/> ,<c:out value="${receipt.lon}"/>);
+    var latlng = new google.maps.LatLng(<c:out value="${receipt.latitude}"/> ,<c:out value="${receipt.longitude}"/>);
     var myOptions = {
       zoom: 12,
       center: latlng,
@@ -93,7 +93,7 @@
       map: map,
       title:"Smiths $5.00"
     });
-    var store = "${receipt.store}";
+    var store = "${receipt.store.company.name}";
     var total = "${receipt.total}";
     var contentString = '<div id="content">'+
             '<div id="siteNotice">'+

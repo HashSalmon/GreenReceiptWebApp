@@ -14,16 +14,6 @@
   <div id="receiptRow" style="display: none;"></div>
 </div>
 </body>
-<script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
-<script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
-<script src="<c:url value="/resources/js/jquery.min.js" />"></script>
-<script src="<c:url value="/resources/js/kendo.dataviz.min.js" />"></script>
-<script src="<c:url value="/resources/js/kendo.web.min.js" />"></script>
-<script src="<c:url value="/resources/js/kendo.all.min.js" />"></script>
-<script src="<c:url value="/resources/js/kendo.timezones.min.js" />"></script>
-<script src="<c:url value="/resources/js/kendo-dojo.js" />"></script>
-<script src="<c:url value="/resources/js/console.js" />"></script>
-<script src="<c:url value="/resources/js/prettify.js" />"></script>
 <script>
   function onChange(arg) {
     var selected = $.map(this.select(), function(item) {
@@ -37,8 +27,8 @@
   $(document).ready(function () {
     var receipts = [];
     <c:forEach var="receipt" items="${receipts}" varStatus="status">
-      var id = "${receipt.receiptId}";
-      var store = "${receipt.store}";
+      var id = "${receipt.id}";
+      var store = "${receipt.store.company.name}";
       var total = "${receipt.total}";
       var returnDate = "${receipt.returnDate}";
       receipts.push({Id: id, Store: store, Total: total, ReturnDate: returnDate});

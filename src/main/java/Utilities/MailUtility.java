@@ -12,12 +12,14 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
+import java.text.ParseException;
+
 public class MailUtility {
 
     private static final String FROM = "greenreceiptteam@gmail.com";
     private static final String PASSWORD = "N0teP@djwGm@ilMay14";
 
-    public void sendMail(String subject, Receipt receipt) {
+    public void sendMail(String subject, Receipt receipt) throws ParseException {
         JavaMailSenderImpl mailSender1 = new JavaMailSenderImpl();
         mailSender1.setHost("smtp.gmail.com");
         mailSender1.setPort(587);
@@ -33,16 +35,16 @@ public class MailUtility {
             helper.setFrom(FROM);
             helper.setTo("jwanlass8@gmail.com");
             helper.setSubject(subject);
-            String content = "Store: " + receipt.getStore() + "\n";
-            for(ReceiptItem item: receipt.getItems()) {
-                content += item.getName() + " " + item.getPrice() + "\n";
+            String content = "Store: " + receipt.getStore().getCompany().getName() + "\n";
+            for(ReceiptItem item: receipt.getReceiptItems()) {
+                content += item.getItemName() + " " + item.getPrice() + "\n";
             }
             content += "Return Date: " + receipt.getReturnDate() + "\n";
             content += "Total: " + receipt.getTotal();
             helper.setText(content);
 
-            FileSystemResource file = new FileSystemResource(getAttatchmentUrl(receipt.getStore(), receipt.getTotal()));
-            helper.addAttachment(file.getFilename(), file);
+//            FileSystemResource file = new FileSystemResource(getAttatchmentUrl(receipt.getStore().getCompany().getName(), receipt.getTotal().toString()));
+//            helper.addAttachment(file.getFilename(), file);
             mailSender1.send(message);
             System.out.println("Mail sent successfully.");
         }catch (MessagingException e) {

@@ -54,10 +54,10 @@
           Notifications <span class="badge">2</span><br/><br/>
           <ul style="list-style: none; padding-left: 0;">
             <li>
-              <span class="glyphicon glyphicon-warning-sign"></span><a href="/receipt?receiptId=7"> Upcoming Return</a>
+              <span class="glyphicon glyphicon-warning-sign"></span><a href="/receipt?receiptId=1"> Upcoming Return</a>
             </li>
             <li>
-              <span class="glyphicon glyphicon-random"></span><a href="/receipt?receiptId=4&exchange=true"> Exchange</a>
+              <span class="glyphicon glyphicon-random"></span><a href="/receipt?receiptId=2&exchange=true"> Exchange</a>
             </li>
           </ul>
         </div>
@@ -67,13 +67,10 @@
           Recent Activity<br/><br/>
           <ul style="list-style: none; padding-left: 0;">
             <li>
-              <span class="glyphicon glyphicon-barcode"></span><a href="/receipt?receiptId=1"> Smiths</a>
+              <span class="glyphicon glyphicon-barcode"></span><a href="/receipt?receiptId=1"> Walmart</a>
             </li>
             <li>
-              <span class="glyphicon glyphicon-barcode"></span><a href="/receipt?receiptId=2"> Smiths</a>
-            </li>
-            <li>
-              <span class="glyphicon glyphicon-barcode"></span><a href="/receipt?receiptId=4"> Best Buy</a>
+              <span class="glyphicon glyphicon-barcode"></span><a href="/receipt?receiptId=2"> Target</a>
             </li>
           </ul>
         </div>
@@ -231,84 +228,73 @@
 
   $(document).ready(createChart2);
   $(document).bind("kendo:skinChange", createChart2);
-  var markers = [];
-  function loadMap() {
-    var latlng = new google.maps.LatLng(40.759104, -111.875556);
-    var smithsLocation = new google.maps.LatLng(40.759104, -111.875556);
-    var smiths1Location = new google.maps.LatLng(40.750770, -111.866249);
-    var bestBuyLocation = new google.maps.LatLng(40.724399, -111.897481);
-    var myOptions = {
+
+
+  function initialize() {
+    var mapOptions = {
       zoom: 12,
-      center: latlng,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
+      center: new google.maps.LatLng(<c:out value="${receipts[0].latitude}"/>, <c:out value="${receipts[0].longitude}"/>)
     };
-    var map = new google.maps.Map(document.getElementById("map_container"),myOptions);
-    var marker = new google.maps.Marker({
-      position: smithsLocation,
-      map: map,
-      title:"Smiths $5.00"
-    });
-    var marker1 = new google.maps.Marker({
-      position: smiths1Location,
-      map: map,
-      title:"Smiths $60.00"
-    });
-    var marker2 = new google.maps.Marker({
-      position: bestBuyLocation,
-      map: map,
-      title:"Best Buy $500.00"
-    });
-    var contentString = '<div id="content">'+
-            '<div id="siteNotice">'+
-            '</div>'+
-            '<h1 id="firstHeading" class="firstHeading">Smiths: $5.00</h1>'+
-            '<div id="bodyContent">'+
-            '</div>'+
-            '</div>';
-    var content1String = '<div id="content">'+
-            '<div id="siteNotice">'+
-            '</div>'+
-            '<h1 id="firstHeading" class="firstHeading">Smiths: $60.00</h1>'+
-            '<div id="bodyContent">'+
-            '</div>'+
-            '</div>';
-    var content2String = '<div id="content">'+
-            '<div id="siteNotice">'+
-            '</div>'+
-            '<h1 id="firstHeading" class="firstHeading">Best Buy: $500.00</h1>'+
-            '<div id="bodyContent">'+
-            '</div>'+
-            '</div>';
-    var infowindow = new google.maps.InfoWindow({
-      content: contentString
-    });
-    var infowindow1 = new google.maps.InfoWindow({
-      content: content1String
-    });
-    var infowindow2 = new google.maps.InfoWindow({
-      content: content2String
-    });
-
-    google.maps.event.addListener(marker, 'click', function() {
-      infowindow.setContent(contentString);
-      infowindow.open(map,marker);
-    });
-    google.maps.event.addListener(marker1, 'click', function() {
-      infowindow.setContent(content1String);
-      infowindow.open(map,marker1);
-    });
-    google.maps.event.addListener(marker2, 'click', function() {
-      infowindow.setContent(content2String);
-      infowindow.open(map,marker2);
-    });
-
+    var map = new google.maps.Map(document.getElementById('map_container'),
+            mapOptions);
+    var markers = [];
     var trafficLayer = new google.maps.TrafficLayer();
     trafficLayer.setMap(map);
 
+    var length = 0;
+    <c:forEach items="${receipts}" var="receipt">
+      markers.push(["${receipt.store.company.name}", <c:out value="${receipt.latitude}"/>, <c:out value="${receipt.longitude}"/>, "${receipt.total}"]);
+      length++;
+    </c:forEach>
+    setMarkers(map, markers, length);
+    AutoCenter(markers);
+  }
+
+  function setMarkers(map, locations, length) {
+    var infowindow = new google.maps.InfoWindow();
+    for (var i = 0; i < length; i++) {
+      var receipt = locations[i];
+      console.log(receipt);
+
+      var myLatLng = new google.maps.LatLng(receipt[1], receipt[2]);
+      console.log(myLatLng);
+      var marker = new google.maps.Marker({
+        position: myLatLng,
+        map: map,
+        title: receipt[0]
+      });
+      var contentString = '<div id="content">'+
+        '<div id="siteNotice">'+
+        '</div>'+
+        '<h1 id="firstHeading" class="firstHeading">' + receipt[0] + ':' + receipt[3] + '</h1>'+
+        '<div id="bodyContent">'+
+        '</div>'+
+        '</div>';
+
+
+
+      google.maps.event.addListener(marker, 'click', function(content) {
+        return function(){
+          infowindow.setContent(content);
+          infowindow.open(map,this);
+        }
+      }(contentString));
+    }
+
+  }
+
+  function AutoCenter(markers) {
+    var bounds = new google.maps.LatLngBounds();
+    $.each(markers, function (index, marker) {
+      bounds.extend(marker.position);
+    });
+    map.fitBounds(bounds);
   }
 
 
-  $(document).ready(loadMap());
+
+  //  $(document).ready(initialize());
+  google.maps.event.addDomListener(window, 'load', initialize);
 </script>
 
 </body>
