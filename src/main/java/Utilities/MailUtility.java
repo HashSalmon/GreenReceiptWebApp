@@ -14,11 +14,23 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 
 import java.text.ParseException;
 
+/**
+ * Holds the functions necessary to send emails to the user, providing them with receipts, reports, information, etc.
+ *
+ * @author Jordan Wanlass
+ */
 public class MailUtility {
 
     private static final String FROM = "greenreceiptteam@gmail.com";
     private static final String PASSWORD = "N0teP@djwGm@ilMay14";
 
+    /**
+     * Sends an email with the information for a specific receipt along with an image associated with the receipt.
+     *
+     * @param subject The subject of the email
+     * @param receipt The receipt object.  Its used to populate the email with information.
+     * @throws ParseException
+     */
     public void sendMail(String subject, Receipt receipt) throws ParseException {
         JavaMailSenderImpl mailSender1 = new JavaMailSenderImpl();
         mailSender1.setHost("smtp.gmail.com");
