@@ -42,5 +42,13 @@
     <button class="btn btn-lg btn-success btn-block" type="submit">Sign in</button>
   </form>
 </div>
+<script type="text/javascript">
+  ${timeout}
+
+  function refreshPage() {
+    alert("Your Session has expired.  The page will now reload to prevent errors.")
+    location.reload();
+  }
+</script>
 </body>
 </html>

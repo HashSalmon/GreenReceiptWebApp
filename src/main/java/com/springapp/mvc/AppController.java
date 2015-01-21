@@ -95,6 +95,7 @@ public class AppController {
         }
 
         if (logout != null) {
+            model.addObject("timeout", "setTimeout(\"refreshPage()\", 60000)");
             model.addObject("msg", "You've been logged out successfully.");
         }
         model.setViewName("login");
