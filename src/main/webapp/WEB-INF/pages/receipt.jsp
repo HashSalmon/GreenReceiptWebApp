@@ -38,10 +38,22 @@
               </c:forEach>
               <tr>
                 <td>
+                  SubTotal:
+                </td>
+                <td></td>
+                <td class="rightText">$${receipt.subTotal}</td>
+              </tr>
+              <tr>
+                <td>
                   Total:
                 </td>
                 <td></td>
                 <td class="rightText">$${receipt.total}</td>
+              </tr>
+              <tr>
+                <td colspan="3" class="centerText">
+                  ${receipt.barcode}
+                </td>
               </tr>
             </table>
             <button id="sendEmail" style="margin-top: 20px;;" class="btn btn-success col-md-offset-4" onclick="sendEmail();">Send Email</button>

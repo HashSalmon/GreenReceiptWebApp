@@ -32,7 +32,6 @@
           <div class="panel panel-default">
             <div class="panel-body">
               <span class="label label-success" style="font-size: large;">Current Budget</span>
-
               <%--Current Budget--%>
               <div id="chart2"></div>
             </div>
@@ -291,9 +290,6 @@
     map.fitBounds(bounds);
   }
 
-
-
-  //  $(document).ready(initialize());
   google.maps.event.addDomListener(window, 'load', initialize);
 </script>
 

@@ -39,9 +39,7 @@ public class GreenReceiptUtil {
             return null;
         }
 
-        List<Receipt> receipts = gson.fromJson((String) responseEntity.getBody(), new TypeToken<List<Receipt>>() {
-        }.getType());
-        return receipts;
+        return gson.fromJson((String) responseEntity.getBody(), new TypeToken<List<Receipt>>() {}.getType());
     }
 
     /**
@@ -67,8 +65,6 @@ public class GreenReceiptUtil {
             return null;
         }
 
-        Receipt receipt = gson.fromJson((String) responseEntity.getBody(), new TypeToken<Receipt>() {
-        }.getType());
-        return receipt;
+        return gson.fromJson((String) responseEntity.getBody(), new TypeToken<Receipt>() {}.getType());
     }
 }

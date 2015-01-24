@@ -72,3 +72,7 @@ table.receiptTable tr td.receiptHeader {
 table.k-selectable tr {
     cursor: pointer !important;
 }
+
+.barcodeIcon {
+    font-size: 30px;
+}
