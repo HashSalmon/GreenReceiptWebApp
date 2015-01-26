@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
   <title>Dashboard</title>
@@ -231,8 +232,10 @@
 
   function initialize() {
     var mapOptions = {
+      <c:if test="${fn:length(receipts) > 0}">
       zoom: 12,
       center: new google.maps.LatLng(<c:out value="${receipts[0].latitude}"/>, <c:out value="${receipts[0].longitude}"/>)
+      </c:if>
     };
     var map = new google.maps.Map(document.getElementById('map_container'),
             mapOptions);
@@ -290,7 +293,9 @@
     map.fitBounds(bounds);
   }
 
-  google.maps.event.addDomListener(window, 'load', initialize);
+  <c:if test="${fn:length(receipts) > 0}">
+    google.maps.event.addDomListener(window, 'load', initialize);
+  </c:if>
 </script>
 
 </body>

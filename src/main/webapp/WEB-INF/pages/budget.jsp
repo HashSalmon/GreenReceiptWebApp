@@ -19,7 +19,7 @@
             <div style="margin-top: 60px;">
               <table style="width: 100%; margin-bottom: 5px;">
                 <tr>
-                  <td>${item.category}</td>
+                  <td>${item.category.name}</td>
                   <td class="centerText">Amount Used: ${item.amountUsedCurrency}</td>
                   <td class="rightText">Limit: ${item.amountAllowedCurrency}</td>
                 </tr>
@@ -33,11 +33,22 @@
               </div>
             </div>
           </c:forEach>
-          <div class="centerText">
-            <div class="btn btn-primary" onclick="window.location.href='/editBudget'">
-              Edit Budget
-            </div>
-          </div>
+          <c:choose>
+            <c:when test="${createNew}">
+              <div class="centerText">
+                <div class="btn btn-primary" onclick="window.location.href='/selectCategories'">
+                  Create Budget
+                </div>
+              </div>
+            </c:when>
+            <c:otherwise>
+              <div class="centerText">
+                <div class="btn btn-primary" onclick="window.location.href='/editBudget'">
+                  Edit Budget
+                </div>
+              </div>
+            </c:otherwise>
+          </c:choose>
         </div>
       </div>
     </div>

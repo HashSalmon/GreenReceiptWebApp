@@ -84,6 +84,14 @@ public class AppController {
         return model;
     }
 
+
+    /**
+     * This controllers the mapping of logging in.  Logging in and out and error all direct to the same page
+     *
+     * @param error     if the user enters in the wrong information the error parameter will equal "error"
+     * @param logout    if the user selects to logout the logout parameter will equal "logout"
+     * @return          returns the model object that points to the login jsp.
+     */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login(
             @RequestParam(value = "error", required = false) String error,
@@ -104,6 +112,11 @@ public class AppController {
 
     }
 
+    /**
+     * Returns a new CreateAccount Object
+     *
+     * @return a new CreateAccount Object
+     */
     @ModelAttribute("createAccountObject")
     public CreateAccount getCreateAccountForm() {
         return new CreateAccount();
@@ -150,13 +163,17 @@ public class AppController {
 
         List<Receipt> receipts = GreenReceiptUtil.getReceipts();
         if(receipts != null && !receipts.isEmpty()) {
-            model.addObject("receipt", receipts);
+            model.addObject("receipts", receipts);
             receiptsContainer.setReceipts(receipts);
         } else {
             model.setViewName("redirect:/login?logout");
         }
 
-        model.addObject("receipts", receipts);
+        List<Receipt> returnNotifications = GreenReceiptUtil.getReturnNotifications();
+        if(returnNotifications != null) {
+            model.addObject("returnNotifications", returnNotifications);
+        }
+
         model.addObject("dashboardActive", "active");
         model.setViewName("dashboard");
         return model;
@@ -198,6 +215,13 @@ public class AppController {
     public ModelAndView displayBudget(){
         ModelAndView model = new ModelAndView();
         model.addObject("budgetActive", "active");
+
+        budget = GreenReceiptUtil.getCurrentBudget();
+
+        if(budget == null) {
+            model.addObject("createNew", true);
+        }
+
         model.addObject("budget", budget);
 
 
@@ -232,6 +256,64 @@ public class AppController {
             item.setAmountAllowed(editBudgetItems.get(index++).getAmountAllowed());
         }
 
+        model.setViewName("redirect:/budget");
+        return model;
+    }
+
+    @RequestMapping(value="/selectCategories", method = RequestMethod.GET)
+    public ModelAndView displaySelectCategories(){
+        ModelAndView model = new ModelAndView();
+        model.addObject("budgetActive", "active");
+
+        List<Category> categories = GreenReceiptUtil.getCategories();
+
+        model.addObject("categoryList", new CategoryList());
+        model.addObject("categories", categories);
+        model.setViewName("selectCategories");
+        return model;
+    }
+
+    @RequestMapping(value="/selectCategoriesForm", method = RequestMethod.POST)
+    public ModelAndView selectCategoriesFormSubmit(@ModelAttribute("categoryList") CategoryList categoryList, BindingResult result) {
+        ModelAndView model = new ModelAndView();
+        model.addObject("budgetActive", "active");
+        String[] selectedCategories = categoryList.getCategoriesForBudget().split(",");
+
+        model.addObject("selectedCategories", selectedCategories);
+        model.setViewName("redirect:/createBudget");
+        return model;
+    }
+
+    @RequestMapping(value="/createBudget", method = RequestMethod.GET)
+    public ModelAndView displayCreateBudget(@RequestParam(defaultValue = "") String[] selectedCategories){
+        ModelAndView model = new ModelAndView();
+         model.addObject("budgetActive", "active");
+
+        List<BudgetItem> createBudgetItems = new ArrayList<BudgetItem>();
+        Budget createBudget = new Budget();
+        for(String categoryName : selectedCategories) {
+            createBudgetItems.add(new BudgetItem(0.0, new Category(categoryName), 0.0));
+        }
+
+        createBudget.setBudgetItems(createBudgetItems);
+        budget.setBudgetItems(createBudgetItems);
+        model.addObject("createBudget", createBudget);
+        model.setViewName("createBudget");
+        return model;
+    }
+
+    @RequestMapping(value="/createBudgetForm", method = RequestMethod.POST)
+    public ModelAndView createBudgetFormSubmit(@ModelAttribute("createBudget") Budget createBudget, BindingResult result) {
+        ModelAndView model = new ModelAndView();
+        model.addObject("budgetActive", "active");
+        Gson gson = new Gson();
+        int index = 0;
+        for(BudgetItem item : createBudget.getBudgetItems()) {
+            budget.getBudgetItems().get(index).setAmountAllowed(item.getAmountAllowed());
+            index++;
+        }
+        Boolean createSuccess = GreenReceiptUtil.createBudget(gson.toJson(budget));
+        budget = null;
         model.setViewName("redirect:/budget");
         return model;
     }

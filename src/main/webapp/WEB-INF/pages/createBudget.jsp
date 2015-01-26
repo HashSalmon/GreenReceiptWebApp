@@ -10,13 +10,14 @@
 <body>
 <%@include file="exteriorNavBar.jsp"%>
 <div class="container">
-  <form:form action="editBudgetForm" modelAttribute="editBudget" class="form-signin" method="post">
-    <c:forEach items="${editBudget.budgetItems}" var="budgetItem" varStatus="index">
+  <form:form action="createBudgetForm" modelAttribute="createBudget" class="form-signin" method="post">
+    <c:forEach items="${createBudget.budgetItems}" var="budgetItem" varStatus="index">
       <label>Category:&nbsp;</label><c:out value="${budgetItem.category.name}"/><br/>
-      <input class="form-control" name="budgetItems[${index.index}].amountAllowed" value="${budgetItem.amountAllowed}" style="margin-bottom: 10px;"/>
+      <input type="hidden" name="budgetItem.category.name" value="${budgetItem.category.name}">
+      <input class="form-control" name="budgetItems[${index.index}].amountAllowed" value="" style="margin-bottom: 10px;"/>
     </c:forEach>
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-    <button class="btn btn-lg btn-success btn-block" type="submit">Set Budget</button>
+    <button class="btn btn-lg btn-success btn-block" type="submit">Create Budget</button>
   </form:form>
 </div>
 </body>

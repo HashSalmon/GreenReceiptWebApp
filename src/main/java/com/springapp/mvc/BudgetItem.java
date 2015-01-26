@@ -4,40 +4,52 @@ import javax.validation.constraints.NotNull;
 import java.text.NumberFormat;
 
 public class BudgetItem {
+    private Category Category;
+    private Double AmountUsed;
+    private Double AmountAllowed;
+    
     private String category;
-    private Double amountUsed;
+//    private Double AmountUsed;
 
-    @NotNull
-    private Double amountAllowed;
+//    @NotNull
+//    private Double AmountAllowed;
 
-    public BudgetItem(double amountAllowed, String category, double amountUsed) {
-        this.amountAllowed = amountAllowed;
-        this.category = category;
-        this.amountUsed = amountUsed;
+    public BudgetItem(double AmountAllowed, Category Category, double AmountUsed) {
+        this.AmountAllowed = AmountAllowed;
+        this.Category = Category;
+        this.AmountUsed = AmountUsed;
     }
 
     public BudgetItem() {
         //default
     }
 
-    public String getCategory() {
-        return category;
+    public Category getCategory() {
+        return Category;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategory(Category category) {
+        Category = category;
     }
+
+    //    public String getCategory() {
+//        return category;
+//    }
+//
+//    public void setCategory(String category) {
+//        this.category = category;
+//    }
 
     public String getPercentUsedString() {
-        if(this.amountAllowed != null && this.amountUsed != null) {
+        if(this.AmountAllowed != null && this.AmountUsed != null) {
             return NumberFormat.getPercentInstance().format(this.getPercentUsed());
         }
         return null;
     }
 
     public Double getPercentUsed() {
-        if(this.amountAllowed != null && this.amountUsed != null) {
-            return this.amountUsed/this.amountAllowed;
+        if(this.AmountAllowed != null && this.AmountUsed != null) {
+            return this.AmountUsed/this.AmountAllowed;
         }
         return null;
     }
@@ -53,24 +65,24 @@ public class BudgetItem {
                 return "danger";
             }
         } else {
-            return null;
+            return "success";
         }
     }
 
     public double getAmountUsed() {
-        return amountUsed;
+        return AmountUsed;
     }
 
-    public void setAmountUsed(double amountUsed) {
-        this.amountUsed = amountUsed;
+    public void setAmountUsed(double AmountUsed) {
+        this.AmountUsed = AmountUsed;
     }
 
     public double getAmountAllowed() {
-        return amountAllowed;
+        return AmountAllowed;
     }
 
-    public void setAmountAllowed(double amountAllowed) {
-        this.amountAllowed = amountAllowed;
+    public void setAmountAllowed(double AmountAllowed) {
+        this.AmountAllowed = AmountAllowed;
     }
 
     public Integer getValue() {
@@ -83,10 +95,10 @@ public class BudgetItem {
     }
 
     public String getAmountAllowedCurrency() {
-        return NumberFormat.getCurrencyInstance().format(this.amountAllowed);
+        return NumberFormat.getCurrencyInstance().format(this.AmountAllowed);
     }
 
     public String getAmountUsedCurrency() {
-        return NumberFormat.getCurrencyInstance().format(this.amountUsed);
+        return NumberFormat.getCurrencyInstance().format(this.AmountUsed);
     }
 }
