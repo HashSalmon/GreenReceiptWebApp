@@ -39,14 +39,18 @@
 <%@include file="exteriorNavBar.jsp"%>
 <div class="container">
 
-    <label for="multiselect">Categories</label>
-    <select id="multiselect" multiple="multiple">
-      <c:forEach items="${categories}" var="category">
-        <option>${category.name}</option>
-      </c:forEach>
-    </select>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-4">
+        <label for="multiselect">Select categories you wish to track with your budget:</label>
+        <select id="multiselect" multiple="multiple" class="categoriesSelect">
+          <c:forEach items="${categories}" var="category">
+            <option>${category.name}</option>
+          </c:forEach>
+        </select>
+        <button class="btn btn-success categoriesSelectBtn" id="get">Next</button>
+      </div>
+    </div>
 
-    <button class="btn btn-success" id="get">Next</button>
 
   <form:form action="selectCategoriesForm" modelAttribute="categoryList" class="form-signin" method="post" cssStyle="display: none;">
     <input name="categoriesForBudget" id="categoriesFormInput" type="text"/>
@@ -61,7 +65,6 @@
 
     $("#get").click(function() {
       $("#categoriesFormInput").val(required.value());
-      alert($("#categoriesFormInput").val())
       $("#submitButton").click();
     });
   });

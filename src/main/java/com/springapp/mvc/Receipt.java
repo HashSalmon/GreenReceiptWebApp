@@ -29,6 +29,7 @@ public class Receipt {
     private Double Total;
     private String returnDate;
     private String ReturnDate;
+    private Boolean ReturnReminder;
     private String CashierId;
     private Double lat;
     private Double lon;
@@ -231,5 +232,13 @@ public class Receipt {
 
     public void setLongitude(Double longitude) {
         Longitude = longitude;
+    }
+
+    public Boolean getReturnReminder() {
+        return ReturnReminder;
+    }
+
+    public void setReturnReminder(Boolean returnReminder) {
+        ReturnReminder = returnReminder;
     }
 }

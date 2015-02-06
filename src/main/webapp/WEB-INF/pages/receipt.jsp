@@ -12,7 +12,7 @@
       <div class="col-md-4 col-md-offset-4">
         <div class="panel panel-defualt">
           <div class="panel-body">
-            <c:if test="${receipt.returnDate != null && receipt.returnDate != ''}">
+            <c:if test="${receipt.returnReminder}">
               <div class="alert alert-danger centerText">
                 The last day to return these items is coming up soon!<br> ${receipt.returnDate}
               </div>

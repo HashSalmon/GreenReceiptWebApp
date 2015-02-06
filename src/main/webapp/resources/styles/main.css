@@ -76,3 +76,12 @@ table.k-selectable tr {
 .barcodeIcon {
     font-size: 30px;
 }
+
+.categoriesSelect {
+    width: 400px;
+}
+
+.categoriesSelectBtn {
+    float: left !important;
+    width: 400px;
+}

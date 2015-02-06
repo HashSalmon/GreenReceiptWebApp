@@ -7,6 +7,8 @@ public class BudgetItem {
     private Category Category;
     private Double AmountUsed;
     private Double AmountAllowed;
+    private Integer BudgetId;
+    private Integer Id;
     
     private String category;
 //    private Double AmountUsed;
@@ -77,11 +79,11 @@ public class BudgetItem {
         this.AmountUsed = AmountUsed;
     }
 
-    public double getAmountAllowed() {
+    public Double getAmountAllowed() {
         return AmountAllowed;
     }
 
-    public void setAmountAllowed(double AmountAllowed) {
+    public void setAmountAllowed(Double AmountAllowed) {
         this.AmountAllowed = AmountAllowed;
     }
 
@@ -100,5 +102,21 @@ public class BudgetItem {
 
     public String getAmountUsedCurrency() {
         return NumberFormat.getCurrencyInstance().format(this.AmountUsed);
+    }
+
+    public Integer getId() {
+        return Id;
+    }
+
+    public void setId(Integer id) {
+        Id = id;
+    }
+
+    public Integer getBudgetId() {
+        return BudgetId;
+    }
+
+    public void setBudgetId(Integer budgetId) {
+        BudgetId = budgetId;
     }
 }

@@ -10,6 +10,7 @@ import java.util.List;
 @Scope("session")
 public class Budget {
     private List<BudgetItem> BudgetItems = null;
+    private Integer Id;
 
     public List<BudgetItem> getBudgetItems() {
         return BudgetItems;
@@ -17,5 +18,13 @@ public class Budget {
 
     public void setBudgetItems(List<BudgetItem> budgetItems) {
         BudgetItems = budgetItems;
+    }
+
+    public Integer getId() {
+        return Id;
+    }
+
+    public void setId(Integer id) {
+        Id = id;
     }
 }

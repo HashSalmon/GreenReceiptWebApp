@@ -230,16 +230,15 @@ public class AppController {
     }
 
     @RequestMapping(value="/editBudget", method = RequestMethod.GET)
-    public ModelAndView displayEditBudget(){
+    public ModelAndView displayEditBudget(@RequestParam(value = "error", required = false) String error){
         ModelAndView model = new ModelAndView();
         model.addObject("budgetActive", "active");
-        Budget editBudget = new Budget();
-        List<BudgetItem> editBudgetItems = new ArrayList<BudgetItem>();
-        for(BudgetItem item : budget.getBudgetItems()) {
-            BudgetItem budgetItem = new BudgetItem(item.getAmountAllowed(), item.getCategory(), item.getAmountUsed());
-            editBudgetItems.add(budgetItem);
+
+        if(error != null) {
+            model.addObject("errorMessage", "Please double check your input");
         }
-        editBudget.setBudgetItems(editBudgetItems);
+        Budget editBudget = GreenReceiptUtil.getCurrentBudget();
+
         model.addObject("editBudget", editBudget);
 
         model.setViewName("editBudget");
@@ -250,10 +249,21 @@ public class AppController {
     public ModelAndView editBudgetFormSubmit(@ModelAttribute("editBudget") Budget editBudget, BindingResult result) {
         ModelAndView model = new ModelAndView();
         model.addObject("budgetActive", "active");
+
+        budget = GreenReceiptUtil.getCurrentBudget();
+
         List<BudgetItem> editBudgetItems = editBudget.getBudgetItems();
         int index = 0;
         for(BudgetItem item: budget.getBudgetItems()) {
-            item.setAmountAllowed(editBudgetItems.get(index++).getAmountAllowed());
+            BudgetItem newBudgetItem = editBudgetItems.get(index++);
+            if(newBudgetItem.getAmountAllowed() != null) {
+                model.setViewName("redirect:/editBudget?error");
+                return model;
+            }
+            if(item.getId().equals(newBudgetItem.getId()) && item.getAmountAllowed() != newBudgetItem.getAmountAllowed()) {
+                item.setAmountAllowed(newBudgetItem.getAmountAllowed());
+                GreenReceiptUtil.updateBudgetItem(item);
+            }
         }
 
         model.setViewName("redirect:/budget");

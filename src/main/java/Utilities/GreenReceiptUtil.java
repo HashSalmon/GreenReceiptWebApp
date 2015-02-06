@@ -2,10 +2,7 @@ package Utilities;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.springapp.mvc.Budget;
-import com.springapp.mvc.Category;
-import com.springapp.mvc.Receipt;
-import com.springapp.mvc.UserInfo;
+import com.springapp.mvc.*;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -153,5 +150,25 @@ public class GreenReceiptUtil {
         }
 
         return gson.fromJson((String) responseEntity.getBody(), new TypeToken<List<Category>>() {}.getType());
+    }
+
+    public static Boolean updateBudgetItem(BudgetItem budgetItem) {
+        RestTemplate restTemplate = new RestTemplate();
+        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Gson gson = new Gson();
+        String apiCall = "https://greenreceipt.net/api/BudgetItem";
+        String budgetItemJson = gson.toJson(budgetItem);
+        headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
+        ResponseEntity responseEntity = null;
+        try {
+            responseEntity = restTemplate.exchange(apiCall,
+                    HttpMethod.POST, new HttpEntity<Object>(budgetItemJson, headers), String.class);
+        } catch (Exception e) {
+            return null;
+        }
+
+        return true;
     }
 }
