@@ -8,11 +8,34 @@
 <body>
 <%@include file="interiorNavBar.jsp"%>
 <div class="container">
+  <c:if test="${errorMessage != null}">
+    <div class="alert alert-danger centerText">
+        ${errorMessage}
+    </div>
+  </c:if>
   <div class="row">
     <div class="col-md-6 col-md-offset-3">
       <div class="panel panel-defualt">
         <div class="panel-body">
-          <div class="centerText">
+          <c:choose>
+            <c:when test="${createNew}">
+            <!-- do nothing -->
+            </c:when>
+            <c:otherwise>
+              <div class="col-md-12" style="text-align: right;">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    Options <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#" data-toggle="modal" data-target="#myModal">Add Category</a></li>
+                    <li><a href="/editBudget">Edit Budget</a></li>
+                  </ul>
+                </div>
+              </div>
+            </c:otherwise>
+          </c:choose>
+          <div class="col-md-12" style="text-align: center;">
             <h2>Budget</h2>
           </div>
           <c:forEach items="${budget.budgetItems}" var="item">
@@ -32,6 +55,9 @@
                 </div>
               </div>
             </div>
+            <div class="centerText">
+              <button class="btn btn-danger" onclick="deleteCategory(${item.id})">Delete</button>
+            </div>
           </c:forEach>
           <c:choose>
             <c:when test="${createNew}">
@@ -42,30 +68,23 @@
               </div>
             </c:when>
             <c:otherwise>
-              <div class="centerText">
-                <div class="btn btn-primary" onclick="window.location.href='/editBudget'">
-                  Edit Budget
-                </div>
-              </div>
-
-              <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                Launch demo modal
-              </button>
-
 
               <div class="modal fade" id="myModal">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                      <h4 class="modal-title">Modal title</h4>
+                      <h4 class="modal-title">Add a category to track in your budget</h4>
                     </div>
                     <div class="modal-body">
-                      <p>One fine body&hellip;</p>
+                      <label for="categoryName">Category</label>
+                      <input type="text" name="categoryName" id="categoryName" />
+                      <label for="amountAllowed">Limit</label>
+                      <input type="text" name="amountAllowed" id="amountAllowed"/>
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                      <button type="button" class="btn btn-primary">Save changes</button>
+                      <button type="button" class="btn btn-primary" onclick="addCategory()">Save changes</button>
                     </div>
                   </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->
@@ -80,5 +99,22 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+  function addCategory() {
+    categoryName = $('#categoryName').val();
+    amountAllowed = $('#amountAllowed').val();
+
+    window.location.href='addBudgetItem?categoryName=' + categoryName + '&amountAllowed=' + amountAllowed;
+  }
+
+  function deleteCategory(id) {
+    confirmed = confirm("Are you sure that you want to delete this category");
+    if (confirmed) {
+      alert("hello");
+      window.location.href='deleteBudgetItem?id=' + id;
+    }
+  }
+</script>
 </body>
 </html>

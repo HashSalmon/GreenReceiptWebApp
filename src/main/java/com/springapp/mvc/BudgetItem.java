@@ -22,6 +22,12 @@ public class BudgetItem {
         this.AmountUsed = AmountUsed;
     }
 
+    public BudgetItem(Double amountAllowed, Category category, Integer budgetId) {
+        this.AmountAllowed = amountAllowed;
+        this.Category = category;
+        this.BudgetId = budgetId;
+    }
+
     public BudgetItem() {
         //default
     }

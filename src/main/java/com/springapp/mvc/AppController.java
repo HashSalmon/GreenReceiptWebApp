@@ -262,7 +262,7 @@ public class AppController {
             }
             if(item.getId().equals(newBudgetItem.getId()) && item.getAmountAllowed() != newBudgetItem.getAmountAllowed()) {
                 item.setAmountAllowed(newBudgetItem.getAmountAllowed());
-                GreenReceiptUtil.updateBudgetItem(item);
+                GreenReceiptUtil.updateOrAddBudgetItem(item);
             }
         }
 
@@ -324,6 +324,41 @@ public class AppController {
         }
         Boolean createSuccess = GreenReceiptUtil.createBudget(gson.toJson(budget));
         budget = null;
+        model.setViewName("redirect:/budget");
+        return model;
+    }
+
+    @RequestMapping(value="/addBudgetItem", method = RequestMethod.GET)
+    public ModelAndView addBudgetItem(@RequestParam(defaultValue = "") String categoryName, @RequestParam(defaultValue = "") String amountAllowed) {
+        ModelAndView model = new ModelAndView();
+        model.addObject("budgetActive", "active");
+
+        budget = GreenReceiptUtil.getCurrentBudget();
+
+        Double amountAllowedDouble = null;
+        try {
+            amountAllowedDouble = Double.parseDouble(amountAllowed);
+        } catch (Exception e) {
+            model.addObject("errorMessage", "Please input a valid limit");
+        }
+
+        Category category = new Category(categoryName);
+
+        GreenReceiptUtil.updateOrAddBudgetItem(new BudgetItem(amountAllowedDouble, category, budget.getId()));
+
+
+        model.setViewName("redirect:/budget");
+        return model;
+    }
+
+    @RequestMapping(value="/deleteBudgetItem", method = RequestMethod.GET)
+    public ModelAndView deleteBudgetItem(@RequestParam(defaultValue = "") String id) {
+        ModelAndView model = new ModelAndView();
+        model.addObject("budgetActive", "active");
+
+        GreenReceiptUtil.deleteBudgetItem(id);
+
+
         model.setViewName("redirect:/budget");
         return model;
     }

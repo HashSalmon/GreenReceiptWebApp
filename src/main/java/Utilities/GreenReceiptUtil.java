@@ -152,7 +152,7 @@ public class GreenReceiptUtil {
         return gson.fromJson((String) responseEntity.getBody(), new TypeToken<List<Category>>() {}.getType());
     }
 
-    public static Boolean updateBudgetItem(BudgetItem budgetItem) {
+    public static Boolean updateOrAddBudgetItem(BudgetItem budgetItem) {
         RestTemplate restTemplate = new RestTemplate();
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         HttpHeaders headers = new HttpHeaders();
@@ -165,6 +165,24 @@ public class GreenReceiptUtil {
         try {
             responseEntity = restTemplate.exchange(apiCall,
                     HttpMethod.POST, new HttpEntity<Object>(budgetItemJson, headers), String.class);
+        } catch (Exception e) {
+            return null;
+        }
+
+        return true;
+    }
+
+    public static Boolean deleteBudgetItem(String id) {
+        RestTemplate restTemplate = new RestTemplate();
+        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        String apiCall = "https://greenreceipt.net/api/BudgetItem?id=" + id;
+        headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
+        ResponseEntity responseEntity = null;
+        try {
+            responseEntity = restTemplate.exchange(apiCall,
+                    HttpMethod.DELETE, new HttpEntity<Object>(headers), String.class);
         } catch (Exception e) {
             return null;
         }
