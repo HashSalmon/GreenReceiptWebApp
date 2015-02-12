@@ -157,8 +157,31 @@ public class AppController {
     public ModelAndView initializeDashboard(HttpSession session) {
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ModelAndView model = new ModelAndView();
-        if(session.getAttribute("username") == null) {
-            session.setAttribute("username", userInfo.getUserName());
+
+        CategoryReport categoryReport = GreenReceiptUtil.getCategoryReportItems();
+
+        if(categoryReport != null) {
+            if(categoryReport.getCategoryReportItems() != null) {
+                String categoryReportValues = "[";
+                String categoryReportNames = "[";
+                String prepend = "";
+                for(CategoryReportItem item : categoryReport.getCategoryReportItems()) {
+                    categoryReportValues += prepend + item.getTotal().toString();
+                    categoryReportNames += prepend + '"' + item.getCategoryName() + '"';
+                    prepend = ",";
+                }
+                categoryReportValues += "]";
+                categoryReportNames += "]";
+                model.addObject("categoryReportValues", categoryReportValues);
+                model.addObject("categoryReportNames", categoryReportNames);
+            }
+        }
+
+        if(session.getAttribute("firstname") == null) {
+           session.setAttribute("firstname", userInfo.getFirstName());
+        }
+        if(session.getAttribute("lastname") == null) {
+            session.setAttribute("lastname", userInfo.getLastName());
         }
 
         List<Receipt> receipts = GreenReceiptUtil.getReceipts();
@@ -175,23 +198,26 @@ public class AppController {
         }
 
         budget = GreenReceiptUtil.getCurrentBudget();
-        List<BudgetItem> budgetItems = budget.getBudgetItems();
-        Double budgetTotal = GreenReceiptUtil.getBudgetTotal(budgetItems);
+
+        if(budget != null) {
+            List<BudgetItem> budgetItems = budget.getBudgetItems();
+            Double budgetTotal = GreenReceiptUtil.getBudgetTotal(budgetItems);
 
 
-        List<String> colors = GreenReceiptUtil.getChartColors(budget.getBudgetItems().size());
+            List<String> colors = GreenReceiptUtil.getChartColors(budget.getBudgetItems().size());
 
-        BudgetPieChart pieChart = new BudgetPieChart();
-        List<BudgetPieChartItems> items = new ArrayList<BudgetPieChartItems>();
-        int index = 0;
-        for(String color : colors) {
-            BudgetItem budgetItem = budgetItems.get(index++);
-            Double value = budgetItem.getAmountAllowed()/budgetTotal;
-            items.add(new BudgetPieChartItems(budgetItem.getCategory().getName(), value * 100, color));
+            BudgetPieChart pieChart = new BudgetPieChart();
+            List<BudgetPieChartItems> items = new ArrayList<BudgetPieChartItems>();
+            int index = 0;
+            for(String color : colors) {
+                BudgetItem budgetItem = budgetItems.get(index++);
+                Double value = budgetItem.getAmountAllowed()/budgetTotal;
+                items.add(new BudgetPieChartItems(budgetItem.getCategory().getName(), Math.floor(value * 100), color));
+            }
+
+            Gson gson = new Gson();
+            model.addObject("pieChartJson", gson.toJson(items));
         }
-
-        Gson gson = new Gson();
-        model.addObject("pieChartJson", gson.toJson(items));
 
         model.addObject("dashboardActive", "active");
         model.setViewName("dashboard");
@@ -275,7 +301,7 @@ public class AppController {
         int index = 0;
         for(BudgetItem item: budget.getBudgetItems()) {
             BudgetItem newBudgetItem = editBudgetItems.get(index++);
-            if(newBudgetItem.getAmountAllowed() != null) {
+            if(newBudgetItem.getAmountAllowed() == null) {
                 model.setViewName("redirect:/editBudget?error");
                 return model;
             }

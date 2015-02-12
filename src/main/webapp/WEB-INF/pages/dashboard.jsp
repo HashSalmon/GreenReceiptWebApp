@@ -94,7 +94,7 @@
       },
       series: [{
         name: "Total Amount",
-        data: [100, 75, 200, 150, 48, 500],
+        data: ${categoryReportValues == null ? "[]" : categoryReportValues},
         color: "#9de219"
       }],
       valueAxis: {
@@ -107,7 +107,7 @@
         }
       },
       categoryAxis: {
-        categories: ["Food", "Clothing", "Gas", "Dining", "Entertainment", "Electronics"],
+        categories: ${categoryReportNames == null ? "[]" : categoryReportNames},
         majorGridLines: {
           visible: false
         }
@@ -193,32 +193,7 @@
       series: [{
         type: "pie",
         startAngle: 150,
-        data: ${pieChartJson}
-//        data: [{
-//          category: "Clothing",
-//          value: 25,
-//          color: "#9de219"
-//        },{
-//          category: "Food",
-//          value: 27,
-//          color: "#90cc38"
-//        },{
-//          category: "Electronics",
-//          value: 11.5,
-//          color: "#068c35"
-//        },{
-//          category: "Dining",
-//          value: 9.5,
-//          color: "#006634"
-//        },{
-//          category: "Entertainment",
-//          value: 10,
-//          color: "#004d38"
-//        },{
-//          category: "Gas",
-//          value: 17,
-//          color: "#033939"
-//        }]
+        data: ${pieChartJson == null ? "[]" : pieChartJson}
       }],
       tooltip: {
         visible: true,
@@ -227,8 +202,10 @@
     });
   }
 
-  $(document).ready(createChart2);
-  $(document).bind("kendo:skinChange", createChart2);
+  <%--<c:if test="${pieChartJson != null}">--%>
+    $(document).ready(createChart2);
+    $(document).bind("kendo:skinChange", createChart2);
+  <%--</c:if>--%>
 
 
   function initialize() {

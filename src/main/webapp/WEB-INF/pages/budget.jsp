@@ -111,7 +111,6 @@
   function deleteCategory(id) {
     confirmed = confirm("Are you sure that you want to delete this category");
     if (confirmed) {
-      alert("hello");
       window.location.href='deleteBudgetItem?id=' + id;
     }
   }

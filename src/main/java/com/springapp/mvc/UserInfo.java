@@ -5,6 +5,8 @@ import java.security.Principal;
 
 public class UserInfo implements Principal {
     private String userName;
+    private String FirstName;
+    private String LastName;
     private String access_token;
 
 
@@ -32,5 +34,21 @@ public class UserInfo implements Principal {
 
     public void setAccess_token(String access_token) {
         this.access_token = access_token;
+    }
+
+    public String getFirstName() {
+        return FirstName;
+    }
+
+    public void setFirstName(String firstName) {
+        FirstName = firstName;
+    }
+
+    public String getLastName() {
+        return LastName;
+    }
+
+    public void setLastName(String lastName) {
+        LastName = lastName;
     }
 }

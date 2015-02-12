@@ -7,7 +7,7 @@
       </a>
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <p class="navbar-text navbar-right">Welcome ${sessionScope.username}&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/login?logout">Logout</a>&nbsp;&nbsp;</p>
+      <p class="navbar-text navbar-right">Welcome ${sessionScope.firstname}&nbsp;${sessionScope.lastname}&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/login?logout">Logout</a>&nbsp;&nbsp;</p>
       <ul class="nav navbar-nav">
         <li class="${dashboardActive}"><a href="/dashboard">Dashboard <span class="sr-only">(current)</span></a></li>
         <li class="${receiptsActive}"><a href="/receipts">Receipts </a></li>

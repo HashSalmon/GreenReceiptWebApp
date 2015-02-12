@@ -8,6 +8,7 @@ import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.client.RestTemplate;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -190,6 +191,34 @@ public class GreenReceiptUtil {
         }
 
         return true;
+    }
+
+    public static CategoryReport getCategoryReportItems() {
+        RestTemplate restTemplate = new RestTemplate();
+        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Gson gson = new Gson();
+        Calendar startDate = Calendar.getInstance();
+        startDate.set(Calendar.DAY_OF_MONTH, 1);
+        Calendar endDate  = Calendar.getInstance();
+        endDate.add(Calendar.DAY_OF_MONTH, 1);
+
+
+        headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+        String startDateString = sf.format(startDate.getTime());
+        String endDateString = sf.format(endDate.getTime());
+        String json = "https://greenreceipt.net/api/CategoryReport?startDate="  + startDateString + "&endDate=" + endDateString;
+        ResponseEntity responseEntity = null;
+        try {
+            responseEntity = restTemplate.exchange(json,
+                    HttpMethod.GET, new HttpEntity<Object>(headers), String.class);
+        } catch (Exception e) {
+            return null;
+        }
+
+        return gson.fromJson((String) responseEntity.getBody(), new TypeToken<CategoryReport>() {}.getType());
     }
 
     public static List<String> getChartColors(int numCategories) {
