@@ -32,7 +32,7 @@
       },
       series: [{
         name: "Total Amount",
-        data: [100, 75, 200, 150, 48, 500],
+        data: ${categoryReportValues == null ? "[]" : categoryReportValues},
         color: "#9de219"
       }],
       valueAxis: {
@@ -45,7 +45,7 @@
         }
       },
       categoryAxis: {
-        categories: ["Food", "Clothing", "Gas", "Dining", "Entertainment", "Electronics"],
+        categories: ${categoryReportNames == null ? "[]" : categoryReportNames},
         majorGridLines: {
           visible: false
         }

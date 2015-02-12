@@ -252,6 +252,27 @@ public class AppController {
     public ModelAndView displayCategoryReport(){
         ModelAndView model = new ModelAndView();
         model.addObject("reportActive", "active");
+
+        CategoryReport categoryReport = GreenReceiptUtil.getCategoryReportItems();
+
+        if(categoryReport != null) {
+            if(categoryReport.getCategoryReportItems() != null) {
+                String categoryReportValues = "[";
+                String categoryReportNames = "[";
+                String prepend = "";
+                for(CategoryReportItem item : categoryReport.getCategoryReportItems()) {
+                    categoryReportValues += prepend + item.getTotal().toString();
+                    categoryReportNames += prepend + '"' + item.getCategoryName() + '"';
+                    prepend = ",";
+                }
+                categoryReportValues += "]";
+                categoryReportNames += "]";
+                model.addObject("categoryReportValues", categoryReportValues);
+                model.addObject("categoryReportNames", categoryReportNames);
+            }
+        }
+
+
         model.setViewName("category");
         return model;
     }
