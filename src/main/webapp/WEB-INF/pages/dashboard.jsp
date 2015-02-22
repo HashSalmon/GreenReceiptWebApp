@@ -51,14 +51,13 @@
     <div class="col-md-2">
       <div class="panel panel-default">
         <div class="panel-body">
-          Notifications <span class="badge">2</span><br/><br/>
+          Notifications <span class="badge">${fn:length(returnNotifications)}</span><br/><br/>
           <ul style="list-style: none; padding-left: 0;">
+          <c:forEach var="notification" items="${returnNotifications}">
             <li>
-              <span class="glyphicon glyphicon-warning-sign"></span><a href="/receipt?receiptId=1"> Upcoming Return</a>
+              <span class="glyphicon glyphicon-warning-sign"></span><a href="/receipt?receiptId=${notification.id}">${notification.store.company.name} Return</a>
             </li>
-            <li>
-              <span class="glyphicon glyphicon-random"></span><a href="/receipt?receiptId=2&exchange=true"> Exchange</a>
-            </li>
+          </c:forEach>
           </ul>
         </div>
       </div>
@@ -66,12 +65,11 @@
         <div class="panel-body">
           Recent Activity<br/><br/>
           <ul style="list-style: none; padding-left: 0;">
-            <li>
-              <span class="glyphicon glyphicon-barcode"></span><a href="/receipt?receiptId=1"> Walmart</a>
-            </li>
-            <li>
-              <span class="glyphicon glyphicon-barcode"></span><a href="/receipt?receiptId=2"> Target</a>
-            </li>
+            <c:forEach items="${recentReceipts}" var="receipt">
+              <li>
+                <span class="glyphicon glyphicon-barcode"></span><a href="/receipt?receiptId=${receipt.id}"> ${receipt.store.company.name}</a>
+              </li>
+            </c:forEach>
           </ul>
         </div>
       </div>
@@ -202,17 +200,16 @@
     });
   }
 
-  <%--<c:if test="${pieChartJson != null}">--%>
-    $(document).ready(createChart2);
-    $(document).bind("kendo:skinChange", createChart2);
-  <%--</c:if>--%>
+  $(document).ready(createChart2);
+  $(document).bind("kendo:skinChange", createChart2);
+
 
 
   function initialize() {
     var mapOptions = {
-      <c:if test="${fn:length(receipts) > 0}">
+      <c:if test="${fn:length(recentReceipts) > 0}">
       zoom: 12,
-      center: new google.maps.LatLng(<c:out value="${receipts[0].latitude}"/>, <c:out value="${receipts[0].longitude}"/>)
+      center: new google.maps.LatLng(<c:out value="${recentReceipts[0].latitude}"/>, <c:out value="${recentReceipts[0].longitude}"/>)
       </c:if>
     };
     var map = new google.maps.Map(document.getElementById('map_container'),
@@ -222,7 +219,7 @@
     trafficLayer.setMap(map);
 
     var length = 0;
-    <c:forEach items="${receipts}" var="receipt">
+    <c:forEach items="${recentReceipts}" var="receipt">
       markers.push(["${receipt.store.company.name}", <c:out value="${receipt.latitude}"/>, <c:out value="${receipt.longitude}"/>, "${receipt.total}"]);
       length++;
     </c:forEach>
@@ -271,7 +268,7 @@
     map.fitBounds(bounds);
   }
 
-  <c:if test="${fn:length(receipts) > 0}">
+  <c:if test="${fn:length(recentReceipts) > 0}">
     google.maps.event.addDomListener(window, 'load', initialize);
   </c:if>
 </script>

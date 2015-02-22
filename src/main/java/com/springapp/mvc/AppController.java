@@ -181,6 +181,11 @@ public class AppController {
             model.addObject("returnNotifications", returnNotifications);
         }
 
+        List<Receipt> recentReceipts = GreenReceiptUtil.getMostRecentReceipts();
+        if(recentReceipts != null) {
+            model.addObject("recentReceipts", recentReceipts);
+        }
+
         budget = GreenReceiptUtil.getCurrentBudget();
 
         if(budget != null) {
