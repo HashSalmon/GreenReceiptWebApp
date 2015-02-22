@@ -3,10 +3,10 @@ package Utilities;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.springapp.mvc.*;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -286,5 +286,32 @@ public class GreenReceiptUtil {
         }
 
         return total;
+    }
+
+    /**
+     * Build up the json for the category report
+     * @param categoryReport the list of category report items
+     * @param model the model object that will make the variables available in the jsp
+     */
+    public static void makeCategoryReportStrings(CategoryReport categoryReport, ModelAndView model) {
+        Double total = 0.0;
+        if(categoryReport != null) {
+            if(categoryReport.getCategoryReportItems() != null) {
+                String categoryReportValues = "[";
+                String categoryReportNames = "[";
+                String prepend = "";
+                for(CategoryReportItem item : categoryReport.getCategoryReportItems()) {
+                    total += item.getTotal();
+                    categoryReportValues += prepend + item.getTotal().toString();
+                    categoryReportNames += prepend + '"' + item.getCategoryName() + '"';
+                    prepend = ",";
+                }
+                categoryReportValues += "]";
+                categoryReportNames += "]";
+                model.addObject("categoryReportValues", categoryReportValues);
+                model.addObject("categoryReportNames", categoryReportNames);
+                model.addObject("categoryReportTotal", total + 200);
+            }
+        }
     }
 }

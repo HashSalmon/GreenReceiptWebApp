@@ -36,7 +36,7 @@
         color: "#9de219"
       }],
       valueAxis: {
-        max: 600,
+        max: ${categoryReportTotal == null ? 100 : categoryReportTotal},
         line: {
           visible: false
         },

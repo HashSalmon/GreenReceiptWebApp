@@ -159,23 +159,7 @@ public class AppController {
         ModelAndView model = new ModelAndView();
 
         CategoryReport categoryReport = GreenReceiptUtil.getCategoryReportItems();
-
-        if(categoryReport != null) {
-            if(categoryReport.getCategoryReportItems() != null) {
-                String categoryReportValues = "[";
-                String categoryReportNames = "[";
-                String prepend = "";
-                for(CategoryReportItem item : categoryReport.getCategoryReportItems()) {
-                    categoryReportValues += prepend + item.getTotal().toString();
-                    categoryReportNames += prepend + '"' + item.getCategoryName() + '"';
-                    prepend = ",";
-                }
-                categoryReportValues += "]";
-                categoryReportNames += "]";
-                model.addObject("categoryReportValues", categoryReportValues);
-                model.addObject("categoryReportNames", categoryReportNames);
-            }
-        }
+        GreenReceiptUtil.makeCategoryReportStrings(categoryReport, model);
 
         if(session.getAttribute("firstname") == null) {
            session.setAttribute("firstname", userInfo.getFirstName());
@@ -254,24 +238,7 @@ public class AppController {
         model.addObject("reportActive", "active");
 
         CategoryReport categoryReport = GreenReceiptUtil.getCategoryReportItems();
-
-        if(categoryReport != null) {
-            if(categoryReport.getCategoryReportItems() != null) {
-                String categoryReportValues = "[";
-                String categoryReportNames = "[";
-                String prepend = "";
-                for(CategoryReportItem item : categoryReport.getCategoryReportItems()) {
-                    categoryReportValues += prepend + item.getTotal().toString();
-                    categoryReportNames += prepend + '"' + item.getCategoryName() + '"';
-                    prepend = ",";
-                }
-                categoryReportValues += "]";
-                categoryReportNames += "]";
-                model.addObject("categoryReportValues", categoryReportValues);
-                model.addObject("categoryReportNames", categoryReportNames);
-            }
-        }
-
+        GreenReceiptUtil.makeCategoryReportStrings(categoryReport, model);
 
         model.setViewName("category");
         return model;
