@@ -118,7 +118,10 @@ public class GreenReceiptUtil {
         return gson.fromJson((String) responseEntity.getBody(), new TypeToken<List<Receipt>>() {}.getType());
     }
 
-
+    /**
+     * This call gets the users currently set budget
+     * @return return a budget item that contains a full list of BudgetItems
+     */
     public static Budget getCurrentBudget() {
         RestTemplate restTemplate = new RestTemplate();
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -139,12 +142,17 @@ public class GreenReceiptUtil {
         return gson.fromJson((String) responseEntity.getBody(), new TypeToken<Budget>() {}.getType());
     }
 
+    /**
+     * Send the budget to the server to be created
+     *
+     * @param budgetJson The json representation of the budget object with budgetItems
+     * @return Returns true if the budget is successfully created, null if an exception occurs
+     */
     public static Boolean createBudget(String budgetJson) {
         RestTemplate restTemplate = new RestTemplate();
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        Gson gson = new Gson();
         String apiCall = "https://greenreceipt.net/api/Budget";
 
         headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
@@ -159,6 +167,10 @@ public class GreenReceiptUtil {
         return true;
     }
 
+    /**
+     * Gets a list of all of the categories in the system
+     * @return The list of Category objects
+     */
     public static List<Category> getCategories() {
         RestTemplate restTemplate = new RestTemplate();
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -178,6 +190,11 @@ public class GreenReceiptUtil {
         return gson.fromJson((String) responseEntity.getBody(), new TypeToken<List<Category>>() {}.getType());
     }
 
+    /**
+     * Sends a budgetItem to the server.  If it already exists, it updates the item, if it doesn't exist, it adds the item
+     * @param budgetItem The budget item to be added or updated
+     * @return Returns true if the update/add is successful, null if an exception occurs
+     */
     public static Boolean updateOrAddBudgetItem(BudgetItem budgetItem) {
         RestTemplate restTemplate = new RestTemplate();
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -198,6 +215,11 @@ public class GreenReceiptUtil {
         return true;
     }
 
+    /**
+     * Removes a budgetItem (category) from the users current budget
+     * @param id The id of the budgetItem to remove
+     * @return Returns true if the delete is successful, null if an exception occurs
+     */
     public static Boolean deleteBudgetItem(String id) {
         RestTemplate restTemplate = new RestTemplate();
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -216,6 +238,14 @@ public class GreenReceiptUtil {
         return true;
     }
 
+    /**
+     * Retries the Category Report for the user
+     * @param startDateString The earliest date you want to see category information
+     * @param endDateString The latest date you want to see category information
+     * @param model Model object for accessing variables in the jsp
+     * @return The category report object
+     * @throws ParseException If the dates cannot be parsed because they are in the incorrect format, throw an exception
+     */
     public static CategoryReport getCategoryReportItems(String startDateString, String endDateString, ModelAndView model) throws ParseException {
         RestTemplate restTemplate = new RestTemplate();
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -258,13 +288,18 @@ public class GreenReceiptUtil {
         return gson.fromJson((String) responseEntity.getBody(), new TypeToken<CategoryReport>() {}.getType());
     }
 
+    /**
+     * Get the colors for the budget chart
+     * @param numCategories The number of categories to get colors for
+     * @return A list of the color strings
+     */
     public static List<String> getChartColors(int numCategories) {
         List<String> colors;
 
         if(numCategories == 1 || numCategories == 0) {
             return new ArrayList<String>(Arrays.asList("#9de219"));
         } else if(numCategories == 2) {
-            return new ArrayList<String>(Arrays.asList("#033939"));
+            return new ArrayList<String>(Arrays.asList("#9de219","#033939"));
         }
 
         int firstSteps = numCategories;// This is the number of steps for the first to the second color.
@@ -279,6 +314,12 @@ public class GreenReceiptUtil {
         return colors;
     }
 
+    /**
+     * Add the colors to the array
+     * @param first number of steps for the first to the second color
+     * @param last number of steps for the second to last color
+     * @return List of colors
+     */
     public static List<String> addColors(int first, int last) {
         List<String> colors = new ArrayList<String>();
         int[] mainGreen = new int[]{157, 226, 25};
@@ -289,6 +330,14 @@ public class GreenReceiptUtil {
         return colors;
     }
 
+    /**
+     * Create the colors and and them to the color list
+     * @param step the number of steps in between each color
+     * @param colors an empty list that will be populated with colors
+     * @param firstColor the first color to start gradient from
+     * @param secondColor the last color that the gradient will end with
+     * @param includeLast add the last color
+     */
     public static void generateColors(int step, List<String> colors, int[] firstColor, int[] secondColor, boolean includeLast) {
         int[] increment = new int[3];
         String color = "";
@@ -315,6 +364,11 @@ public class GreenReceiptUtil {
         }
     }
 
+    /**
+     * Get the total dollar amount for your budget, a sum of all the budget item limits
+     * @param budgetItems A list of all of the budget items in the users current budget
+     * @return a double that is the sum of all of the budget item's limits
+     */
     public static Double getBudgetTotal(List<BudgetItem> budgetItems) {
         Double total = 0.0;
 
@@ -350,16 +404,5 @@ public class GreenReceiptUtil {
                 model.addObject("categoryReportTotal", total + 200);
             }
         }
-    }
-
-    public static boolean isValidDate(String inDate) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        dateFormat.setLenient(false);
-        try {
-            dateFormat.parse(inDate.trim());
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
     }
 }
