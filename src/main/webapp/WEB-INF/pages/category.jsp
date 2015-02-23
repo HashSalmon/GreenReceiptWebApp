@@ -8,7 +8,32 @@
 <body>
 <%@include file="interiorNavBar.jsp"%>
 <div class="container">
+  <c:if test="${error != null}">
+  <div class="alert alert-danger centerText">
+      ${error}
+  </div>
+  </c:if>
+    <c:if test="${startDateError != null}">
+    <div class="alert alert-danger centerText">
+        ${startDateError}
+    </div>
+    </c:if>
+    <c:if test="${endDateError != null}">
+    <div class="alert alert-danger centerText">
+        ${endDateError}
+    </div>
+    </c:if>
   <div class="row">
+    <form:form action="categoryDateForm" modelAttribute="categoryReportDates" method="post">
+      <div class="col-md-6">
+        <label for="startDatePicker">Start Date:</label><input id="startDatePicker" name="startDate" value="${startDate}" style="width:200px;" />
+        <label for="endDatePicker">End Date:</label><input id="endDatePicker" name="endDate" value="${endDate}" style="width:200px" />
+      </div>
+      <div class="col-md-6">
+        <button class="btn btn-default">Submit</button>
+      </div>
+      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    </form:form>
     <div class="col-md-12">
       <div class="panel panel-default">
         <div class="panel-body">
@@ -17,7 +42,6 @@
       </div>
     </div>
   </div>
-</div>
 <script>
   function createChart() {
     $("#chart").kendoChart({
@@ -60,6 +84,12 @@
 
   $(document).ready(createChart);
   $(document).bind("kendo:skinChange", createChart);
+
+  $(document).ready(function() {
+    // create DatePicker from input HTML element
+    $("#startDatePicker").kendoDatePicker({format: "yyyy-MM-dd"});
+    $("#endDatePicker").kendoDatePicker({format: "yyyy-MM-dd"});
+  });
 </script>
 </body>
 </html>

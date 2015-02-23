@@ -8,11 +8,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 /**
  * Holds the main utilities for the application.
@@ -218,22 +216,36 @@ public class GreenReceiptUtil {
         return true;
     }
 
-    public static CategoryReport getCategoryReportItems() {
+    public static CategoryReport getCategoryReportItems(String startDateString, String endDateString, ModelAndView model) throws ParseException {
         RestTemplate restTemplate = new RestTemplate();
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         Gson gson = new Gson();
-        Calendar startDate = Calendar.getInstance();
-        startDate.set(Calendar.DAY_OF_MONTH, 1);
-        Calendar endDate  = Calendar.getInstance();
-        endDate.add(Calendar.DAY_OF_MONTH, 1);
 
+        Calendar startDate = Calendar.getInstance();
+        Calendar endDate = Calendar.getInstance();
+        if(startDateString == null) {
+            startDate.set(Calendar.DAY_OF_MONTH, 1);
+        } else {
+            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+            Date d = sf.parse(startDateString);
+            startDate.setTime(d);
+        }
+        if(endDateString == null) {
+            endDate.add(Calendar.DAY_OF_MONTH, 1);
+        } else {
+            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+            Date d = sf.parse(endDateString);
+            endDate.setTime(d);
+        }
 
         headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
-        String startDateString = sf.format(startDate.getTime());
-        String endDateString = sf.format(endDate.getTime());
+        startDateString = sf.format(startDate.getTime());
+        endDateString = sf.format(endDate.getTime());
+        model.addObject("startDate", startDateString);
+        model.addObject("endDate", endDateString);
         String json = "https://greenreceipt.net/api/CategoryReport?startDate="  + startDateString + "&endDate=" + endDateString;
         ResponseEntity responseEntity = null;
         try {
@@ -338,5 +350,16 @@ public class GreenReceiptUtil {
                 model.addObject("categoryReportTotal", total + 200);
             }
         }
+    }
+
+    public static boolean isValidDate(String inDate) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+        try {
+            dateFormat.parse(inDate.trim());
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 }

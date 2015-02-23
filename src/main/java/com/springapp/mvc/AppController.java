@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.mail.Session;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -158,7 +160,15 @@ public class AppController {
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ModelAndView model = new ModelAndView();
 
-        CategoryReport categoryReport = GreenReceiptUtil.getCategoryReportItems();
+        String startDate = (String) session.getAttribute("CategoryReportStartDate");
+        String endDate = (String) session.getAttribute("CategoryReportEndDate");
+
+        CategoryReport categoryReport = null;
+        try {
+            categoryReport = GreenReceiptUtil.getCategoryReportItems(startDate, endDate, model);
+        } catch (ParseException e) {
+            //Do Nothing
+        }
         GreenReceiptUtil.makeCategoryReportStrings(categoryReport, model);
 
         if(session.getAttribute("firstname") == null) {
@@ -238,14 +248,34 @@ public class AppController {
     }
 
     @RequestMapping(value="/category", method = RequestMethod.GET)
-    public ModelAndView displayCategoryReport(){
+    public ModelAndView displayCategoryReport( HttpSession session){
         ModelAndView model = new ModelAndView();
         model.addObject("reportActive", "active");
 
-        CategoryReport categoryReport = GreenReceiptUtil.getCategoryReportItems();
+        String startDate = (String) session.getAttribute("CategoryReportStartDate");
+        String endDate = (String) session.getAttribute("CategoryReportEndDate");
+
+        CategoryReport categoryReport = null;
+        try {
+            categoryReport = GreenReceiptUtil.getCategoryReportItems(startDate, endDate, model);
+        } catch (ParseException e) {
+            model.addObject("error", "Please check your dates");
+            return model;
+        }
         GreenReceiptUtil.makeCategoryReportStrings(categoryReport, model);
 
         model.setViewName("category");
+        return model;
+    }
+
+    @RequestMapping(value="/categoryDateForm", method = RequestMethod.POST)
+    public ModelAndView categoryReportDateChange(@ModelAttribute("categoryReportDates") @Valid CategoryReportDates categoryReportDates, HttpSession session) {
+        ModelAndView model = new ModelAndView();
+
+        session.setAttribute("CategoryReportStartDate", categoryReportDates.getStartDate());
+        session.setAttribute("CategoryReportEndDate", categoryReportDates.getEndDate());
+
+        model.setViewName("redirect:/category");
         return model;
     }
 
