@@ -9,10 +9,15 @@
 <%@include file="interiorNavBar.jsp"%>
 <div class="container">
   <c:if test="${error != null}">
-  <div class="alert alert-danger centerText">
-      ${error}
-  </div>
+    <div class="alert alert-danger centerText">
+        ${error}
+    </div>
   </c:if>
+    <c:if test="${noResults != null}">
+      <div class="alert alert-info centerText">
+          ${noResults}
+      </div>
+    </c:if>
     <c:if test="${startDateError != null}">
     <div class="alert alert-danger centerText">
         ${startDateError}

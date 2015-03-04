@@ -1,6 +1,5 @@
 package com.springapp.mvc;
 
-import javax.validation.constraints.NotNull;
 import java.text.NumberFormat;
 
 public class BudgetItem {
@@ -9,12 +8,6 @@ public class BudgetItem {
     private Double AmountAllowed;
     private Integer BudgetId;
     private Integer Id;
-    
-    private String category;
-//    private Double AmountUsed;
-
-//    @NotNull
-//    private Double AmountAllowed;
 
     public BudgetItem(double AmountAllowed, Category Category, double AmountUsed) {
         this.AmountAllowed = AmountAllowed;
@@ -39,14 +32,6 @@ public class BudgetItem {
     public void setCategory(Category category) {
         Category = category;
     }
-
-    //    public String getCategory() {
-//        return category;
-//    }
-//
-//    public void setCategory(String category) {
-//        this.category = category;
-//    }
 
     public String getPercentUsedString() {
         if(this.AmountAllowed != null && this.AmountUsed != null) {

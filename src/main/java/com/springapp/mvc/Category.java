@@ -5,6 +5,15 @@ package com.springapp.mvc;
  */
 public class Category {
     private String Name;
+    private Integer Id;
+
+    public Integer getId() {
+        return Id;
+    }
+
+    public void setId(Integer id) {
+        Id = id;
+    }
 
     public Category(String name) {
         Name = name;

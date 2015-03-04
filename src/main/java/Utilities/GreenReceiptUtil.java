@@ -401,6 +401,9 @@ public class GreenReceiptUtil {
                 categoryReportNames += "]";
                 model.addObject("categoryReportValues", categoryReportValues);
                 model.addObject("categoryReportNames", categoryReportNames);
+                if(categoryReportNames.length() < 3) {
+                    model.addObject("noResults", "There are no results for this date range");
+                }
                 model.addObject("categoryReportTotal", total + 200);
             }
         }
