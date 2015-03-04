@@ -10,6 +10,7 @@
 <body>
 <%@include file="exteriorNavBar.jsp"%>
 <div class="container">
+  <h2 class="centerText">Enter in your desired limit for each category in your budget</h2>
   <form:form action="createBudgetForm" modelAttribute="createBudget" class="form-signin" method="post">
     <c:forEach items="${createBudget.budgetItems}" var="budgetItem" varStatus="index">
       <label>Category:&nbsp;</label><c:out value="${budgetItem.category.name}"/><br/>
