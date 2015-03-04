@@ -468,4 +468,16 @@ public class AppController {
 
         return "Receipt successfully sent!";
     }
+
+    @RequestMapping(value="/deleteReceipt", method = RequestMethod.GET)
+    public ModelAndView deleteReceipt(@RequestParam(defaultValue = "") String id) {
+        ModelAndView model = new ModelAndView();
+        model.addObject("receiptsActive", "active");
+
+        GreenReceiptUtil.deleteReceipt(id);
+
+
+        model.setViewName("redirect:/receipts");
+        return model;
+    }
 }

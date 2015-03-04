@@ -71,6 +71,29 @@ public class GreenReceiptUtil {
     }
 
     /**
+     * Removes a receipt
+     * @param id The id of the receipt to remove
+     * @return Returns true if the delete is successful, null if an exception occurs
+     */
+    public static Boolean deleteReceipt(String id) {
+        RestTemplate restTemplate = new RestTemplate();
+        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        String apiCall = "https://greenreceipt.net/api/Receipt?id=" + id;
+        headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
+        ResponseEntity responseEntity = null;
+        try {
+            responseEntity = restTemplate.exchange(apiCall,
+                    HttpMethod.DELETE, new HttpEntity<Object>(headers), String.class);
+        } catch (Exception e) {
+            return null;
+        }
+
+        return true;
+    }
+
+    /**
      * Returns all of the users receipts with a return notification set that has a return date within the next 7 days
      *
      * @return a list of all of the users return receipts receipts

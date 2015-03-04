@@ -56,7 +56,8 @@
                 </td>
               </tr>
             </table>
-            <button id="sendEmail" style="margin-top: 20px;;" class="btn btn-success col-md-offset-4" onclick="sendEmail();">Send Email</button>
+            <button id="sendEmail" class="btn btn-success col-md-offset-4 receiptButton" onclick="sendEmail();">Send Email</button>
+            <button id="deleteReceipt" class="btn btn-danger col-md-offset-4 receiptButton" onclick="deleteReceipt()">Delete</button>
           </div>
         </div>
       </div>
@@ -90,6 +91,13 @@
         alert(xhr.responseText);
       }
     });
+  }
+
+  function deleteReceipt() {
+    confirmed = confirm("Are you sure that you want to delete this receipt");
+    if (confirmed) {
+      window.location.href = "/deleteReceipt?id=${receipt.id}";
+    }
   }
 
   function loadMap() {

@@ -85,3 +85,8 @@ table.k-selectable tr {
     float: left !important;
     width: 400px;
 }
+
+.receiptButton {
+    width: 100px;
+    margin-top: 20px;
+}
