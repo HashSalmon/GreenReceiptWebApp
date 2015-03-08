@@ -97,7 +97,8 @@ public class AppController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login(
             @RequestParam(value = "error", required = false) String error,
-            @RequestParam(value = "logout", required = false) String logout) {
+            @RequestParam(value = "logout", required = false) String logout,
+            HttpSession session) {
 
         ModelAndView model = new ModelAndView();
         if (error != null) {
@@ -105,6 +106,8 @@ public class AppController {
         }
 
         if (logout != null) {
+            session.invalidate();
+            SecurityContextHolder.getContext().setAuthentication(null);
             model.addObject("timeout", "setTimeout(\"refreshPage()\", 60000)");
             model.addObject("msg", "You've been logged out successfully.");
         }
@@ -170,6 +173,18 @@ public class AppController {
             //Do Nothing
         }
         GreenReceiptUtil.makeCategoryReportStrings(categoryReport, model);
+
+        String startDateTrending = (String) session.getAttribute("TrendingReportStartDate");
+        String endDateTrending = (String) session.getAttribute("TrendingReportEndDate");
+
+        TrendingReport trendingReport = null;
+        try {
+            trendingReport = GreenReceiptUtil.getTrendingReportItems(startDateTrending, endDateTrending, model);
+        } catch (ParseException e) {
+            model.addObject("error", "Please check your dates");
+            return model;
+        }
+        GreenReceiptUtil.makeTrendingReportStrings(trendingReport, model);
 
         if(session.getAttribute("firstname") == null) {
            session.setAttribute("firstname", userInfo.getFirstName());
@@ -239,14 +254,6 @@ public class AppController {
         return model;
     }
 
-    @RequestMapping(value="/trending", method = RequestMethod.GET)
-    public ModelAndView displayTrendingReport(){
-        ModelAndView model = new ModelAndView();
-        model.addObject("reportActive", "active");
-        model.setViewName("trending");
-        return model;
-    }
-
     @RequestMapping(value="/category", method = RequestMethod.GET)
     public ModelAndView displayCategoryReport( HttpSession session){
         ModelAndView model = new ModelAndView();
@@ -276,6 +283,27 @@ public class AppController {
         session.setAttribute("CategoryReportEndDate", categoryReportDates.getEndDate());
 
         model.setViewName("redirect:/category");
+        return model;
+    }
+
+    @RequestMapping(value="/trending", method = RequestMethod.GET)
+    public ModelAndView displayTrendingReport( HttpSession session){
+        ModelAndView model = new ModelAndView();
+        model.addObject("reportActive", "active");
+
+        String startDate = (String) session.getAttribute("TrendingReportStartDate");
+        String endDate = (String) session.getAttribute("TrendingReportEndDate");
+
+        TrendingReport trendingReport = null;
+        try {
+            trendingReport = GreenReceiptUtil.getTrendingReportItems(startDate, endDate, model);
+        } catch (ParseException e) {
+            model.addObject("error", "Please check your dates");
+            return model;
+        }
+        GreenReceiptUtil.makeTrendingReportStrings(trendingReport, model);
+
+        model.setViewName("trending");
         return model;
     }
 

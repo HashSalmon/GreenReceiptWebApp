@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -312,6 +313,58 @@ public class GreenReceiptUtil {
     }
 
     /**
+     * Retries the Trending Report for the user
+     * @param startDateString The earliest date you want to see trending information (if null is passed in, it will be january first of the current year)
+     * @param endDateString The latest date you want to see trending information (if null is passed in, it will be the next month from the current one)
+     * @param model Model object for accessing variables in the jsp
+     * @return The trending report object
+     * @throws ParseException If the dates cannot be parsed because they are in the incorrect format, throw an exception
+     */
+    public static TrendingReport getTrendingReportItems(String startDateString, String endDateString, ModelAndView model) throws ParseException {
+        RestTemplate restTemplate = new RestTemplate();
+        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Gson gson = new Gson();
+
+        Calendar startDate = Calendar.getInstance();
+        Calendar endDate = Calendar.getInstance();
+        if(startDateString == null) {
+            startDate.set(Calendar.DAY_OF_MONTH, 1);
+            startDate.set(Calendar.MONTH, 0);
+        } else {
+            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+            Date d = sf.parse(startDateString);
+            startDate.setTime(d);
+        }
+        if(endDateString == null) {
+            endDate.add(Calendar.DAY_OF_MONTH, 1);
+            endDate.add(Calendar.MONTH, 1);
+        } else {
+            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+            Date d = sf.parse(endDateString);
+            endDate.setTime(d);
+        }
+
+        headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+        startDateString = sf.format(startDate.getTime());
+        endDateString = sf.format(endDate.getTime());
+        model.addObject("startDate", startDateString);
+        model.addObject("endDate", endDateString);
+        String json = "https://greenreceipt.net/api/TrendingReport?startDate="  + startDateString + "&endDate=" + endDateString;
+        ResponseEntity responseEntity = null;
+        try {
+            responseEntity = restTemplate.exchange(json,
+                    HttpMethod.GET, new HttpEntity<Object>(headers), String.class);
+        } catch (Exception e) {
+            return null;
+        }
+
+        return gson.fromJson((String) responseEntity.getBody(), new TypeToken<TrendingReport>() {}.getType());
+    }
+
+    /**
      * Get the colors for the budget chart
      * @param numCategories The number of categories to get colors for
      * @return A list of the color strings
@@ -430,5 +483,54 @@ public class GreenReceiptUtil {
                 model.addObject("categoryReportTotal", total + 200);
             }
         }
+    }
+
+    /**
+     * Build up the json for the trending report
+     * @param trendingReport the list of category report items
+     * @param model the model object that will make the variables available in the jsp
+     */
+    public static void makeTrendingReportStrings(TrendingReport trendingReport, ModelAndView model) {
+        if(trendingReport != null) {
+            if(trendingReport.getTrendingReportItems() != null) {
+                String dataset = "new Array(";
+                String highlighted = "new Array(";
+                String months = "[";
+                String prepend = "";
+                for(TrendingReportItem item : trendingReport.getTrendingReportItems()) {
+                    if(item.isProjected()) {
+                        dataset +=  prepend + "null";
+                        highlighted +=  prepend + item.getTotal().toString();
+                    } else {
+                        dataset += prepend + item.getTotal().toString();
+                        highlighted += prepend + "null";
+                    }
+                    months += prepend + "'" + item.getMonth() + "'";
+                    prepend = ",";
+                }
+                months += "]";
+                dataset += ")";
+                highlighted += ")";
+                model.addObject("months", months);
+                model.addObject("dataset", dataset);
+                model.addObject("highlighted", highlighted);
+                if(dataset.length() < 12) {
+                    model.addObject("noResults", "There are no results for this date range");
+                }
+            }
+        }
+    }
+
+    /**
+     * Clear out all of the set values in the session
+     * @param session The session object for the user
+     */
+    public static void clearSession(HttpSession session) {
+        session.setAttribute("firstname", null);
+        session.setAttribute("lastname", null);
+        session.setAttribute("CategoryReportStartDate", null);
+        session.setAttribute("CategoryReportEndDate", null);
+        session.setAttribute("TrendingReportStartDate", null);
+        session.setAttribute("TrendingReportEndDate", null);
     }
 }

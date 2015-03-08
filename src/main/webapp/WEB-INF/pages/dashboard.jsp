@@ -122,8 +122,8 @@
   $(document).bind("kendo:skinChange", createChart);
 
   function createChart1() {
-    var dataset = new Array(1545.65,1436.43,1567.23,1501.54,null);
-    var highlighted = new Array(null,null,null,null,1512.71);
+    var dataset = ${dataset};
+    var highlighted = ${highlighted};
     $("#chart1").kendoChart({
       title: {
         text: "Trending By Months"
@@ -141,7 +141,7 @@
           color: '#9de219'
         },
         {
-          name: 'Generated',
+          name: 'Projected',
           data: highlighted,
           color: '#033939'
         }
@@ -153,7 +153,7 @@
         axisCrossingValue: 0
       },
       categoryAxis: {
-        categories: ["Jan", "Feb", "Mar", "April", "May"],
+        categories: ${months},
         line: {
           visible: false
         }
