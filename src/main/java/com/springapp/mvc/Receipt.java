@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +15,6 @@ import java.util.List;
 public class Receipt {
     private String receiptId;
     private Integer Id;
-    private String store;
     private String Barcode;
     private String PurchaseDate;
     private Double Tax;
@@ -25,9 +25,7 @@ public class Receipt {
     private Store Store;
     private List<ReceiptItem> items;
     private List<ReceiptItem> ReceiptItems;
-    private String total;
     private Double Total;
-    private String returnDate;
     private String ReturnDate;
     private Boolean ReturnReminder;
     private String CashierId;
@@ -41,13 +39,13 @@ public class Receipt {
         //Default
     }
 
-    public Receipt(String receiptId, String store, List<ReceiptItem> items, String total, String returnDate) {
-        this.receiptId = receiptId;
-        this.store = store;
-        this.items = items;
-        this.total = total;
-        this.returnDate = returnDate;
-    }
+//    public Receipt(String receiptId, String store, List<ReceiptItem> items, String total, String returnDate) {
+//        this.receiptId = receiptId;
+//        this.store = store;
+//        this.items = items;
+//        this.total = total;
+//        this.returnDate = returnDate;
+//    }
 
     public String getReceiptId() {
         return receiptId;
@@ -61,14 +59,6 @@ public class Receipt {
         return Store;
     }
 
-    //    public String getStore() {
-//        return store;
-//    }
-//
-//    public void setStore(String store) {
-//        this.store = store;
-//    }
-
     public List<ReceiptItem> getItems() {
         return items;
     }
@@ -77,24 +67,11 @@ public class Receipt {
         this.items = items;
     }
 
-//    public String getTotal() {
-//        return total;
-//    }
-//
-//    public void setTotal(String total) {
-//        this.total = total;
-//    }
-
     public Date getReturnDate() throws ParseException {
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date d = sf.parse(ReturnDate);
         return d;
-//        return ReturnDate;
     }
-//
-//    public void setReturnDate(String returnDate) {
-//        this.returnDate = returnDate;
-//    }
 
     public Double getLat() {
         return lat;
@@ -234,7 +211,10 @@ public class Receipt {
         Longitude = longitude;
     }
 
-    public Boolean getReturnReminder() {
+    public Boolean getReturnReminder() throws ParseException {
+        if(ReturnReminder && this.getReturnDate().before(Calendar.getInstance().getTime())) {
+            return false;
+        }
         return ReturnReminder;
     }
 

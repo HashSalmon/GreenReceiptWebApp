@@ -168,7 +168,7 @@ public class AppController {
 
         CategoryReport categoryReport = null;
         try {
-            categoryReport = GreenReceiptUtil.getCategoryReportItems(startDate, endDate, model);
+            categoryReport = GreenReceiptUtil.getCategoryReportItems(startDate, endDate, model, session);
         } catch (ParseException e) {
             //Do Nothing
         }
@@ -179,7 +179,7 @@ public class AppController {
 
         TrendingReport trendingReport = null;
         try {
-            trendingReport = GreenReceiptUtil.getTrendingReportItems(startDateTrending, endDateTrending, model);
+            trendingReport = GreenReceiptUtil.getTrendingReportItems(startDateTrending, endDateTrending, model, session);
         } catch (ParseException e) {
             model.addObject("error", "Please check your dates");
             return model;
@@ -231,6 +231,7 @@ public class AppController {
 
             Gson gson = new Gson();
             model.addObject("pieChartJson", gson.toJson(items));
+            model.addObject("budgetItems", budget.getBudgetItems());
         }
 
         model.addObject("dashboardActive", "active");
@@ -264,7 +265,7 @@ public class AppController {
 
         CategoryReport categoryReport = null;
         try {
-            categoryReport = GreenReceiptUtil.getCategoryReportItems(startDate, endDate, model);
+            categoryReport = GreenReceiptUtil.getCategoryReportItems(startDate, endDate, model, session);
         } catch (ParseException e) {
             model.addObject("error", "Please check your dates");
             return model;
@@ -296,7 +297,7 @@ public class AppController {
 
         TrendingReport trendingReport = null;
         try {
-            trendingReport = GreenReceiptUtil.getTrendingReportItems(startDate, endDate, model);
+            trendingReport = GreenReceiptUtil.getTrendingReportItems(startDate, endDate, model, session);
         } catch (ParseException e) {
             model.addObject("error", "Please check your dates");
             return model;

@@ -270,7 +270,7 @@ public class GreenReceiptUtil {
      * @return The category report object
      * @throws ParseException If the dates cannot be parsed because they are in the incorrect format, throw an exception
      */
-    public static CategoryReport getCategoryReportItems(String startDateString, String endDateString, ModelAndView model) throws ParseException {
+    public static CategoryReport getCategoryReportItems(String startDateString, String endDateString, ModelAndView model, HttpSession session) throws ParseException {
         RestTemplate restTemplate = new RestTemplate();
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         HttpHeaders headers = new HttpHeaders();
@@ -300,6 +300,8 @@ public class GreenReceiptUtil {
         endDateString = sf.format(endDate.getTime());
         model.addObject("startDate", startDateString);
         model.addObject("endDate", endDateString);
+        session.setAttribute("CategoryReportStartDate", startDateString);
+        session.setAttribute("CategoryReportEndDate", endDateString);
         String json = "https://greenreceipt.net/api/CategoryReport?startDate="  + startDateString + "&endDate=" + endDateString;
         ResponseEntity responseEntity = null;
         try {
@@ -320,7 +322,7 @@ public class GreenReceiptUtil {
      * @return The trending report object
      * @throws ParseException If the dates cannot be parsed because they are in the incorrect format, throw an exception
      */
-    public static TrendingReport getTrendingReportItems(String startDateString, String endDateString, ModelAndView model) throws ParseException {
+    public static TrendingReport getTrendingReportItems(String startDateString, String endDateString, ModelAndView model, HttpSession session) throws ParseException {
         RestTemplate restTemplate = new RestTemplate();
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         HttpHeaders headers = new HttpHeaders();
@@ -352,6 +354,8 @@ public class GreenReceiptUtil {
         endDateString = sf.format(endDate.getTime());
         model.addObject("startDate", startDateString);
         model.addObject("endDate", endDateString);
+        session.setAttribute("TrendingReportStartDate", startDateString);
+        session.setAttribute("TrendingReportEndDate", endDateString);
         String json = "https://greenreceipt.net/api/TrendingReport?startDate="  + startDateString + "&endDate=" + endDateString;
         ResponseEntity responseEntity = null;
         try {
@@ -372,7 +376,7 @@ public class GreenReceiptUtil {
     public static List<String> getChartColors(int numCategories) {
         List<String> colors;
 
-        if(numCategories == 1 || numCategories == 0) {
+        if(numCategories == 1) {
             return new ArrayList<String>(Arrays.asList("#9de219"));
         } else if(numCategories == 2) {
             return new ArrayList<String>(Arrays.asList("#9de219","#033939"));

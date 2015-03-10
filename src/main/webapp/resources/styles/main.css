@@ -90,3 +90,38 @@ table.k-selectable tr {
     width: 100px;
     margin-top: 20px;
 }
+
+#categoryDateForm {
+    margin-top: 10px;
+}
+
+#categoryChartDiv {
+    margin-top: 15px;
+}
+
+.chartLabel {
+    font-size: large;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.dateRangeLabel {
+    font-size: large;
+    display: block;
+}
+
+.red {
+    color: #d9534f;
+}
+
+.yellow {
+    color: #f0ad4e;
+}
+
+.green {
+    color: #5cb85c;
+}
+
+.budgetItemDetails {
+    margin-bottom: 15px;
+}

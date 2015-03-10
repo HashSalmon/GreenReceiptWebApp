@@ -29,7 +29,7 @@
     </div>
     </c:if>
   <div class="row">
-    <form:form action="categoryDateForm" modelAttribute="categoryReportDates" method="post">
+    <form:form action="categoryDateForm" modelAttribute="categoryReportDates" method="post" id="categoryDateForm">
       <div class="col-md-6">
         <label for="startDatePicker">Start Date:</label><input id="startDatePicker" name="startDate" value="${startDate}" style="width:200px;" />
         <label for="endDatePicker">End Date:</label><input id="endDatePicker" name="endDate" value="${endDate}" style="width:200px" />
@@ -39,7 +39,7 @@
       </div>
       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     </form:form>
-    <div class="col-md-12">
+    <div class="col-md-12" id="categoryChartDiv">
       <div class="panel panel-default">
         <div class="panel-body">
           <div id="chart"></div>
