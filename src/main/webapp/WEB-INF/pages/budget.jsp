@@ -14,7 +14,17 @@
     </div>
   </c:if>
   <div class="row">
-    <div class="col-md-6 col-md-offset-3">
+
+    <div class="col-sm-12 col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <%--Current Budget--%>
+          <div id="chart2"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
       <div class="panel panel-defualt">
         <div class="panel-body">
           <c:choose>
@@ -97,8 +107,48 @@
         </div>
       </div>
     </div>
+
+
+
   </div>
 </div>
+
+<c:forEach var="budgetItem" items="${budget.budgetItems}">
+  <div class="modal fade" id="${budgetItem.category.name}Modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">${budgetItem.category.name} Budget Item Details</h4>
+        </div>
+        <div class="modal-body">
+          <div><strong>${budgetItem.amountUsedCurrency}</strong> of <strong>${budgetItem.amountAllowedCurrency}</strong> used</div>
+          <c:choose>
+            <c:when test="${budgetItem.status == 'success'}">
+              <div class="budgetItemDetails">Status: <span class="green">Under Budget</span></div>
+            </c:when>
+            <c:when test="${budgetItem.status == 'warning'}">
+              <div class="budgetItemDetails">Status: <span class="yellow">Close To Limit</span></div>
+            </c:when>
+            <c:when test="${budgetItem.status == 'danger'}">
+              <div class="budgetItemDetails">Status: <span class="red">Over Budget</span></div>
+            </c:when>
+          </c:choose>
+
+          <div class="progress">
+            <div class="progress-bar progress-bar-${budgetItem.status}" role="progressbar" aria-valuenow="${budgetItem.value}" aria-valuemin="0"
+                 aria-valuemax="100" style="width: ${budgetItem.value <= 100 ? budgetItem.value : max}%;">
+                ${budgetItem.percentUsedString}
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div>
+</c:forEach>
 
 <script type="text/javascript">
   function addCategory() {
@@ -114,6 +164,44 @@
       window.location.href='deleteBudgetItem?id=' + id;
     }
   }
+
+  function createChart2() {
+    $("#chart2").kendoChart({
+      title: {
+        position: "bottom",
+        text: "Budget Distribution"
+      },
+      legend: {
+        visible: false
+      },
+      chartArea: {
+        background: ""
+      },
+      seriesDefaults: {
+        labels: {
+          visible: true,
+          background: "transparent",
+          template: "#= category #: \n #= value#%"
+        }
+      },
+      series: [{
+        type: "pie",
+        startAngle: 150,
+        data: ${pieChartJson == null ? "[]" : pieChartJson}
+      }],
+      tooltip: {
+        visible: true,
+        format: "{0}%"
+      },
+      seriesClick: pieChartClick
+    });
+  }
+
+  function pieChartClick(e) {
+    $('#' + e.category + 'Modal').modal('show');
+  }
+  $(document).ready(createChart2);
+  $(document).bind("kendo:skinChange", createChart2);
 </script>
 </body>
 </html>

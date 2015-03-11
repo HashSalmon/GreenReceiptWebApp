@@ -319,6 +319,26 @@ public class AppController {
             model.addObject("createNew", true);
         }
 
+        if(budget != null) {
+            List<BudgetItem> budgetItems = budget.getBudgetItems();
+            Double budgetTotal = GreenReceiptUtil.getBudgetTotal(budgetItems);
+
+
+            List<String> colors = GreenReceiptUtil.getChartColors(budget.getBudgetItems().size());
+
+            BudgetPieChart pieChart = new BudgetPieChart();
+            List<BudgetPieChartItems> items = new ArrayList<BudgetPieChartItems>();
+            int index = 0;
+            for(String color : colors) {
+                BudgetItem budgetItem = budgetItems.get(index++);
+                Double value = budgetItem.getAmountAllowed()/budgetTotal;
+                items.add(new BudgetPieChartItems(budgetItem.getCategory().getName(), Math.floor(value * 100), color));
+            }
+
+            Gson gson = new Gson();
+            model.addObject("pieChartJson", gson.toJson(items));
+        }
+
         model.addObject("budget", budget);
 
 

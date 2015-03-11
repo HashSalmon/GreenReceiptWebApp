@@ -28,6 +28,7 @@ public class Receipt {
     private Double Total;
     private String ReturnDate;
     private Boolean ReturnReminder;
+    private Boolean IsToday;
     private String CashierId;
     private Double lat;
     private Double lon;
@@ -38,14 +39,6 @@ public class Receipt {
     public Receipt() {
         //Default
     }
-
-//    public Receipt(String receiptId, String store, List<ReceiptItem> items, String total, String returnDate) {
-//        this.receiptId = receiptId;
-//        this.store = store;
-//        this.items = items;
-//        this.total = total;
-//        this.returnDate = returnDate;
-//    }
 
     public String getReceiptId() {
         return receiptId;
@@ -212,10 +205,17 @@ public class Receipt {
     }
 
     public Boolean getReturnReminder() throws ParseException {
-        if(ReturnReminder && this.getReturnDate().before(Calendar.getInstance().getTime())) {
+        if(ReturnReminder && !isToday() && this.getReturnDate().before(Calendar.getInstance().getTime())) {
             return false;
         }
         return ReturnReminder;
+    }
+
+    public Boolean isToday() throws ParseException {
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+        String todayString = sf.format(Calendar.getInstance().getTime());
+        String returnDateString = sf.format(this.getReturnDate());
+        return todayString.equals(returnDateString);
     }
 
     public void setReturnReminder(Boolean returnReminder) {
