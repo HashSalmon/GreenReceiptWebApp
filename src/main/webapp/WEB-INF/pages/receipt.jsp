@@ -107,18 +107,19 @@
       center: latlng,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
+    var store = "${receipt.store.company.name}";
     var map = new google.maps.Map(document.getElementById("map_container"),myOptions);
     var marker = new google.maps.Marker({
       position: latlng,
       map: map,
-      title:"Smiths $5.00"
+      title: store
     });
-    var store = "${receipt.store.company.name}";
+
     var total = "${receipt.total}";
     var contentString = '<div id="content">'+
             '<div id="siteNotice">'+
             '</div>'+
-            '<h1 id="firstHeading" class="firstHeading">' + store + ': ' +  total + '</h1>'+
+            '<h1 id="firstHeading" class="firstHeading">' + store + ': $' +  total + '</h1>'+
             '<div id="bodyContent">'+
             '</div>'+
             '</div>';

@@ -292,7 +292,7 @@
       var contentString = '<div id="content">'+
         '<div id="siteNotice">'+
         '</div>'+
-        '<h1 id="firstHeading" class="firstHeading">' + receipt[0] + ':' + receipt[3] + '</h1>'+
+        '<h1 id="firstHeading" class="firstHeading">' + receipt[0] + ': $' + receipt[3] + '</h1>'+
         '<div id="bodyContent">'+
         '</div>'+
         '</div>';
