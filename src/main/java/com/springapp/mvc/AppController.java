@@ -272,6 +272,7 @@ public class AppController {
         }
         GreenReceiptUtil.makeCategoryReportStrings(categoryReport, model);
 
+        model.addObject("reportsActive", "active");
         model.setViewName("category");
         return model;
     }
@@ -303,7 +304,7 @@ public class AppController {
             return model;
         }
         GreenReceiptUtil.makeTrendingReportStrings(trendingReport, model);
-
+        model.addObject("reportsActive", "active");
         model.setViewName("trending");
         return model;
     }
@@ -494,6 +495,23 @@ public class AppController {
 
         model.addObject("receipts", receipts);
         model.setViewName("receipts");
+        return model;
+    }
+
+    @RequestMapping(value="/receiptsMap", method = RequestMethod.GET)
+    public ModelAndView displayReceiptsMap(){
+        ModelAndView model = new ModelAndView();
+        model.addObject("receiptsActive", "active");
+        List<Receipt> receipts = GreenReceiptUtil.getReceipts();
+        if(receipts != null && !receipts.isEmpty()) {
+            model.addObject("receipt", receipts);
+            receiptsContainer.setReceipts(receipts);
+        } else {
+            model.setViewName("redirect:/login?logout");
+        }
+
+        model.addObject("receipts", receipts);
+        model.setViewName("receiptsMap");
         return model;
     }
 
