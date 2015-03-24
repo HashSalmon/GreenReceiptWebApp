@@ -482,10 +482,20 @@ public class AppController {
     }
 
     @RequestMapping(value="/receipts", method = RequestMethod.GET)
-    public ModelAndView displayReceipts(){
+    public ModelAndView displayReceipts(HttpSession session){
         ModelAndView model = new ModelAndView();
         model.addObject("receiptsActive", "active");
-        List<Receipt> receipts = GreenReceiptUtil.getReceipts();
+
+        List<Receipt> receipts = null;
+        String amount = (String) session.getAttribute("numReceipts");
+        if(amount != null && !amount.equals("All")) {
+            Integer amountNum = Integer.parseInt(amount);
+            receipts = GreenReceiptUtil.getReceipts(amountNum);
+        } else {
+            receipts = GreenReceiptUtil.getReceipts();
+        }
+        //TODO: Get all receipts call
+
         if(receipts != null && !receipts.isEmpty()) {
             model.addObject("receipt", receipts);
             receiptsContainer.setReceipts(receipts);
@@ -499,10 +509,19 @@ public class AppController {
     }
 
     @RequestMapping(value="/receiptsMap", method = RequestMethod.GET)
-    public ModelAndView displayReceiptsMap(){
+    public ModelAndView displayReceiptsMap(HttpSession session){
         ModelAndView model = new ModelAndView();
         model.addObject("receiptsActive", "active");
-        List<Receipt> receipts = GreenReceiptUtil.getReceipts();
+
+        List<Receipt> receipts = null;
+        String amount = (String) session.getAttribute("numReceipts");
+        if(amount != null && !amount.equals("All")) {
+            Integer amountNum = Integer.parseInt(amount);
+            receipts = GreenReceiptUtil.getReceipts(amountNum);
+        } else {
+            receipts = GreenReceiptUtil.getReceipts();
+        }
+
         if(receipts != null && !receipts.isEmpty()) {
             model.addObject("receipt", receipts);
             receiptsContainer.setReceipts(receipts);
@@ -512,6 +531,16 @@ public class AppController {
 
         model.addObject("receipts", receipts);
         model.setViewName("receiptsMap");
+        return model;
+    }
+
+    @RequestMapping(value="/numReceiptsForm", method = RequestMethod.POST)
+    public ModelAndView numReceiptsForm(@ModelAttribute("receiptViewAmount") @Valid ReceiptsViewAmount receiptsViewAmount, HttpSession session) {
+        ModelAndView model = new ModelAndView();
+
+        session.setAttribute("numReceipts", receiptsViewAmount.getNumReceipts());
+
+        model.setViewName("redirect:" + receiptsViewAmount.getView());
         return model;
     }
 

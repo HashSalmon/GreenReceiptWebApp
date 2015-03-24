@@ -9,6 +9,22 @@
 <body>
 <%@include file="interiorNavBar.jsp"%>
 <div class="container">
+
+  <form:form action="numReceiptsForm" modelAttribute="receiptViewAmount" method="post" id="numReceiptsForm">
+    <div class="col-sm-3">
+      <label for="numReceipts">Select number of receipts to view:</label>
+      <select id="numReceipts" name="numReceipts" class="form-control" onchange="submitNumReceiptsForm()">
+        <option value="100" ${sessionScope.numReceipts == "100" ? 'selected' : ''}>100</option>
+        <option value="1000" ${sessionScope.numReceipts == "1000" ? 'selected' : ''}>1000</option>
+        <option value="10000" ${sessionScope.numReceipts == "10000" ? 'selected' : ''}>10000</option>
+        <option value="100000" ${sessionScope.numReceipts == "100000" ? 'selected' : ''}>100000</option>
+        <option value="All" ${sessionScope.numReceipts == "All" ? 'selected' : ''}>All</option>
+      </select>
+      <input type="hidden" name="view" value="/receiptsMap"/>
+      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    </div>
+  </form:form>
+
   <div class="col-sm-12">
     <div class="panel panel-default">
       <div class="panel-body">
@@ -22,6 +38,11 @@
 <script type="text/javascript"
         src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script>
+
+  function submitNumReceiptsForm() {
+    $("#numReceiptsForm").submit();
+  }
+
   function initialize() {
     var mapOptions = {
       <c:if test="${fn:length(receipts) > 0}">

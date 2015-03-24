@@ -131,3 +131,7 @@ table.k-selectable tr {
     height: 500px;
     margin-top: 11px;
 }
+
+#numReceipts{
+    margin-bottom: 20px;
+}

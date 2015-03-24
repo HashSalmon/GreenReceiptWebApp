@@ -3,6 +3,7 @@ package Utilities;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.springapp.mvc.*;
+import com.springapp.mvc.JsonBodyObjects.PageObject;
 import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.client.RestTemplate;
@@ -38,6 +39,32 @@ public class GreenReceiptUtil {
         try {
             responseEntity = restTemplate.exchange("https://greenreceipt.net/api/Receipt",
                     HttpMethod.GET, new HttpEntity<Object>(headers), String.class);
+        } catch (Exception e) {
+            return null;
+        }
+
+        return gson.fromJson((String) responseEntity.getBody(), new TypeToken<List<Receipt>>() {}.getType());
+    }
+
+    /**
+     * Returns all of the users receipts that the user has in the system.
+     *
+     * @return a list of all of the users receipts
+     */
+    public static List<Receipt> getReceipts(Integer amount) {
+        RestTemplate restTemplate = new RestTemplate();
+        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        Gson gson = new Gson();
+        String pageObjectJson = gson.toJson(new PageObject(amount, 0, 1));
+
+        headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
+        ResponseEntity responseEntity = null;
+        try {
+            responseEntity = restTemplate.exchange("https://greenreceipt.net/api/Receipt",
+                    HttpMethod.GET, new HttpEntity<Object>(pageObjectJson, headers), String.class);
         } catch (Exception e) {
             return null;
         }
