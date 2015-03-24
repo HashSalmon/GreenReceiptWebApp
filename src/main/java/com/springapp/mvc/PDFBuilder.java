@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import Utilities.AbstractITextPdfView;
+import Utilities.AbstractITextPdf;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -20,7 +20,7 @@ import com.itextpdf.text.pdf.PdfWriter;
  * @author www.codejava.net
  *
  */
-public class PDFBuilder extends AbstractITextPdfView {
+public class PDFBuilder extends AbstractITextPdf {
 
     @Override
     protected void buildPdfDocument(Map<String, Object> model, Document doc,
