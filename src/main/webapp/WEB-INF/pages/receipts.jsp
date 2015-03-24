@@ -35,6 +35,7 @@
   function submitNumReceiptsForm() {
     $("#numReceiptsForm").submit();
   }
+
   function onChange(arg) {
     var selected = $.map(this.select(), function(item) {
       $('#receiptRow').html($(item).html());

@@ -576,4 +576,14 @@ public class AppController {
         model.setViewName("redirect:/receipts");
         return model;
     }
+
+    @RequestMapping(value = "/downloadPDF", method = RequestMethod.GET)
+    public ModelAndView downloadExcel() {
+        // create some sample data
+        List<Receipt> receipts = GreenReceiptUtil.getMostRecentReceipts();
+
+
+        // return a view which will be resolved by an excel view resolver
+        return new ModelAndView("pdfView", "receipts", receipts);
+    }
 }

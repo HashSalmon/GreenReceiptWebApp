@@ -66,6 +66,11 @@ public class Receipt {
         return d;
     }
 
+    public String getReturnDateString() throws ParseException {
+        SimpleDateFormat sf = new SimpleDateFormat("MM-dd-yyyy");
+        return sf.format(getReturnDate());
+    }
+
     public Double getLat() {
         return lat;
     }
@@ -102,6 +107,11 @@ public class Receipt {
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date d = sf.parse(PurchaseDate);
         return d;
+    }
+
+    public String getPurchaseDateString() throws ParseException {
+        SimpleDateFormat sf = new SimpleDateFormat("MM-dd-yyyy");
+        return sf.format(getPurchaseDate());
     }
 
     public void setPurchaseDate(String purchaseDate) {
