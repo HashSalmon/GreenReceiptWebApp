@@ -162,7 +162,7 @@
     });
   }
   function onSeriesClick(e) {
-//    alert(e.series.name +  e.category + e.value)
+    window.location.href= "/categoryReceiptItems?category=" + e.category + "&startDate=${sessionScope.CategoryReportStartDate}&endDate=${sessionScope.CategoryReportEndDate}";
   }
   $(document).ready(createChart);
   $(document).bind("kendo:skinChange", createChart);

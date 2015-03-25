@@ -4,8 +4,17 @@ package com.springapp.mvc.CategoryReportObjects;
  * Created by jordanwanlass on 2/11/15.
  */
 public class CategoryReportItem {
+    private Integer CategoryId;
     private String CategoryName;
     private Double Total;
+
+    public Integer getId() {
+        return CategoryId;
+    }
+
+    public void setId(Integer id) {
+        CategoryId = id;
+    }
 
     public String getCategoryName() {
         return CategoryName;

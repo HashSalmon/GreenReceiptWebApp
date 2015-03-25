@@ -9,10 +9,7 @@ import com.google.gson.reflect.TypeToken;
 import com.springapp.mvc.BudgetObjects.*;
 import com.springapp.mvc.CategoryReportObjects.CategoryReport;
 import com.springapp.mvc.CategoryReportObjects.CategoryReportDates;
-import com.springapp.mvc.ReceiptObjects.Category;
-import com.springapp.mvc.ReceiptObjects.ReceiptObject;
-import com.springapp.mvc.ReceiptObjects.ReceiptsContainer;
-import com.springapp.mvc.ReceiptObjects.ReceiptsViewAmount;
+import com.springapp.mvc.ReceiptObjects.*;
 import com.springapp.mvc.TrendingReportObjects.TrendingReport;
 import com.springapp.mvc.UserObjects.User;
 import com.springapp.mvc.UserObjects.UserInfo;
@@ -31,6 +28,7 @@ import javax.validation.Valid;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -182,7 +180,7 @@ public class AppController {
         } catch (ParseException e) {
             //Do Nothing
         }
-        GreenReceiptUtil.makeCategoryReportStrings(categoryReport, model);
+        GreenReceiptUtil.makeCategoryReportStrings(categoryReport, model, session);
 
         String startDateTrending = (String) session.getAttribute("TrendingReportStartDate");
         String endDateTrending = (String) session.getAttribute("TrendingReportEndDate");
@@ -280,7 +278,7 @@ public class AppController {
             model.addObject("error", "Please check your dates");
             return model;
         }
-        GreenReceiptUtil.makeCategoryReportStrings(categoryReport, model);
+        GreenReceiptUtil.makeCategoryReportStrings(categoryReport, model, session);
 
         model.addObject("reportsActive", "active");
         model.setViewName("category");
@@ -300,6 +298,22 @@ public class AppController {
         session.setAttribute("CategoryReportEndDateDisplay", displayEndDate);
 
         model.setViewName("redirect:/category");
+        return model;
+    }
+
+    @RequestMapping(value="/categoryReceiptItems", method = RequestMethod.GET)
+    public ModelAndView displayCategoryReceiptItems(@RequestParam(defaultValue = "") String category,
+                                                    @RequestParam(defaultValue = "") String startDate,
+                                                    @RequestParam(defaultValue = "") String endDate,
+                                                    HttpSession session) throws ParseException {
+        ModelAndView model = new ModelAndView();
+        model.addObject("reportsActive", "active");
+        HashMap<String, Integer> categoryMap = (HashMap<String, Integer>) session.getAttribute("categoryMap");
+
+        List<ReceiptItem> receiptItems = GreenReceiptUtil.getCategoryReceiptItems(categoryMap.get(category), startDate, endDate, session);
+
+        model.addObject("receiptItems", receiptItems);
+        model.setViewName("categoryReceiptItems");
         return model;
     }
 

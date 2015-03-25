@@ -83,10 +83,13 @@
         visible: true,
         format: "/$/{0}",
         template: "#= series.name #: #= kendo.format('{0:C}',value) #"
-      }
+      },
+      seriesClick: onSeriesClick
     });
   }
-
+  function onSeriesClick(e) {
+    window.location.href= "/categoryReceiptItems?category=" + e.category + "&startDate=${startDate}&endDate=${endDate}";
+  }
   $(document).ready(createChart);
   $(document).bind("kendo:skinChange", createChart);
 

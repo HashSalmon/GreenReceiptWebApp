@@ -8,6 +8,7 @@ import com.springapp.mvc.CategoryReportObjects.CategoryReport;
 import com.springapp.mvc.CategoryReportObjects.CategoryReportItem;
 import com.springapp.mvc.PageObjects.PageObject;
 import com.springapp.mvc.ReceiptObjects.Category;
+import com.springapp.mvc.ReceiptObjects.ReceiptItem;
 import com.springapp.mvc.ReceiptObjects.ReceiptObject;
 import com.springapp.mvc.TrendingReportObjects.TrendingReport;
 import com.springapp.mvc.TrendingReportObjects.TrendingReportItem;
@@ -355,6 +356,48 @@ public class GreenReceiptUtil {
         return gson.fromJson((String) responseEntity.getBody(), new TypeToken<CategoryReport>() {}.getType());
     }
 
+    public static List<ReceiptItem> getCategoryReceiptItems(Integer categoryId, String startDateString, String endDateString, HttpSession session) throws ParseException {
+        RestTemplate restTemplate = new RestTemplate();
+        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Gson gson = new Gson();
+
+        Calendar startDate = Calendar.getInstance();
+        Calendar endDate = Calendar.getInstance();
+        if(startDateString == null) {
+            startDate.set(Calendar.DAY_OF_MONTH, 1);
+        } else {
+            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+            Date d = sf.parse(startDateString);
+            startDate.setTime(d);
+        }
+        if(endDateString == null) {
+            endDate.add(Calendar.DAY_OF_MONTH, 1);
+        } else {
+            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+            Date d = sf.parse(endDateString);
+            endDate.setTime(d);
+        }
+
+        headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+        startDateString = sf.format(startDate.getTime());
+        endDateString = sf.format(endDate.getTime());
+
+
+        String json = "https://greenreceipt.net/api/ReceiptItem/ReceiptItems?categoryId=" + categoryId + "&startDate="  + startDateString + "&endDate=" + endDateString;
+        ResponseEntity responseEntity = null;
+        try {
+            responseEntity = restTemplate.exchange(json,
+                    HttpMethod.GET, new HttpEntity<Object>(headers), String.class);
+        } catch (Exception e) {
+            return null;
+        }
+
+        return gson.fromJson((String) responseEntity.getBody(), new TypeToken<List<ReceiptItem>>() {}.getType());
+    }
+
     /**
      * Retries the Trending Report for the user
      * @param startDateString The earliest date you want to see trending information (if null is passed in, it will be january first of the current year)
@@ -511,14 +554,16 @@ public class GreenReceiptUtil {
      * @param categoryReport the list of category report items
      * @param model the model object that will make the variables available in the jsp
      */
-    public static void makeCategoryReportStrings(CategoryReport categoryReport, ModelAndView model) {
+    public static void makeCategoryReportStrings(CategoryReport categoryReport, ModelAndView model, HttpSession session) {
         Double total = 0.0;
         if(categoryReport != null) {
             if(categoryReport.getCategoryReportItems() != null) {
+                HashMap<String, Integer> categoryMap = new HashMap<String, Integer>();
                 String categoryReportValues = "[";
                 String categoryReportNames = "[";
                 String prepend = "";
                 for(CategoryReportItem item : categoryReport.getCategoryReportItems()) {
+                    categoryMap.put(item.getCategoryName(), item.getId());
                     total += item.getTotal();
                     categoryReportValues += prepend + item.getTotal().toString();
                     categoryReportNames += prepend + '"' + item.getCategoryName() + '"';
@@ -526,6 +571,9 @@ public class GreenReceiptUtil {
                 }
                 categoryReportValues += "]";
                 categoryReportNames += "]";
+
+                session.setAttribute("categoryMap", categoryMap);
+
                 model.addObject("categoryReportValues", categoryReportValues);
                 model.addObject("categoryReportNames", categoryReportNames);
                 if(categoryReportNames.length() < 3) {
