@@ -1,4 +1,4 @@
-package com.springapp.mvc;
+package com.springapp.mvc.ReceiptObjects;
 
 /**
  * Created by jordanwanlass on 3/23/15.

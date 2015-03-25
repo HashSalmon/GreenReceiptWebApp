@@ -1,4 +1,4 @@
-package com.springapp.mvc.JsonBodyObjects;
+package com.springapp.mvc.PageObjects;
 
 /**
  * Created by jordanwanlass on 3/23/15.

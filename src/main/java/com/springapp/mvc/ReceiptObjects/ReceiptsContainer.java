@@ -1,4 +1,4 @@
-package com.springapp.mvc;
+package com.springapp.mvc.ReceiptObjects;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

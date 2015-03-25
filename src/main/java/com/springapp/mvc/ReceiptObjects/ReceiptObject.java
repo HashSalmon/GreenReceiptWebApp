@@ -1,9 +1,8 @@
-package com.springapp.mvc;
+package com.springapp.mvc.ReceiptObjects;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

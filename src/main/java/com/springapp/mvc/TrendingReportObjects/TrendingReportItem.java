@@ -1,4 +1,4 @@
-package com.springapp.mvc;
+package com.springapp.mvc.TrendingReportObjects;
 
 /**
  * Created by jordanwanlass on 3/4/15.

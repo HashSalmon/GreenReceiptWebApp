@@ -1,4 +1,4 @@
-package com.springapp.mvc;
+package com.springapp.mvc.CategoryReportObjects;
 
 /**
  * Created by jordanwanlass on 2/11/15.

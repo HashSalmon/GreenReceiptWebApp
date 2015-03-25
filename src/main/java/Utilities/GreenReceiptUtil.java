@@ -2,8 +2,16 @@ package Utilities;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.springapp.mvc.*;
-import com.springapp.mvc.JsonBodyObjects.PageObject;
+import com.springapp.mvc.BudgetObjects.BudgetItem;
+import com.springapp.mvc.BudgetObjects.BudgetObject;
+import com.springapp.mvc.CategoryReportObjects.CategoryReport;
+import com.springapp.mvc.CategoryReportObjects.CategoryReportItem;
+import com.springapp.mvc.PageObjects.PageObject;
+import com.springapp.mvc.ReceiptObjects.Category;
+import com.springapp.mvc.ReceiptObjects.ReceiptObject;
+import com.springapp.mvc.TrendingReportObjects.TrendingReport;
+import com.springapp.mvc.TrendingReportObjects.TrendingReportItem;
+import com.springapp.mvc.UserObjects.UserInfo;
 import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.client.RestTemplate;

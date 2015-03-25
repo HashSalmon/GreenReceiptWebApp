@@ -1,4 +1,4 @@
-package com.springapp.mvc;
+package com.springapp.mvc.PdfObjects;
 
 
 import java.text.NumberFormat;
@@ -13,6 +13,7 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.springapp.mvc.ReceiptObjects.ReceiptObject;
 
 /**
  * This view class generates a PDF document 'on the fly' based on the data

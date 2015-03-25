@@ -1,4 +1,4 @@
-package com.springapp.mvc;
+package com.springapp.mvc.BudgetObjects;
 
 /**
  * Created by jordanwanlass on 2/8/15.

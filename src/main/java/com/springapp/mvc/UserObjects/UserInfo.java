@@ -1,4 +1,4 @@
-package com.springapp.mvc;
+package com.springapp.mvc.UserObjects;
 
 import javax.security.auth.Subject;
 import java.security.Principal;

@@ -3,8 +3,8 @@ package Utilities;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
-import com.springapp.mvc.ReceiptObject;
-import com.springapp.mvc.ReceiptItem;
+import com.springapp.mvc.ReceiptObjects.ReceiptObject;
+import com.springapp.mvc.ReceiptObjects.ReceiptItem;
 import org.springframework.mail.MailParseException;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;

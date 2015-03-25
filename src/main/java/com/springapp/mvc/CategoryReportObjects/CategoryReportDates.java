@@ -1,9 +1,9 @@
-package com.springapp.mvc;
+package com.springapp.mvc.CategoryReportObjects;
 
 /**
  * Created by jordanwanlass on 2/22/15.
  */
-public class TrendingReportDates {
+public class CategoryReportDates {
 
     private String startDate;
     private String endDate;

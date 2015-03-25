@@ -1,4 +1,6 @@
-package com.springapp.mvc;
+package com.springapp.mvc.BudgetObjects;
+
+import com.springapp.mvc.ReceiptObjects.Category;
 
 import java.text.NumberFormat;
 

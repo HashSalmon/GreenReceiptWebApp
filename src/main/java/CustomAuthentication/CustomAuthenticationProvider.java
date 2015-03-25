@@ -2,7 +2,7 @@ package CustomAuthentication;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.springapp.mvc.UserInfo;
+import com.springapp.mvc.UserObjects.UserInfo;
 import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

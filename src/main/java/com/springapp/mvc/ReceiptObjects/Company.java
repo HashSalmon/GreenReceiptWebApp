@@ -1,4 +1,4 @@
-package com.springapp.mvc;
+package com.springapp.mvc.ReceiptObjects;
 
 public class Company {
 

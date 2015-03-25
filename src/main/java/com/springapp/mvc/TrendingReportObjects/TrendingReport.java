@@ -1,4 +1,4 @@
-package com.springapp.mvc;
+package com.springapp.mvc.TrendingReportObjects;
 
 import java.util.List;
 
