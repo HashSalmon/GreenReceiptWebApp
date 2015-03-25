@@ -528,6 +528,7 @@ public class AppController {
             model.setViewName("redirect:/login?logout");
         }
 
+        model.addObject("receiptsCount", receipts.size());
         model.addObject("receipts", receipts);
         model.setViewName("receiptsMap");
         return model;
@@ -578,12 +579,9 @@ public class AppController {
 
     @RequestMapping(value = "/downloadPDF", method = RequestMethod.GET)
     public ModelAndView downloadExcel() {
-        // create some sample data
+
         List<ReceiptObject> receipts = GreenReceiptUtil.getMostRecentReceipts();
-//        ModelAndView modelAndView = new ModelAndView("pdfView", "receipts", receipts)
-//        PDFBuilder builder = new PDFBuilder();
-//        builder.buildPdfDocument(modelAndView,  );
-        // return a view which will be resolved by an excel view resolver
+
         return new ModelAndView("pdfView", "receipts", receipts);
     }
 }

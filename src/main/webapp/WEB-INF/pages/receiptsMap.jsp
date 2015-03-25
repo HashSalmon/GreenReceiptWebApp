@@ -14,10 +14,11 @@
     <div class="col-sm-3">
       <label for="numReceipts">Select number of receipts to view:</label>
       <select id="numReceipts" name="numReceipts" class="form-control" onchange="submitNumReceiptsForm()">
-        <option value="100" ${sessionScope.numReceipts == "100" ? 'selected' : ''}>100</option>
-        <option value="1000" ${sessionScope.numReceipts == "1000" ? 'selected' : ''}>1000</option>
-        <option value="10000" ${sessionScope.numReceipts == "10000" ? 'selected' : ''}>10000</option>
-        <option value="100000" ${sessionScope.numReceipts == "100000" ? 'selected' : ''}>100000</option>
+        <option value="25" ${sessionScope.numReceipts == "25" ? 'selected' : ''}>Up to 25</option>
+        <option value="100" ${sessionScope.numReceipts == "100" ? 'selected' : ''}>Up to 100</option>
+        <option value="1000" ${sessionScope.numReceipts == "1000" ? 'selected' : ''}>Up to 1000</option>
+        <option value="10000" ${sessionScope.numReceipts == "10000" ? 'selected' : ''}>Up to 10000</option>
+        <option value="100000" ${sessionScope.numReceipts == "100000" ? 'selected' : ''}>Up to 100000</option>
         <option value="All" ${sessionScope.numReceipts == "All" ? 'selected' : ''}>All</option>
       </select>
       <input type="hidden" name="view" value="/receiptsMap"/>
@@ -28,7 +29,7 @@
   <div class="col-sm-12">
     <div class="panel panel-default">
       <div class="panel-body">
-        <span class="label label-success" style="font-size: large;">Receipts</span>
+        <span class="label label-success" style="font-size: large;">Receipts: ${receiptsCount}</span>
         <div id="map_container" class="receiptsMap"></div>
       </div>
     </div>
