@@ -59,7 +59,7 @@
 
     var length = 0;
     <c:forEach items="${receipts}" var="receipt">
-    markers.push(["${receipt.store.company.name}", <c:out value="${receipt.latitude}"/>, <c:out value="${receipt.longitude}"/>, "${receipt.total}", "${receipt.id}", "${receipt.address}"]);
+    markers.push(["${receipt.store.company.name}", <c:out value="${receipt.latitude}"/>, <c:out value="${receipt.longitude}"/>, "${receipt.total}", "${receipt.id}");
     length++;
     </c:forEach>
     setMarkers(map, markers, length);
