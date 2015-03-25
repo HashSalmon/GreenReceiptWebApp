@@ -135,3 +135,7 @@ table.k-selectable tr {
 #numReceipts{
     margin-bottom: 20px;
 }
+
+.export {
+    cursor: pointer;
+}

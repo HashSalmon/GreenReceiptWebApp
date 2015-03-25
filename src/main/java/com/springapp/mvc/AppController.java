@@ -25,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -310,8 +311,18 @@ public class AppController {
         model.addObject("reportsActive", "active");
         HashMap<String, Integer> categoryMap = (HashMap<String, Integer>) session.getAttribute("categoryMap");
 
-        List<ReceiptItem> receiptItems = GreenReceiptUtil.getCategoryReceiptItems(categoryMap.get(category), startDate, endDate, session);
+        List<ReceiptItem> receiptItems = GreenReceiptUtil.getCategoryReceiptItems(categoryMap.get(category), startDate, endDate);
+        Double total = 0.0;
+        for(ReceiptItem item: receiptItems) {
+            total += Double.parseDouble(item.getPrice());
+        }
+        model.addObject("category", category);
+        model.addObject("categoryId", categoryMap.get(category));
 
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        model.addObject("total", formatter.format(total));
+
+        model.addObject("numItems", receiptItems.size());
         model.addObject("receiptItems", receiptItems);
         model.setViewName("categoryReceiptItems");
         return model;
@@ -608,9 +619,14 @@ public class AppController {
     }
 
     @RequestMapping(value = "/downloadPDF", method = RequestMethod.GET)
-    public ModelAndView downloadExcel() {
+    public ModelAndView downloadExcel(@RequestParam(defaultValue = "") String categoryId,
+                                      @RequestParam(defaultValue = "") String startDate,
+                                      @RequestParam(defaultValue = "") String endDate,
+                                      HttpSession session) throws ParseException {
 
-        List<ReceiptObject> receipts = GreenReceiptUtil.getMostRecentReceipts();
+
+
+        List<ReceiptObject> receipts = GreenReceiptUtil.getCategoryReceipts(categoryId, startDate, endDate, session);
 
         return new ModelAndView("pdfView", "receipts", receipts);
     }

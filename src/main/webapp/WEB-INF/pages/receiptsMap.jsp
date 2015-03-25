@@ -47,7 +47,7 @@
   function initialize() {
     var mapOptions = {
       <c:if test="${fn:length(receipts) > 0}">
-      zoom: 12,
+      zoom: 10,
       center: new google.maps.LatLng(<c:out value="${receipts[0].latitude}"/>, <c:out value="${receipts[0].longitude}"/>)
       </c:if>
     };
@@ -59,7 +59,7 @@
 
     var length = 0;
     <c:forEach items="${receipts}" var="receipt">
-    markers.push(["${receipt.store.company.name}", <c:out value="${receipt.latitude}"/>, <c:out value="${receipt.longitude}"/>, "${receipt.total}", "${receipt.id}");
+    markers.push(["${receipt.store.company.name}", <c:out value="${receipt.latitude}"/>, <c:out value="${receipt.longitude}"/>, "${receipt.total}", "${receipt.id}"]);
     length++;
     </c:forEach>
     setMarkers(map, markers, length);
