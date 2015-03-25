@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.mail.Session;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.text.ParseException;
@@ -31,7 +30,7 @@ public class AppController {
     private User user;
 
     @Autowired
-    private Budget budget;
+    private BudgetObject budget;
 
     @Autowired
     private ReceiptsContainer receiptsContainer;
@@ -76,7 +75,7 @@ public class AppController {
         headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
         ResponseEntity responseEntity = restTemplate.exchange("https://greenreceipt.net/api/Receipt",
                 HttpMethod.GET, new HttpEntity<Object>(headers), String.class);
-        List<Receipt> receipts = gson.fromJson((String) responseEntity.getBody(), new TypeToken<List<Receipt>>() {
+        List<ReceiptObject> receipts = gson.fromJson((String) responseEntity.getBody(), new TypeToken<List<ReceiptObject>>() {
         }.getType());
         receiptsContainer.setReceipts(receipts);
         model.addObject("receipts", receipts);
@@ -193,7 +192,7 @@ public class AppController {
             session.setAttribute("lastname", userInfo.getLastName());
         }
 
-        List<Receipt> receipts = GreenReceiptUtil.getReceipts();
+        List<ReceiptObject> receipts = GreenReceiptUtil.getReceipts();
         if(receipts != null && !receipts.isEmpty()) {
             model.addObject("receipts", receipts);
             receiptsContainer.setReceipts(receipts);
@@ -201,12 +200,12 @@ public class AppController {
             model.setViewName("redirect:/login?logout");
         }
 
-        List<Receipt> returnNotifications = GreenReceiptUtil.getReturnNotifications();
+        List<ReceiptObject> returnNotifications = GreenReceiptUtil.getReturnNotifications();
         if(returnNotifications != null) {
             model.addObject("returnNotifications", returnNotifications);
         }
 
-        List<Receipt> recentReceipts = GreenReceiptUtil.getMostRecentReceipts();
+        List<ReceiptObject> recentReceipts = GreenReceiptUtil.getMostRecentReceipts();
         if(recentReceipts != null) {
             model.addObject("recentReceipts", recentReceipts);
         }
@@ -243,7 +242,7 @@ public class AppController {
     public ModelAndView displayReceipt(@RequestParam(defaultValue = "") String receiptId, @RequestParam(defaultValue = "") String exchange) {
         ModelAndView model = new ModelAndView();
         model.addObject("receiptsActive", "active");
-        Receipt receipt = GreenReceiptUtil.getReceipt(receiptId);
+        ReceiptObject receipt = GreenReceiptUtil.getReceipt(receiptId);
         if(receipt != null) {
             model.addObject("receipt", receipt);
         } else {
@@ -355,7 +354,7 @@ public class AppController {
         if(error != null) {
             model.addObject("errorMessage", "Please double check your input");
         }
-        Budget editBudget = GreenReceiptUtil.getCurrentBudget();
+        BudgetObject editBudget = GreenReceiptUtil.getCurrentBudget();
 
         model.addObject("editBudget", editBudget);
 
@@ -364,7 +363,7 @@ public class AppController {
     }
 
     @RequestMapping(value="/editBudgetForm", method = RequestMethod.POST)
-    public ModelAndView editBudgetFormSubmit(@ModelAttribute("editBudget") Budget editBudget, BindingResult result) {
+    public ModelAndView editBudgetFormSubmit(@ModelAttribute("editBudget") BudgetObject editBudget, BindingResult result) {
         ModelAndView model = new ModelAndView();
         model.addObject("budgetActive", "active");
 
@@ -418,7 +417,7 @@ public class AppController {
          model.addObject("budgetActive", "active");
 
         List<BudgetItem> createBudgetItems = new ArrayList<BudgetItem>();
-        Budget createBudget = new Budget();
+        BudgetObject createBudget = new BudgetObject();
         for(String categoryName : selectedCategories) {
             createBudgetItems.add(new BudgetItem(0.0, new Category(categoryName), 0.0));
         }
@@ -431,7 +430,7 @@ public class AppController {
     }
 
     @RequestMapping(value="/createBudgetForm", method = RequestMethod.POST)
-    public ModelAndView createBudgetFormSubmit(@ModelAttribute("createBudget") Budget createBudget, BindingResult result) {
+    public ModelAndView createBudgetFormSubmit(@ModelAttribute("createBudget") BudgetObject createBudget, BindingResult result) {
         ModelAndView model = new ModelAndView();
         model.addObject("budgetActive", "active");
         Gson gson = new Gson();
@@ -486,7 +485,7 @@ public class AppController {
         ModelAndView model = new ModelAndView();
         model.addObject("receiptsActive", "active");
 
-        List<Receipt> receipts = null;
+        List<ReceiptObject> receipts = null;
         String amount = (String) session.getAttribute("numReceipts");
         if(amount != null && !amount.equals("All")) {
             Integer amountNum = Integer.parseInt(amount);
@@ -513,7 +512,7 @@ public class AppController {
         ModelAndView model = new ModelAndView();
         model.addObject("receiptsActive", "active");
 
-        List<Receipt> receipts = null;
+        List<ReceiptObject> receipts = null;
         String amount = (String) session.getAttribute("numReceipts");
         if(amount != null && !amount.equals("All")) {
             Integer amountNum = Integer.parseInt(amount);
@@ -548,7 +547,7 @@ public class AppController {
     @ResponseBody
     public String sendEmail(@RequestParam(defaultValue = "") String receiptId) {
         ModelAndView model = new ModelAndView();
-        Receipt receipt = GreenReceiptUtil.getReceipt(receiptId);
+        ReceiptObject receipt = GreenReceiptUtil.getReceipt(receiptId);
         if(receipt != null) {
             model.addObject("receipt", receipt);
         } else {
@@ -580,9 +579,10 @@ public class AppController {
     @RequestMapping(value = "/downloadPDF", method = RequestMethod.GET)
     public ModelAndView downloadExcel() {
         // create some sample data
-        List<Receipt> receipts = GreenReceiptUtil.getMostRecentReceipts();
-
-
+        List<ReceiptObject> receipts = GreenReceiptUtil.getMostRecentReceipts();
+//        ModelAndView modelAndView = new ModelAndView("pdfView", "receipts", receipts)
+//        PDFBuilder builder = new PDFBuilder();
+//        builder.buildPdfDocument(modelAndView,  );
         // return a view which will be resolved by an excel view resolver
         return new ModelAndView("pdfView", "receipts", receipts);
     }

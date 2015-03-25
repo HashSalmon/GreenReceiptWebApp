@@ -8,7 +8,7 @@ import java.util.List;
 
 @Component
 @Scope("session")
-public class Budget {
+public class BudgetObject {
     private List<BudgetItem> BudgetItems = null;
     private Integer Id;
 

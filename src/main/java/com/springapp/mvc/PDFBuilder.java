@@ -23,11 +23,11 @@ import com.itextpdf.text.pdf.PdfWriter;
 public class PDFBuilder extends AbstractITextPdf {
 
     @Override
-    protected void buildPdfDocument(Map<String, Object> model, Document doc,
+    public void buildPdfDocument(Map<String, Object> model, Document doc,
                                     PdfWriter writer, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         // get data model which is passed by the Spring container
-        List<Receipt> listBooks = (List<Receipt>) model.get("receipts");
+        List<ReceiptObject> listBooks = (List<ReceiptObject>) model.get("receipts");
 
         Font font = FontFactory.getFont(FontFactory.HELVETICA, 28, Font.BOLD);
         doc.add(new Paragraph("Recent Receipts", font));
@@ -67,7 +67,7 @@ public class PDFBuilder extends AbstractITextPdf {
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
 
         Double total = 0.0;
-        for (Receipt receipt : listBooks) {
+        for (ReceiptObject receipt : listBooks) {
             table.addCell(receipt.getStore().getCompany().getName());
             table.addCell(formatter.format(receipt.getSubTotal()));
             table.addCell(formatter.format(receipt.getTotal()));

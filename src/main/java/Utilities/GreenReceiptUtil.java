@@ -26,7 +26,7 @@ public class GreenReceiptUtil {
      *
      * @return a list of all of the users receipts
      */
-    public static List<Receipt> getReceipts() {
+    public static List<ReceiptObject> getReceipts() {
         RestTemplate restTemplate = new RestTemplate();
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         HttpHeaders headers = new HttpHeaders();
@@ -37,13 +37,13 @@ public class GreenReceiptUtil {
         headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
         ResponseEntity responseEntity = null;
         try {
-            responseEntity = restTemplate.exchange("https://greenreceipt.net/api/Receipt",
-                    HttpMethod.GET, new HttpEntity<Object>(headers), String.class);
+            responseEntity = restTemplate.exchange("https://greenreceipt.net/api/Receipt/TestReceipts",
+                    HttpMethod.POST, new HttpEntity<Object>(headers), String.class);
         } catch (Exception e) {
             return null;
         }
 
-        return gson.fromJson((String) responseEntity.getBody(), new TypeToken<List<Receipt>>() {}.getType());
+        return gson.fromJson((String) responseEntity.getBody(), new TypeToken<List<ReceiptObject>>() {}.getType());
     }
 
     /**
@@ -51,25 +51,25 @@ public class GreenReceiptUtil {
      *
      * @return a list of all of the users receipts
      */
-    public static List<Receipt> getReceipts(Integer amount) {
+    public static List<ReceiptObject> getReceipts(Integer amount) {
         RestTemplate restTemplate = new RestTemplate();
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         Gson gson = new Gson();
-        String pageObjectJson = gson.toJson(new PageObject(amount, 0, 1));
+        String pageObjectJson = gson.toJson(new PageObject(amount, 1, 1));
 
         headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
         ResponseEntity responseEntity = null;
         try {
-            responseEntity = restTemplate.exchange("https://greenreceipt.net/api/Receipt",
-                    HttpMethod.GET, new HttpEntity<Object>(pageObjectJson, headers), String.class);
+            responseEntity = restTemplate.exchange("https://greenreceipt.net/api/Receipt/TestReceipts",
+                    HttpMethod.POST, new HttpEntity<Object>(pageObjectJson, headers), String.class);
         } catch (Exception e) {
             return null;
         }
 
-        return gson.fromJson((String) responseEntity.getBody(), new TypeToken<List<Receipt>>() {}.getType());
+        return gson.fromJson((String) responseEntity.getBody(), new TypeToken<List<ReceiptObject>>() {}.getType());
     }
 
     /**
@@ -78,7 +78,7 @@ public class GreenReceiptUtil {
      * @param receiptId This is the id for the receipt that corresponds to the database.
      * @return          Returns a receipt object that corresponds to the id passed in.
      */
-    public static Receipt getReceipt(String receiptId) {
+    public static ReceiptObject getReceipt(String receiptId) {
         RestTemplate restTemplate = new RestTemplate();
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         HttpHeaders headers = new HttpHeaders();
@@ -95,7 +95,7 @@ public class GreenReceiptUtil {
             return null;
         }
 
-        return gson.fromJson((String) responseEntity.getBody(), new TypeToken<Receipt>() {}.getType());
+        return gson.fromJson((String) responseEntity.getBody(), new TypeToken<ReceiptObject>() {}.getType());
     }
 
     /**
@@ -126,7 +126,7 @@ public class GreenReceiptUtil {
      *
      * @return a list of all of the users return receipts receipts
      */
-    public static List<Receipt> getReturnNotifications() {
+    public static List<ReceiptObject> getReturnNotifications() {
         RestTemplate restTemplate = new RestTemplate();
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         HttpHeaders headers = new HttpHeaders();
@@ -142,7 +142,7 @@ public class GreenReceiptUtil {
             return null;
         }
 
-        return gson.fromJson((String) responseEntity.getBody(), new TypeToken<List<Receipt>>() {}.getType());
+        return gson.fromJson((String) responseEntity.getBody(), new TypeToken<List<ReceiptObject>>() {}.getType());
     }
 
     /**
@@ -150,7 +150,7 @@ public class GreenReceiptUtil {
      *
      * @return a list of all of the users most recent receipts
      */
-    public static List<Receipt> getMostRecentReceipts() {
+    public static List<ReceiptObject> getMostRecentReceipts() {
         RestTemplate restTemplate = new RestTemplate();
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         HttpHeaders headers = new HttpHeaders();
@@ -166,14 +166,14 @@ public class GreenReceiptUtil {
             return null;
         }
 
-        return gson.fromJson((String) responseEntity.getBody(), new TypeToken<List<Receipt>>() {}.getType());
+        return gson.fromJson((String) responseEntity.getBody(), new TypeToken<List<ReceiptObject>>() {}.getType());
     }
 
     /**
      * This call gets the users currently set budget
      * @return return a budget item that contains a full list of BudgetItems
      */
-    public static Budget getCurrentBudget() {
+    public static BudgetObject getCurrentBudget() {
         RestTemplate restTemplate = new RestTemplate();
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         HttpHeaders headers = new HttpHeaders();
@@ -190,7 +190,7 @@ public class GreenReceiptUtil {
             return null;
         }
 
-        return gson.fromJson((String) responseEntity.getBody(), new TypeToken<Budget>() {}.getType());
+        return gson.fromJson((String) responseEntity.getBody(), new TypeToken<BudgetObject>() {}.getType());
     }
 
     /**

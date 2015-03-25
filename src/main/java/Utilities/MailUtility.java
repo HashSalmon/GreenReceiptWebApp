@@ -3,12 +3,9 @@ package Utilities;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
-import com.springapp.mvc.Receipt;
+import com.springapp.mvc.ReceiptObject;
 import com.springapp.mvc.ReceiptItem;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.MailParseException;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
@@ -31,7 +28,7 @@ public class MailUtility {
      * @param receipt The receipt object.  Its used to populate the email with information.
      * @throws ParseException
      */
-    public void sendMail(String subject, Receipt receipt) throws ParseException {
+    public void sendMail(String subject, ReceiptObject receipt) throws ParseException {
         JavaMailSenderImpl mailSender1 = new JavaMailSenderImpl();
         mailSender1.setHost("smtp.gmail.com");
         mailSender1.setPort(587);

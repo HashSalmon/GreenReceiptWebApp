@@ -9,13 +9,13 @@ import java.util.List;
 @Scope("session")
 public class ReceiptsContainer {
 
-    private List<Receipt> Receipts;
+    private List<ReceiptObject> Receipts;
 
-    public List<Receipt> getReceipts() {
+    public List<ReceiptObject> getReceipts() {
         return Receipts;
     }
 
-    public void setReceipts(List<Receipt> receipts) {
+    public void setReceipts(List<ReceiptObject> receipts) {
         Receipts = receipts;
     }
 }

@@ -10,11 +10,12 @@
 
     <mvc:resources mapping="/resources/**" location="/resources/"/>
 
-    <bean id="viewResolver1" class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
-        <property name="order" value="1"/>
+    <bean class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+        <property name="order" value="0"/>
         <property name="basename" value="views"/>
     </bean>
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <bean id="viewResolver0" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="order" value="1"/>
         <property name="prefix" value="/WEB-INF/pages/"/>
         <property name="suffix" value=".jsp"/>
     </bean>

@@ -12,7 +12,7 @@ import java.util.List;
 
 @Component
 @Scope("session")
-public class Receipt {
+public class ReceiptObject {
     private String receiptId;
     private Integer Id;
     private String Barcode;
@@ -36,7 +36,7 @@ public class Receipt {
     private Double Longitude;
     private String address;
 
-    public Receipt() {
+    public ReceiptObject() {
         //Default
     }
 
