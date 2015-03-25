@@ -52,7 +52,7 @@
       var id = "${receipt.id}";
       var store = "${receipt.store.company.name}";
       var total = "${receipt.total}";
-      var returnDate = "${receipt.returnDate}";
+      var returnDate = "${receipt.returnDateString}";
       receipts.push({Id: id, Store: store, Total: total, ReturnDate: returnDate});
     </c:forEach>
 

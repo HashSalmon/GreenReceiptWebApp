@@ -335,8 +335,14 @@ public class GreenReceiptUtil {
         endDateString = sf.format(endDate.getTime());
         model.addObject("startDate", startDateString);
         model.addObject("endDate", endDateString);
+
         session.setAttribute("CategoryReportStartDate", startDateString);
         session.setAttribute("CategoryReportEndDate", endDateString);
+        String displayStartDate = GreenReceiptUtil.formatDateString(startDateString);
+        String displayEndDate = GreenReceiptUtil.formatDateString(endDateString);
+        session.setAttribute("CategoryReportStartDateDisplay", displayStartDate);
+        session.setAttribute("CategoryReportEndDateDisplay", displayEndDate);
+
         String json = "https://greenreceipt.net/api/CategoryReport?startDate="  + startDateString + "&endDate=" + endDateString;
         ResponseEntity responseEntity = null;
         try {
@@ -391,6 +397,12 @@ public class GreenReceiptUtil {
         model.addObject("endDate", endDateString);
         session.setAttribute("TrendingReportStartDate", startDateString);
         session.setAttribute("TrendingReportEndDate", endDateString);
+
+        String displayStartDate = GreenReceiptUtil.formatDateString(startDateString);
+        String displayEndDate = GreenReceiptUtil.formatDateString(endDateString);
+        session.setAttribute("TrendingReportStartDateDisplay", displayStartDate);
+        session.setAttribute("TrendingReportEndDateDisplay", displayEndDate);
+
         String json = "https://greenreceipt.net/api/TrendingReport?startDate="  + startDateString + "&endDate=" + endDateString;
         ResponseEntity responseEntity = null;
         try {
@@ -571,5 +583,16 @@ public class GreenReceiptUtil {
         session.setAttribute("CategoryReportEndDate", null);
         session.setAttribute("TrendingReportStartDate", null);
         session.setAttribute("TrendingReportEndDate", null);
+    }
+
+    /**
+     * Take in a string formatted yyyy-MM-dd and change it to MM-dd-yyyy
+     * @param date string to reformat
+     */
+    public static String formatDateString(String date) throws ParseException {
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+        Date d = sf.parse(date);
+        sf = new SimpleDateFormat("MM-dd-yyyy");
+        return sf.format(d);
     }
 }

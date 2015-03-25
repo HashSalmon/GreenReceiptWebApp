@@ -16,7 +16,7 @@
           <div class="panel panel-default">
             <div class="panel-body">
               <div class="label label-success chartLabel">Trending Chart</div>
-              <div class="label label-success dateRangeLabel">Date Range: ${sessionScope.TrendingReportStartDate} - ${sessionScope.TrendingReportEndDate}</div>
+              <div class="label label-success dateRangeLabel">Date Range: ${sessionScope.TrendingReportStartDateDisplay} - ${sessionScope.TrendingReportEndDateDisplay}</div>
 
             <%--Trending Chart--%>
               <div id="chart1" style="margin-top: 11px;"></div>
@@ -27,7 +27,7 @@
           <div class="panel panel-default">
             <div class="panel-body">
               <div class="label label-success chartLabel">Category Chart</div>
-              <div class="label label-success dateRangeLabel">Date Range: ${sessionScope.CategoryReportStartDate} - ${sessionScope.CategoryReportEndDate}</div>
+              <div class="label label-success dateRangeLabel">Date Range: ${sessionScope.CategoryReportStartDateDisplay} - ${sessionScope.CategoryReportEndDateDisplay}</div>
               <%--Category Chart--%>
               <div id="chart" style="margin-top: 11px;"></div>
             </div>

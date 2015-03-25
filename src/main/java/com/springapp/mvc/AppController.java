@@ -29,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -287,11 +288,16 @@ public class AppController {
     }
 
     @RequestMapping(value="/categoryDateForm", method = RequestMethod.POST)
-    public ModelAndView categoryReportDateChange(@ModelAttribute("categoryReportDates") @Valid CategoryReportDates categoryReportDates, HttpSession session) {
+    public ModelAndView categoryReportDateChange(@ModelAttribute("categoryReportDates") @Valid CategoryReportDates categoryReportDates, HttpSession session) throws ParseException {
         ModelAndView model = new ModelAndView();
 
         session.setAttribute("CategoryReportStartDate", categoryReportDates.getStartDate());
         session.setAttribute("CategoryReportEndDate", categoryReportDates.getEndDate());
+
+        String displayStartDate = GreenReceiptUtil.formatDateString(categoryReportDates.getStartDate());
+        String displayEndDate = GreenReceiptUtil.formatDateString(categoryReportDates.getEndDate());
+        session.setAttribute("CategoryReportStartDateDisplay", displayStartDate);
+        session.setAttribute("CategoryReportEndDateDisplay", displayEndDate);
 
         model.setViewName("redirect:/category");
         return model;
