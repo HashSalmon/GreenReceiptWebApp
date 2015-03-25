@@ -56,7 +56,7 @@
                 </td>
               </tr>
             </table>
-            <button id="sendEmail" class="btn btn-success col-md-offset-4 receiptButton" onclick="sendEmail();">Send Email</button>
+            <%--<button id="sendEmail" class="btn btn-success col-md-offset-4 receiptButton" onclick="sendEmail();">Send Email</button>--%>
             <button id="deleteReceipt" class="btn btn-danger col-md-offset-4 receiptButton" onclick="deleteReceipt()">Delete</button>
           </div>
         </div>
