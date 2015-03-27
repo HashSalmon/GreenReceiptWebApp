@@ -9,7 +9,6 @@
 <body>
 <%@include file="interiorNavBar.jsp"%>
 <div class="container">
-  <a href="/downloadPDF" target="_blank">TEST</a>
   <div class="row">
     <div class="col-md-10">
         <div class="col-sm-12 col-md-6">
@@ -258,7 +257,7 @@
   function initialize() {
     var mapOptions = {
       <c:if test="${fn:length(recentReceipts) > 0}">
-      zoom: 12,
+      zoom: 10,
       center: new google.maps.LatLng(<c:out value="${recentReceipts[0].latitude}"/>, <c:out value="${recentReceipts[0].longitude}"/>)
       </c:if>
     };

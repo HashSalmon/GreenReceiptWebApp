@@ -1,6 +1,7 @@
 package com.springapp.mvc.PdfObjects;
 
 
+import java.io.FileOutputStream;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Map;
@@ -77,7 +78,7 @@ public class PDFBuilder extends AbstractITextPdf {
             table.addCell(receipt.getReturnDateString());
             doc.add(table);
 
-            doc.add(Chunk.NEWLINE);
+//            doc.add(Chunk.NEWLINE);
 
             // Add receipt Items
             table = new PdfPTable(2);
@@ -101,7 +102,7 @@ public class PDFBuilder extends AbstractITextPdf {
             }
             doc.add(table);
 
-            doc.add(Chunk.NEWLINE);
+//            doc.add(Chunk.NEWLINE);
 
             table = new PdfPTable(3);
             table.setWidthPercentage(100.0f);
