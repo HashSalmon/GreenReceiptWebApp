@@ -46,7 +46,7 @@ public class GreenReceiptUtil {
         headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
         ResponseEntity responseEntity = null;
         try {
-            responseEntity = restTemplate.exchange("https://greenreceipt.net/api/Receipt/TestReceipts",
+            responseEntity = restTemplate.exchange("https://greenreceipt.net/api/Receipt/Receipts",
                     HttpMethod.POST, new HttpEntity<Object>(headers), String.class);
         } catch (Exception e) {
             return null;
@@ -72,7 +72,7 @@ public class GreenReceiptUtil {
         headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
         ResponseEntity responseEntity = null;
         try {
-            responseEntity = restTemplate.exchange("https://greenreceipt.net/api/Receipt/TestReceipts",
+            responseEntity = restTemplate.exchange("https://greenreceipt.net/api/Receipt/Receipts",
                     HttpMethod.POST, new HttpEntity<Object>(pageObjectJson, headers), String.class);
         } catch (Exception e) {
             return null;
@@ -146,7 +146,7 @@ public class GreenReceiptUtil {
         ResponseEntity responseEntity = null;
         try {
             responseEntity = restTemplate.exchange("https://greenreceipt.net/api/Receipt/ReturnReceipts",
-                    HttpMethod.GET, new HttpEntity<Object>(headers), String.class);
+                    HttpMethod.POST, new HttpEntity<Object>(headers), String.class);
         } catch (Exception e) {
             return null;
         }
@@ -170,7 +170,7 @@ public class GreenReceiptUtil {
         ResponseEntity responseEntity = null;
         try {
             responseEntity = restTemplate.exchange("https://greenreceipt.net/api/Receipt/RecentReceipts?recentCount=5",
-                    HttpMethod.GET, new HttpEntity<Object>(headers), String.class);
+                    HttpMethod.POST, new HttpEntity<Object>(headers), String.class);
         } catch (Exception e) {
             return null;
         }

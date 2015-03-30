@@ -78,7 +78,6 @@ public class PDFBuilder extends AbstractITextPdf {
             table.addCell(receipt.getReturnDateString());
             doc.add(table);
 
-//            doc.add(Chunk.NEWLINE);
 
             // Add receipt Items
             table = new PdfPTable(2);
@@ -102,7 +101,6 @@ public class PDFBuilder extends AbstractITextPdf {
             }
             doc.add(table);
 
-//            doc.add(Chunk.NEWLINE);
 
             table = new PdfPTable(3);
             table.setWidthPercentage(100.0f);
