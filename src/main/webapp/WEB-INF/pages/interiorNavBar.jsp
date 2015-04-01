@@ -25,6 +25,7 @@
             <li><a href="/category">Category</a></li>
           </ul>
         </li>
+        <li class="${settingsActive}"><a href="#">Settings</a></li>
       </ul>
     </div>
   </div>

@@ -1,8 +1,10 @@
 body {
     padding-top: 120px;
     padding-bottom: 120px;
-    background-color: #eee;
+    /*background-color: #eee;*/
+    background-image: url(/resources/receiptBackground5.jpeg);
 }
+
 
 .form-signin {
     max-width: 330px;
