@@ -25,7 +25,12 @@
             <li><a href="/category">Category</a></li>
           </ul>
         </li>
-        <li class="${settingsActive}"><a href="#">Settings</a></li>
+        <li class="dropdown ${settingsActive}">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Settings <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/manageCards">Manage Cards</a></li>
+          </ul>
+        </li>
       </ul>
     </div>
   </div>

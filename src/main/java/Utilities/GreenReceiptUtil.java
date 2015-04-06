@@ -6,6 +6,7 @@ import com.springapp.mvc.BudgetObjects.BudgetItem;
 import com.springapp.mvc.BudgetObjects.BudgetObject;
 import com.springapp.mvc.CategoryReportObjects.CategoryReport;
 import com.springapp.mvc.CategoryReportObjects.CategoryReportItem;
+import com.springapp.mvc.CreditCardObjects.CreditCardObject;
 import com.springapp.mvc.PageObjects.PageObject;
 import com.springapp.mvc.ReceiptObjects.Category;
 import com.springapp.mvc.ReceiptObjects.ReceiptItem;
@@ -19,6 +20,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -514,6 +517,94 @@ public class GreenReceiptUtil {
         }
 
         return gson.fromJson((String) responseEntity.getBody(), new TypeToken<TrendingReport>() {}.getType());
+    }
+
+    /**
+     * Gets a list of all of the Credit Cards the user has in the system
+     * @return The list of Credit Card Objects objects
+     */
+    public static List<CreditCardObject> getCreditCards() {
+        RestTemplate restTemplate = new RestTemplate();
+        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Gson gson = new Gson();
+
+        headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
+        ResponseEntity responseEntity = null;
+        try {
+            responseEntity = restTemplate.exchange("https://greenreceipt.net/api/UserAccountId",
+                    HttpMethod.GET, new HttpEntity<Object>(headers), String.class);
+        } catch (Exception e) {
+            return null;
+        }
+
+        return gson.fromJson((String) responseEntity.getBody(), new TypeToken<List<CreditCardObject>>() {}.getType());
+    }
+
+
+    /**
+     * adds a card to the users account
+     * @param cardHash The card hash representation of the card number
+     * @return Returns true if the add is successful, null if an exception occurs
+     */
+    public static Boolean addCard(String cardHash, String lastFour) {
+        RestTemplate restTemplate = new RestTemplate();
+        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        Gson gson = new Gson();
+        String cardObjectJson = gson.toJson(new CreditCardObject(cardHash, lastFour));
+
+        String apiCall = "https://greenreceipt.net/api/UserAccountId";
+        headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
+        ResponseEntity responseEntity = null;
+        try {
+            responseEntity = restTemplate.exchange(apiCall,
+                    HttpMethod.POST, new HttpEntity<Object>(cardObjectJson, headers), String.class);
+        } catch (Exception e) {
+            return null;
+        }
+
+        return true;
+    }
+
+    /**
+     * Removes a card
+     * @param id The id of the card to remove
+     * @return Returns true if the delete is successful, null if an exception occurs
+     */
+    public static Boolean deleteCard(String id) {
+        RestTemplate restTemplate = new RestTemplate();
+        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        String apiCall = "https://greenreceipt.net/api/UserAccountId?id=" + id;
+        headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
+        ResponseEntity responseEntity = null;
+        try {
+            responseEntity = restTemplate.exchange(apiCall,
+                    HttpMethod.DELETE, new HttpEntity<Object>(headers), String.class);
+        } catch (Exception e) {
+            return null;
+        }
+
+        return true;
+    }
+
+    public static String hashCard(String cardNumber) throws NoSuchAlgorithmException {
+        MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
+        byte[] passBytes = cardNumber.getBytes();
+        byte[] passHash = sha256.digest(passBytes);
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < passHash.length; i++) {
+            sb.append(Integer.toString((passHash[i] & 0xff) + 0x100, 16).substring(1));
+        }
+
+        return sb.toString();
     }
 
     /**

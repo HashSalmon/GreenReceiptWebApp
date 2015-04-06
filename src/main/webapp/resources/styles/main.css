@@ -141,3 +141,7 @@ table.k-selectable tr {
 .export {
     cursor: pointer;
 }
+
+.floatRight {
+    float: right;
+}

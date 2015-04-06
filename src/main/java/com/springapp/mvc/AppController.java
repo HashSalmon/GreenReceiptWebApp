@@ -9,6 +9,8 @@ import com.google.gson.reflect.TypeToken;
 import com.springapp.mvc.BudgetObjects.*;
 import com.springapp.mvc.CategoryReportObjects.CategoryReport;
 import com.springapp.mvc.CategoryReportObjects.CategoryReportDates;
+import com.springapp.mvc.CreditCardObjects.CreditCardFormObject;
+import com.springapp.mvc.CreditCardObjects.CreditCardObject;
 import com.springapp.mvc.ReceiptObjects.*;
 import com.springapp.mvc.TrendingReportObjects.TrendingReport;
 import com.springapp.mvc.UserObjects.User;
@@ -25,11 +27,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 @Controller
@@ -629,5 +635,59 @@ public class AppController {
         List<ReceiptObject> receipts = GreenReceiptUtil.getCategoryReceipts(categoryId, startDate, endDate, session);
 
         return new ModelAndView("pdfView", "receipts", receipts);
+    }
+
+    @RequestMapping(value="/manageCards", method = RequestMethod.GET)
+    public ModelAndView manageCards() {
+        ModelAndView model = new ModelAndView();
+        model.addObject("settingsActive", "active");
+
+        List<CreditCardObject> allIds = GreenReceiptUtil.getCreditCards();
+
+        List<CreditCardObject> creditCards = new LinkedList<CreditCardObject>();
+        for(CreditCardObject card: allIds) {
+            if(card.getAccountId().length() != 9) {
+                creditCards.add(card);
+            }
+        }
+        model.addObject("cards", creditCards);
+        model.setViewName("manageCards");
+        return model;
+    }
+
+    @RequestMapping(value="/addCard", method = RequestMethod.POST)
+    public ModelAndView addCard(@ModelAttribute("cardFormObject") CreditCardFormObject cardFormObject, BindingResult result) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        ModelAndView model = new ModelAndView();
+
+        String hash = GreenReceiptUtil.hashCard(cardFormObject.getCardNumber());
+        GreenReceiptUtil.addCard(hash, cardFormObject.getCardNumber().substring(12, 16));// Last four
+
+        model.setViewName("redirect:/manageCards");
+        return model;
+    }
+
+    @RequestMapping(value="/editCard", method = RequestMethod.POST)
+    public ModelAndView editCard(@ModelAttribute("cardFormObject") CreditCardFormObject cardFormObject, BindingResult result) throws NoSuchAlgorithmException {
+        ModelAndView model = new ModelAndView();
+
+        if(GreenReceiptUtil.deleteCard(cardFormObject.getCardId())) {
+            String hash = GreenReceiptUtil.hashCard(cardFormObject.getCardHash());
+            GreenReceiptUtil.addCard(hash, cardFormObject.getCardNumber().substring(12, 16));
+        } else {
+            //error handling
+        }
+        model.setViewName("redirect:/manageCards");
+        return model;
+    }
+
+    @RequestMapping(value="/deleteCard", method = RequestMethod.GET)
+    public ModelAndView deleteCard(@RequestParam(defaultValue = "") String id) {
+        ModelAndView model = new ModelAndView();
+
+        GreenReceiptUtil.deleteCard(id);
+
+
+        model.setViewName("redirect:/manageCards");
+        return model;
     }
 }
