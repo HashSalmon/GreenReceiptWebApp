@@ -9,6 +9,7 @@ import com.springapp.mvc.CategoryReportObjects.CategoryReportItem;
 import com.springapp.mvc.CreditCardObjects.CreditCardObject;
 import com.springapp.mvc.PageObjects.PageObject;
 import com.springapp.mvc.ReceiptObjects.Category;
+import com.springapp.mvc.ReceiptObjects.ReceiptImageObject;
 import com.springapp.mvc.ReceiptObjects.ReceiptItem;
 import com.springapp.mvc.ReceiptObjects.ReceiptObject;
 import com.springapp.mvc.TrendingReportObjects.TrendingReport;
@@ -540,6 +541,29 @@ public class GreenReceiptUtil {
         }
 
         return gson.fromJson((String) responseEntity.getBody(), new TypeToken<List<CreditCardObject>>() {}.getType());
+    }
+
+    /**
+     * Gets a list of all of the images the user has attached to this receipt
+     * @return The list of Image Objects objects
+     */
+    public static List<ReceiptImageObject> getReceiptImages(Integer receiptId) {
+        RestTemplate restTemplate = new RestTemplate();
+        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Gson gson = new Gson();
+
+        headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
+        ResponseEntity responseEntity = null;
+        try {
+            responseEntity = restTemplate.exchange("https://greenreceipt.net/api/Image/ReceiptImages?receiptId=" + receiptId,
+                    HttpMethod.GET, new HttpEntity<Object>(headers), String.class);
+        } catch (Exception e) {
+            return null;
+        }
+
+        return gson.fromJson((String) responseEntity.getBody(), new TypeToken<List<ReceiptImageObject>>() {}.getType());
     }
 
 

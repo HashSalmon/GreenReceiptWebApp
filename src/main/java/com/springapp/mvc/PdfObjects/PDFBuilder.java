@@ -2,7 +2,11 @@ package com.springapp.mvc.PdfObjects;
 
 
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.*;
 import java.text.NumberFormat;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
@@ -14,8 +18,10 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.springapp.mvc.ReceiptObjects.ReceiptImageObject;
 import com.springapp.mvc.ReceiptObjects.ReceiptItem;
 import com.springapp.mvc.ReceiptObjects.ReceiptObject;
+import Utilities.GreenReceiptUtil;
 
 /**
  * This view class generates a PDF document 'on the fly' based on the data
@@ -131,6 +137,33 @@ public class PDFBuilder extends AbstractITextPdf {
             table.addCell(receipt.getLastFourCardNumber());
             table.addCell(receipt.getBarcode());
             doc.add(table);
+
+            List<ReceiptImageObject> images = GreenReceiptUtil.getReceiptImages(receipt.getId());
+            for(ReceiptImageObject imageObject : images) {
+                byte[] data = Base64.getDecoder().decode(imageObject.getBase64Image());
+                try  {
+                    OutputStream stream = new FileOutputStream(imageObject.getFileName());
+                    stream.write(data);
+                    stream.close();
+                } catch (Exception e){
+
+                }
+                Image img = Image.getInstance(imageObject.getFileName());
+                if (img.getScaledWidth() > 300 || img.getScaledHeight() > 300) {
+                    img.scaleToFit(300, 300);
+                }
+                doc.add(img);
+
+                try {
+                    Files.delete(Paths.get(imageObject.getFileName()));
+                } catch (NoSuchFileException x) {
+                    // File doesn't exist, something went wrong with the write
+                } catch (IOException x) {
+                    // File permission problems are caught here.
+                }
+            }
+
+
             doc.newPage();
             total += receipt.getTotal();
         }
