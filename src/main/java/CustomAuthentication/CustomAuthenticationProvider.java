@@ -33,7 +33,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             String body = "grant_type=password&username=" + encodedName + "&password=" + encodedPassword;
             ResponseEntity responseEntity = null;
             try {
-                responseEntity = restTemplate.exchange("https://greenreceipt.net/Token", HttpMethod.POST, new HttpEntity<Object>(body, headers), String.class);
+                responseEntity = restTemplate.exchange("https://api.greenreceipt.net/Token", HttpMethod.POST, new HttpEntity<Object>(body, headers), String.class);
             } catch (Exception e) {
                 return null;
             }

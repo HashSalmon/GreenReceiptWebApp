@@ -50,7 +50,7 @@ public class GreenReceiptUtil {
         headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
         ResponseEntity responseEntity = null;
         try {
-            responseEntity = restTemplate.exchange("https://greenreceipt.net/api/Receipt/Receipts",
+            responseEntity = restTemplate.exchange("https://api.greenreceipt.net/api/Receipt/Receipts",
                     HttpMethod.POST, new HttpEntity<Object>(headers), String.class);
         } catch (Exception e) {
             return null;
@@ -76,7 +76,7 @@ public class GreenReceiptUtil {
         headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
         ResponseEntity responseEntity = null;
         try {
-            responseEntity = restTemplate.exchange("https://greenreceipt.net/api/Receipt/Receipts",
+            responseEntity = restTemplate.exchange("https://api.greenreceipt.net/api/Receipt/Receipts",
                     HttpMethod.POST, new HttpEntity<Object>(pageObjectJson, headers), String.class);
         } catch (Exception e) {
             return null;
@@ -97,7 +97,7 @@ public class GreenReceiptUtil {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         Gson gson = new Gson();
-        String apiCall = "https://greenreceipt.net/api/Receipt?id=" + receiptId;
+        String apiCall = "https://api.greenreceipt.net/api/Receipt?id=" + receiptId;
 
         headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
         ResponseEntity responseEntity = null;
@@ -121,7 +121,7 @@ public class GreenReceiptUtil {
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        String apiCall = "https://greenreceipt.net/api/Receipt?id=" + id;
+        String apiCall = "https://api.greenreceipt.net/api/Receipt?id=" + id;
         headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
         ResponseEntity responseEntity = null;
         try {
@@ -149,7 +149,7 @@ public class GreenReceiptUtil {
         headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
         ResponseEntity responseEntity = null;
         try {
-            responseEntity = restTemplate.exchange("https://greenreceipt.net/api/Receipt/ReturnReceipts",
+            responseEntity = restTemplate.exchange("https://api.greenreceipt.net/api/Receipt/ReturnReceipts",
                     HttpMethod.POST, new HttpEntity<Object>(headers), String.class);
         } catch (Exception e) {
             return null;
@@ -173,7 +173,7 @@ public class GreenReceiptUtil {
         headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
         ResponseEntity responseEntity = null;
         try {
-            responseEntity = restTemplate.exchange("https://greenreceipt.net/api/Receipt/RecentReceipts?recentCount=5",
+            responseEntity = restTemplate.exchange("https://api.greenreceipt.net/api/Receipt/RecentReceipts?recentCount=5",
                     HttpMethod.POST, new HttpEntity<Object>(headers), String.class);
         } catch (Exception e) {
             return null;
@@ -192,7 +192,7 @@ public class GreenReceiptUtil {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         Gson gson = new Gson();
-        String apiCall = "https://greenreceipt.net/api/Budget/CurrentBudget";
+        String apiCall = "https://api.greenreceipt.net/api/Budget/CurrentBudget";
 
         headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
         ResponseEntity responseEntity = null;
@@ -217,7 +217,7 @@ public class GreenReceiptUtil {
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        String apiCall = "https://greenreceipt.net/api/Budget";
+        String apiCall = "https://api.greenreceipt.net/api/Budget";
 
         headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
         ResponseEntity responseEntity = null;
@@ -245,7 +245,7 @@ public class GreenReceiptUtil {
         headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
         ResponseEntity responseEntity = null;
         try {
-            responseEntity = restTemplate.exchange("https://greenreceipt.net/api/Category/GetCategories",
+            responseEntity = restTemplate.exchange("https://api.greenreceipt.net/api/Category/GetCategories",
                     HttpMethod.GET, new HttpEntity<Object>(headers), String.class);
         } catch (Exception e) {
             return null;
@@ -265,7 +265,7 @@ public class GreenReceiptUtil {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         Gson gson = new Gson();
-        String apiCall = "https://greenreceipt.net/api/BudgetItem";
+        String apiCall = "https://api.greenreceipt.net/api/BudgetItem";
         String budgetItemJson = gson.toJson(budgetItem);
         headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
         ResponseEntity responseEntity = null;
@@ -289,7 +289,7 @@ public class GreenReceiptUtil {
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        String apiCall = "https://greenreceipt.net/api/BudgetItem?id=" + id;
+        String apiCall = "https://api.greenreceipt.net/api/BudgetItem?id=" + id;
         headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
         ResponseEntity responseEntity = null;
         try {
@@ -348,7 +348,7 @@ public class GreenReceiptUtil {
         session.setAttribute("CategoryReportStartDateDisplay", displayStartDate);
         session.setAttribute("CategoryReportEndDateDisplay", displayEndDate);
 
-        String json = "https://greenreceipt.net/api/CategoryReport?startDate="  + startDateString + "&endDate=" + endDateString;
+        String json = "https://api.greenreceipt.net/api/CategoryReport?startDate="  + startDateString + "&endDate=" + endDateString;
         ResponseEntity responseEntity = null;
         try {
             responseEntity = restTemplate.exchange(json,
@@ -398,7 +398,7 @@ public class GreenReceiptUtil {
         endDateString = sf.format(endDate.getTime());
 
 
-        String json = "https://greenreceipt.net/api/Receipt/CategoryReceipts?categoryId=" + categoryId + "&startDate="  + startDateString + "&endDate=" + endDateString;
+        String json = "https://api.greenreceipt.net/api/Receipt/CategoryReceipts?categoryId=" + categoryId + "&startDate="  + startDateString + "&endDate=" + endDateString;
         ResponseEntity responseEntity = null;
         try {
             responseEntity = restTemplate.exchange(json,
@@ -448,7 +448,7 @@ public class GreenReceiptUtil {
         endDateString = sf.format(endDate.getTime());
 
 
-        String json = "https://greenreceipt.net/api/ReceiptItem/ReceiptItems?categoryId=" + categoryId + "&startDate="  + startDateString + "&endDate=" + endDateString;
+        String json = "https://api.greenreceipt.net/api/ReceiptItem/ReceiptItems?categoryId=" + categoryId + "&startDate="  + startDateString + "&endDate=" + endDateString;
         ResponseEntity responseEntity = null;
         try {
             responseEntity = restTemplate.exchange(json,
@@ -508,7 +508,7 @@ public class GreenReceiptUtil {
         session.setAttribute("TrendingReportStartDateDisplay", displayStartDate);
         session.setAttribute("TrendingReportEndDateDisplay", displayEndDate);
 
-        String json = "https://greenreceipt.net/api/TrendingReport?startDate="  + startDateString + "&endDate=" + endDateString;
+        String json = "https://api.greenreceipt.net/api/TrendingReport?startDate="  + startDateString + "&endDate=" + endDateString;
         ResponseEntity responseEntity = null;
         try {
             responseEntity = restTemplate.exchange(json,
@@ -534,7 +534,7 @@ public class GreenReceiptUtil {
         headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
         ResponseEntity responseEntity = null;
         try {
-            responseEntity = restTemplate.exchange("https://greenreceipt.net/api/UserAccountId",
+            responseEntity = restTemplate.exchange("https://api.greenreceipt.net/api/UserAccountId",
                     HttpMethod.GET, new HttpEntity<Object>(headers), String.class);
         } catch (Exception e) {
             return null;
@@ -557,7 +557,7 @@ public class GreenReceiptUtil {
         headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
         ResponseEntity responseEntity = null;
         try {
-            responseEntity = restTemplate.exchange("https://greenreceipt.net/api/Image/ReceiptImages?receiptId=" + receiptId,
+            responseEntity = restTemplate.exchange("https://api.greenreceipt.net/api/Image/ReceiptImages?receiptId=" + receiptId,
                     HttpMethod.GET, new HttpEntity<Object>(headers), String.class);
         } catch (Exception e) {
             return null;
@@ -581,7 +581,7 @@ public class GreenReceiptUtil {
         Gson gson = new Gson();
         String cardObjectJson = gson.toJson(new CreditCardObject(cardHash, lastFour));
 
-        String apiCall = "https://greenreceipt.net/api/UserAccountId";
+        String apiCall = "https://api.greenreceipt.net/api/UserAccountId";
         headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
         ResponseEntity responseEntity = null;
         try {
@@ -604,7 +604,7 @@ public class GreenReceiptUtil {
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        String apiCall = "https://greenreceipt.net/api/UserAccountId?id=" + id;
+        String apiCall = "https://api.greenreceipt.net/api/UserAccountId?id=" + id;
         headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
         ResponseEntity responseEntity = null;
         try {
