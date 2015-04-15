@@ -12,6 +12,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.DatatypeConverter;
 
 import Utilities.AbstractITextPdf;
 import com.itextpdf.text.*;
@@ -140,7 +141,8 @@ public class PDFBuilder extends AbstractITextPdf {
 
             List<ReceiptImageObject> images = GreenReceiptUtil.getReceiptImages(receipt.getId());
             for(ReceiptImageObject imageObject : images) {
-                byte[] data = Base64.getDecoder().decode(imageObject.getBase64Image());
+
+                byte[] data = DatatypeConverter.parseBase64Binary(imageObject.getBase64Image());
                 try  {
                     OutputStream stream = new FileOutputStream(imageObject.getFileName());
                     stream.write(data);
