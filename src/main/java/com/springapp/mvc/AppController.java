@@ -141,7 +141,6 @@ public class AppController {
 
     @RequestMapping(value = "/createAccountForm", method = RequestMethod.GET)
     public ModelAndView createAccount(ModelAndView model) {
-        model.addObject("message", "Please enter your information");
         model.setViewName("createAccountForm");
         return model;
 
@@ -153,12 +152,17 @@ public class AppController {
             model.setViewName("createAccountForm");
             return model;
         }
+        if(!createAccount.getPassword().equals(createAccount.getConfirmPassword())) {
+            model.addObject("error", "Passwords do not match");
+            model.setViewName("createAccountForm");
+            return model;
+        }
         RestTemplate restTemplate = new RestTemplate();
         Gson gson = new Gson();
         String createAccountJson = gson.toJson(createAccount);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        ResponseEntity responseEntity = restTemplate.exchange("https://greenreceipt.net/api/Account/Register", HttpMethod.POST, new HttpEntity<Object>(createAccountJson, headers), ResponseEntity.class);
+        ResponseEntity responseEntity = restTemplate.exchange("https://api.greenreceipt.net/api/Account/Register", HttpMethod.POST, new HttpEntity<Object>(createAccountJson, headers), ResponseEntity.class);
         if(responseEntity.getStatusCode().value() == 200) {
             //TODO: MAKE IT SO THE USER KNOWS THEY HAVE SUCCESSFULLY CREATED THEIR ACCOUNT
             model.setViewName("redirect:/login");
