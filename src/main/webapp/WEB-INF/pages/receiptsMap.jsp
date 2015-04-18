@@ -10,30 +10,39 @@
 <%@include file="interiorNavBar.jsp"%>
 <div class="container">
 
-  <form:form action="numReceiptsForm" modelAttribute="receiptViewAmount" method="post" id="numReceiptsForm">
-    <div class="col-sm-3">
-      <label for="numReceipts">Select number of receipts to view:</label>
-      <select id="numReceipts" name="numReceipts" class="form-control" onchange="submitNumReceiptsForm()">
-        <option value="25" ${sessionScope.numReceipts == "25" ? 'selected' : ''}>Up to 25</option>
-        <option value="100" ${sessionScope.numReceipts == "100" ? 'selected' : ''}>Up to 100</option>
-        <option value="1000" ${sessionScope.numReceipts == "1000" ? 'selected' : ''}>Up to 1000</option>
-        <option value="10000" ${sessionScope.numReceipts == "10000" ? 'selected' : ''}>Up to 10000</option>
-        <option value="100000" ${sessionScope.numReceipts == "100000" ? 'selected' : ''}>Up to 100000</option>
-        <option value="All" ${sessionScope.numReceipts == "All" ? 'selected' : ''}>All</option>
-      </select>
-      <input type="hidden" name="view" value="/receiptsMap"/>
-      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-    </div>
-  </form:form>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4>Receipts Map</h4>
 
-  <div class="col-sm-12">
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <span class="label label-success" style="font-size: large;">Receipts: ${receiptsCount}</span>
-        <div id="map_container" class="receiptsMap"></div>
-      </div>
+    </div>
+    <div class="panel-body">
+        <form:form action="numReceiptsForm" modelAttribute="receiptViewAmount" method="post" id="numReceiptsForm">
+          <div class="col-sm-3">
+            <label for="numReceipts">Select number of receipts to view:</label>
+            <select id="numReceipts" name="numReceipts" class="form-control" onchange="submitNumReceiptsForm()">
+              <option value="25" ${sessionScope.numReceipts == "25" ? 'selected' : ''}>Up to 25</option>
+              <option value="100" ${sessionScope.numReceipts == "100" ? 'selected' : ''}>Up to 100</option>
+              <option value="1000" ${sessionScope.numReceipts == "1000" ? 'selected' : ''}>Up to 1000</option>
+              <option value="10000" ${sessionScope.numReceipts == "10000" ? 'selected' : ''}>Up to 10000</option>
+              <option value="100000" ${sessionScope.numReceipts == "100000" ? 'selected' : ''}>Up to 100000</option>
+            </select>
+            <input type="hidden" name="view" value="/receiptsMap"/>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+          </div>
+        </form:form>
+        <div class="col-sm-12">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <span class="label label-success" style="font-size: large;">Receipts: ${receiptsCount}</span>
+              <div id="map_container" class="receiptsMap"></div>
+            </div>
+          </div>
+        </div>
     </div>
   </div>
+
+
+
 </div>
 </body>
 <script type="text/javascript"
