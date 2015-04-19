@@ -272,9 +272,15 @@ public class AppController {
     }
 
     @RequestMapping(value="/category", method = RequestMethod.GET)
-    public ModelAndView displayCategoryReport( HttpSession session){
+    public ModelAndView displayCategoryReport(HttpSession session, @RequestParam(value = "error", required = false) String error){
         ModelAndView model = new ModelAndView();
         model.addObject("reportActive", "active");
+
+        if(error != null) {
+            model.addObject("error", "Please check your dates");
+            model.setViewName("category");
+            return model;
+        }
 
         String startDate = (String) session.getAttribute("CategoryReportStartDate");
         String endDate = (String) session.getAttribute("CategoryReportEndDate");
@@ -296,6 +302,16 @@ public class AppController {
     @RequestMapping(value="/categoryDateForm", method = RequestMethod.POST)
     public ModelAndView categoryReportDateChange(@ModelAttribute("categoryReportDates") @Valid CategoryReportDates categoryReportDates, HttpSession session) throws ParseException {
         ModelAndView model = new ModelAndView();
+
+        try {
+            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+            Date d = sf.parse(categoryReportDates.getStartDate());
+            d = sf.parse(categoryReportDates.getEndDate());
+        } catch (Exception e) {
+            model.addObject("error", "Please check your dates");
+            model.setViewName("redirect:/category");
+            return model;
+        }
 
         session.setAttribute("CategoryReportStartDate", categoryReportDates.getStartDate());
         session.setAttribute("CategoryReportEndDate", categoryReportDates.getEndDate());
