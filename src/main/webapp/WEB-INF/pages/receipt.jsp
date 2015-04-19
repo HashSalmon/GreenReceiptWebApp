@@ -17,14 +17,6 @@
                 The last day to return these items is coming up soon!<br> ${receipt.returnDate}
               </div>
             </c:if>
-            <c:if test="${exchange != null && exchange != ''}">
-              <div class="alert alert-warning centerText">
-                Another user has recently purchased this item for less than you did!<br>
-                You may want to consider returning this item.<br><br>
-                From:  Amazon<br>
-                Price: $450.00
-              </div>
-            </c:if>
             <table class="receiptTable">
               <tr class="receiptLine">
                 <td colspan="3" class="centerText receiptHeader"><h2>${receipt.store.company.name}</h2></td>
@@ -41,14 +33,14 @@
                   SubTotal:
                 </td>
                 <td></td>
-                <td class="rightText">$${receipt.subTotal}</td>
+                <td class="rightText">${receipt.currencySubTotal}</td>
               </tr>
               <tr>
                 <td>
                   Total:
                 </td>
                 <td></td>
-                <td class="rightText">$${receipt.total}</td>
+                <td class="rightText">${receipt.currencyTotal}</td>
               </tr>
               <tr>
                 <td colspan="3" class="centerText">
@@ -115,11 +107,11 @@
       title: store
     });
 
-    var total = "${receipt.total}";
+    var total = "${receipt.currencyTotal}";
     var contentString = '<div id="content">'+
             '<div id="siteNotice">'+
             '</div>'+
-            '<h1 id="firstHeading" class="firstHeading">' + store + ': $' +  total + '</h1>'+
+            '<h1 id="firstHeading" class="firstHeading">' + store + ': ' +  total + '</h1>'+
             '<div id="bodyContent">'+
             '</div>'+
             '</div>';

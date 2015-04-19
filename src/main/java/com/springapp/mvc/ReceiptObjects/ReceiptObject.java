@@ -3,6 +3,7 @@ package com.springapp.mvc.ReceiptObjects;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -129,6 +130,10 @@ public class ReceiptObject {
         return SubTotal;
     }
 
+    public String getCurrencySubTotal() {
+        return NumberFormat.getCurrencyInstance().format(this.SubTotal);
+    }
+
     public void setSubTotal(Double subTotal) {
         SubTotal = subTotal;
     }
@@ -155,6 +160,10 @@ public class ReceiptObject {
 
     public Double getTotal() {
         return Total;
+    }
+
+    public String getCurrencyTotal() {
+       return NumberFormat.getCurrencyInstance().format(this.Total);
     }
 
     public void setMiscMessage(String miscMessage) {

@@ -269,7 +269,7 @@
 
     var length = 0;
     <c:forEach items="${recentReceipts}" var="receipt">
-      markers.push(["${receipt.store.company.name}", <c:out value="${receipt.latitude}"/>, <c:out value="${receipt.longitude}"/>, "${receipt.total}", "${receipt.id}"]);
+      markers.push(["${receipt.store.company.name}", <c:out value="${receipt.latitude}"/>, <c:out value="${receipt.longitude}"/>, "${receipt.currencyTotal}", "${receipt.id}"]);
       length++;
     </c:forEach>
     setMarkers(map, markers, length);
@@ -292,7 +292,7 @@
       var contentString = '<div id="content">'+
         '<div id="siteNotice">'+
         '</div>'+
-        '<h1 id="firstHeading" class="firstHeading">' + receipt[0] + ': $' + receipt[3] + '</h1>'+
+        '<h1 id="firstHeading" class="firstHeading">' + receipt[0] + ': ' + receipt[3] + '</h1>'+
         '<div id="bodyContent"><a href="/receipt?receiptId=' + receipt[4] + '">View Receipt</a>' +
         '</div>'+
         '</div>';
