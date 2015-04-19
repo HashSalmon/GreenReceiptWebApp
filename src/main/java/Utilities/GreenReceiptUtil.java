@@ -617,9 +617,10 @@ public class GreenReceiptUtil {
         return true;
     }
 
-    public static String hashCard(String cardNumber) throws NoSuchAlgorithmException {
+    public static String hashCard(String firstFour, String lastFour, String cardName) throws NoSuchAlgorithmException {
         MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
-        byte[] passBytes = cardNumber.getBytes();
+        String toHash = firstFour + cardName.toUpperCase() + lastFour;
+        byte[] passBytes = toHash.getBytes();
         byte[] passHash = sha256.digest(passBytes);
 
         StringBuilder sb = new StringBuilder();

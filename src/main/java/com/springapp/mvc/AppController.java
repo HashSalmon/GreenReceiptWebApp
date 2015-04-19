@@ -357,9 +357,14 @@ public class AppController {
     }
 
     @RequestMapping(value="/budget", method = RequestMethod.GET)
-    public ModelAndView displayBudget(){
+    public ModelAndView displayBudget(HttpSession session){
         ModelAndView model = new ModelAndView();
         model.addObject("budgetActive", "active");
+
+        if(session.getAttribute("errorMessage") != null) {
+            model.addObject("errorMessage", session.getAttribute("errorMessage"));
+            session.removeAttribute("errorMessage");
+        }
 
         budget = GreenReceiptUtil.getCurrentBudget();
 
@@ -494,7 +499,7 @@ public class AppController {
     }
 
     @RequestMapping(value="/addBudgetItem", method = RequestMethod.GET)
-    public ModelAndView addBudgetItem(@RequestParam(defaultValue = "") String categoryName, @RequestParam(defaultValue = "") String amountAllowed) {
+    public ModelAndView addBudgetItem(@RequestParam(defaultValue = "") String categoryName, @RequestParam(defaultValue = "") String amountAllowed, HttpSession session) {
         ModelAndView model = new ModelAndView();
         model.addObject("budgetActive", "active");
 
@@ -504,7 +509,17 @@ public class AppController {
         try {
             amountAllowedDouble = Double.parseDouble(amountAllowed);
         } catch (Exception e) {
+            session.setAttribute("errorMessage", "Please input a valid limit");
             model.addObject("errorMessage", "Please input a valid limit");
+            model.setViewName("redirect:/budget");
+            return model;
+        }
+
+        if(categoryName.length() == 0) {
+            session.setAttribute("errorMessage", "Please input a category name");
+            model.addObject("errorMessage", "Please input a category name");
+            model.setViewName("redirect:/budget");
+            return model;
         }
 
         Category category = new Category(categoryName);
@@ -639,7 +654,7 @@ public class AppController {
     }
 
     @RequestMapping(value="/manageCards", method = RequestMethod.GET)
-    public ModelAndView manageCards() {
+    public ModelAndView manageCards(HttpSession session) {
         ModelAndView model = new ModelAndView();
         model.addObject("settingsActive", "active");
 
@@ -651,31 +666,69 @@ public class AppController {
                 creditCards.add(card);
             }
         }
+        if(session.getAttribute("manageCardError") != null) {
+            model.addObject("errorMessage", session.getAttribute("manageCardError"));
+            session.removeAttribute("manageCardError");
+        }
         model.addObject("cards", creditCards);
         model.setViewName("manageCards");
         return model;
     }
 
     @RequestMapping(value="/addCard", method = RequestMethod.POST)
-    public ModelAndView addCard(@ModelAttribute("cardFormObject") CreditCardFormObject cardFormObject, BindingResult result) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    public ModelAndView addCard(@ModelAttribute("cardFormObject") @Valid CreditCardFormObject cardFormObject, BindingResult result, HttpSession session) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         ModelAndView model = new ModelAndView();
 
-        String hash = GreenReceiptUtil.hashCard(cardFormObject.getCardNumber());
-        GreenReceiptUtil.addCard(hash, cardFormObject.getCardNumber().substring(12, 16));// Last four
+        if (result.hasErrors()) {
+            String errorMessage = "";
+            for(int i = 0; i<result.getAllErrors().size(); i++) {
+                if(result.getAllErrors().get(i).getDefaultMessage().equals("must match \"[\\d]{4}\"")) {
+                    errorMessage += "Number must be a four digit number<br>";
+                } else {
+                    errorMessage += result.getAllErrors().get(i).getDefaultMessage() + "<br>";
+                }
+            }
+            session.setAttribute("manageCardError", errorMessage);
+            model.setViewName("redirect:/manageCards");
+            return model;
+        }
+
+        String hash = GreenReceiptUtil.hashCard(cardFormObject.getFirstFour(), cardFormObject.getLastFour(), cardFormObject.getCardName());
+        if(GreenReceiptUtil.addCard(hash, cardFormObject.getLastFour()) == null) {
+            session.setAttribute("manageCardError", "An Error occurred adding your card");
+            model.setViewName("redirect:/manageCards");
+            return model;
+        }
 
         model.setViewName("redirect:/manageCards");
         return model;
     }
 
     @RequestMapping(value="/editCard", method = RequestMethod.POST)
-    public ModelAndView editCard(@ModelAttribute("cardFormObject") CreditCardFormObject cardFormObject, BindingResult result) throws NoSuchAlgorithmException {
+    public ModelAndView editCard(@ModelAttribute("cardFormObject") @Valid CreditCardFormObject cardFormObject, BindingResult result, HttpSession session) throws NoSuchAlgorithmException {
         ModelAndView model = new ModelAndView();
 
+        if (result.hasErrors()) {
+            String errorMessage = "";
+            for(int i = 0; i<result.getAllErrors().size(); i++) {
+                if(result.getAllErrors().get(i).getDefaultMessage().equals("must match \"[\\d]{4}\"")) {
+                    errorMessage += "Number must be a four digit number<br>";
+                } else {
+                    errorMessage += result.getAllErrors().get(i).getDefaultMessage() + "<br>";
+                }
+            }
+            session.setAttribute("manageCardError", errorMessage);
+            model.setViewName("redirect:/manageCards");
+            return model;
+        }
+
         if(GreenReceiptUtil.deleteCard(cardFormObject.getCardId())) {
-            String hash = GreenReceiptUtil.hashCard(cardFormObject.getCardHash());
-            GreenReceiptUtil.addCard(hash, cardFormObject.getCardNumber().substring(12, 16));
+            String hash = GreenReceiptUtil.hashCard(cardFormObject.getFirstFour(), cardFormObject.getLastFour(), cardFormObject.getCardHash());
+            GreenReceiptUtil.addCard(hash, cardFormObject.getLastFour());
         } else {
-            //error handling
+            session.setAttribute("manageCardError", "An Error occurred editing your card");
+            model.setViewName("redirect:/manageCards");
+            return model;//error handling
         }
         model.setViewName("redirect:/manageCards");
         return model;

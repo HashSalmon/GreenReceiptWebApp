@@ -8,13 +8,8 @@
 <body>
 <%@include file="interiorNavBar.jsp"%>
 <div class="container">
-  <c:if test="${errorMessage != null}">
-    <div class="alert alert-danger centerText">
-        ${errorMessage}
-    </div>
-  </c:if>
-  <div class="row">
 
+  <div class="row">
     <div class="col-sm-12 col-md-6 col-md-offset-3">
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -28,28 +23,11 @@
 
         </div>
         <div class="panel-body">
-
-          <%--<div class="panel panel-info">--%>
-            <%--<div class="panel-heading">--%>
-              <%--<div>--%>
-                <%--Credit Card 1--%>
-                <%--<div class="btn-group floatRight">--%>
-                  <%--<button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">--%>
-                    <%--Options <span class="caret"></span>--%>
-                  <%--</button>--%>
-                  <%--<ul class="dropdown-menu" role="menu">--%>
-                    <%--<li><a href="#" data-toggle="modal" data-target="#myModal">Edit Card</a></li>--%>
-                    <%--<li><a href="#">Remove Card</a></li>--%>
-                  <%--</ul>--%>
-                <%--</div>--%>
-              <%--</div>--%>
-            <%--</div>--%>
-            <%--<div class="panel-body">--%>
-              <%--<p>Anthony J Wanlass</p>--%>
-              <%--<p>0000-0000-0000-0000</p>--%>
-            <%--</div>--%>
-          <%--</div>--%>
-
+          <c:if test="${errorMessage != null}">
+            <div class="alert alert-danger centerText">
+                The following errors occurred:<br>${errorMessage}<br>Please try again
+            </div>
+          </c:if>
           <c:forEach items="${cards}" var="card" varStatus="status">
             <div class="panel panel-info">
               <div class="panel-heading">
@@ -67,7 +45,7 @@
                 </div>
               </div>
               <div class="panel-body">
-                <p>${sessionScope.firstname}&nbsp;${sessionScope.lastname}</p>
+                <p>Card Ending With:</p>
                 <p>xxxx-xxxx-xxxx-${card.lastFour}</p>
               </div>
             </div>
@@ -90,8 +68,12 @@
         </div>
         <form:form action="editCard" modelAttribute="cardFormObject" class="form-signin" method="post">
           <div class="modal-body">
-            <label for="cardNumber${card.id}">Card Number</label>
-            <input type="text" name="cardNumber" id="cardNumber${card.id}" />
+            <label for="cardName${card.id}">Name On Card</label><br>
+            <input type="text" name="cardName" id="cardName${card.id}"/>
+            <label for="firstFour${card.id}">First Four Numbers On Card</label>
+            <input type="text" name="firstFour" id="firstFour${card.id}"/>
+            <label for="lastFour${card.id}">Last Four Numbers On Card</label>
+            <input type="text" name="lastFour" id="lastFour${card.id}" />
           </div>
           <div class="modal-footer">
             <input type="hidden" name="cardId" style="display: none;" value="${card.id}"/>
@@ -115,8 +97,12 @@
       </div>
       <form:form action="addCard" modelAttribute="cardFormObject" class="form-signin" method="post">
         <div class="modal-body">
-          <label for="cardNumber">Card Number</label>
-          <input type="text" name="cardNumber" id="cardNumber" />
+          <label for="cardName">Name On Card</label><br>
+          <input type="text" name="cardName" id="cardName"/>
+          <label for="firstFour">First Four Numbers On Card</label>
+          <input type="text" name="firstFour" id="firstFour"/>
+          <label for="lastFour">Last Four Numbers On Card</label>
+          <input type="text" name="lastFour" id="lastFour" />
         </div>
         <div class="modal-footer">
           <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
