@@ -4,7 +4,7 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-  <title>Edit Budget</title>
+  <title>Create Budget</title>
   <%@include file="mainHead.jsp"%>
 </head>
 <body>

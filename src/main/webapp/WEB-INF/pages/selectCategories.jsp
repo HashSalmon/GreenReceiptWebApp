@@ -4,7 +4,7 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-  <title>Edit Budget</title>
+  <title>Create Budget</title>
   <%@include file="mainHead.jsp"%>
   <style>html { font-size: 12px; font-family: Arial, Helvetica, sans-serif; }</style>
   <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.3.1316/styles/kendo.common.min.css" />

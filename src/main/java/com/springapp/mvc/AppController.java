@@ -59,6 +59,16 @@ public class AppController {
 
     }
 
+    @RequestMapping(value = "/aboutUs", method = RequestMethod.GET)
+    public ModelAndView aboutUs() {
+        ModelAndView model = new ModelAndView();
+        model.addObject("aboutActive", "active");
+        model.setViewName("aboutUs");
+
+
+        return model;
+    }
+
     //used to test api calls
     @RequestMapping(value="/restStuff", method = RequestMethod.GET)
     public ModelAndView restStuff() {
