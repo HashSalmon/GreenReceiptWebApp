@@ -149,3 +149,7 @@ table.k-selectable tr {
 #numReceiptsForm {
     margin-bottom: 30px;
 }
+
+.addBottomMargin {
+    margin-bottom: 20px;
+}
