@@ -29,20 +29,27 @@
     </div>
     </c:if>
   <div class="row">
-    <form:form action="categoryDateForm" modelAttribute="categoryReportDates" method="post" id="categoryDateForm">
-      <div class="col-md-6">
-        <label for="startDatePicker">Start Date:</label><input id="startDatePicker" name="startDate" value="${startDate}" style="width:200px;" />
-        <label for="endDatePicker">End Date:</label><input id="endDatePicker" name="endDate" value="${endDate}" style="width:200px" />
-      </div>
-      <div class="col-md-6">
-        <button class="btn btn-default">Submit</button>
-      </div>
-      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-    </form:form>
     <div class="col-md-12" id="categoryChartDiv">
       <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4>
+            Category Report
+          </h4>
+        </div>
         <div class="panel-body">
-          <div id="chart"></div>
+          <form:form action="categoryDateForm" modelAttribute="categoryReportDates" method="post" id="categoryDateForm">
+            <div class="col-md-7">
+              <label for="startDatePicker">Start Date:</label><input id="startDatePicker" name="startDate" value="${startDate}" style="width:200px;" />
+              <label for="endDatePicker">End Date:</label><input id="endDatePicker" name="endDate" value="${endDate}" style="width:200px" />
+            </div>
+            <div class="col-md-5">
+              <button class="btn btn-default">Submit</button>
+            </div>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+          </form:form>
+          <div class="col-sm-12">
+            <div id="chart"></div>
+          </div>
         </div>
       </div>
     </div>
