@@ -68,7 +68,7 @@
         </div>
         <form:form action="editCard" modelAttribute="cardFormObject" class="form-signin" method="post">
           <div class="modal-body">
-            <label for="cardName${card.id}">Name On Card</label><br>
+            <label for="cardName${card.id}">Last Name On Card</label><br>
             <input type="text" name="cardName" id="cardName${card.id}"/>
             <label for="firstFour${card.id}">First Four Numbers On Card</label>
             <input type="text" name="firstFour" id="firstFour${card.id}"/>
@@ -97,7 +97,7 @@
       </div>
       <form:form action="addCard" modelAttribute="cardFormObject" class="form-signin" method="post">
         <div class="modal-body">
-          <label for="cardName">Name On Card</label><br>
+          <label for="cardName">Last Name On Card</label><br>
           <input type="text" name="cardName" id="cardName"/>
           <label for="firstFour">First Four Numbers On Card</label>
           <input type="text" name="firstFour" id="firstFour"/>
