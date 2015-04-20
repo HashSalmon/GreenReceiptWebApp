@@ -50,6 +50,7 @@
             </table>
             <%--<button id="sendEmail" class="btn btn-success col-md-offset-4 receiptButton" onclick="sendEmail();">Send Email</button>--%>
             <button id="deleteReceipt" class="btn btn-danger col-md-offset-4 receiptButton" onclick="deleteReceipt()">Delete</button>
+            <button class="btn btn-success col-md-offset-4 receiptButton" onclick="generate()">Download</button>
           </div>
         </div>
       </div>
@@ -69,6 +70,13 @@
 <script type="text/javascript"
         src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript">
+
+  function generate() {
+    confirmed = confirm("Are you sure that you want to export this receipt?");
+    if (confirmed) {
+      window.open("/downloadReceiptPDF?receiptId=${receipt.id}");
+    }
+  }
 
   function sendEmail() {
     $.ajax({

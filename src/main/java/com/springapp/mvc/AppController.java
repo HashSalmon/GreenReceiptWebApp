@@ -679,6 +679,19 @@ public class AppController {
         return new ModelAndView("pdfView", "receipts", receipts);
     }
 
+    @RequestMapping(value = "/downloadReceiptPDF", method = RequestMethod.GET)
+    public ModelAndView downloadReceiptPDF(@RequestParam(defaultValue = "") String receiptId,
+                                      @RequestParam(defaultValue = "") String startDate,
+                                      @RequestParam(defaultValue = "") String endDate,
+                                      HttpSession session) throws ParseException {
+
+
+
+//        List<ReceiptObject> receipts = GreenReceiptUtil.getCategoryReceipts(categoryId, startDate, endDate, session);
+        ReceiptObject receipt = GreenReceiptUtil.getReceipt(receiptId);
+        return new ModelAndView("receiptPdfView", "receipt", receipt);
+    }
+
     @RequestMapping(value="/manageCards", method = RequestMethod.GET)
     public ModelAndView manageCards(HttpSession session) {
         ModelAndView model = new ModelAndView();
