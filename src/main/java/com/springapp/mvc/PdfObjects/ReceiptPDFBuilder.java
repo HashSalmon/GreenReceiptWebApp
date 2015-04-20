@@ -44,7 +44,6 @@ public class ReceiptPDFBuilder extends AbstractITextPdf {
 
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
 
-        Double total = 0.0;
         PdfPTable table = null;
         PdfPCell cell = null;
 
@@ -139,25 +138,25 @@ public class ReceiptPDFBuilder extends AbstractITextPdf {
         table.addCell(receipt.getBarcode());
         doc.add(table);
 
-        total += receipt.getTotal();
-
-        table = new PdfPTable(2);
-        table.setWidthPercentage(100.0f);
-        table.setWidths(new float[] {5.0f, 5.0f});
-        table.setSpacingBefore(10);
-
-        cell = new PdfPCell();
-        cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
-        cell.setPadding(5);
-
-        cell.setPhrase(new Phrase("Total", font));
-        table.addCell(cell);
-
-        cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        cell.setPhrase(new Phrase(formatter.format(total)));
-        table.addCell(cell);
-
-        doc.add(table);
+//        total += receipt.getTotal();
+//
+//        table = new PdfPTable(2);
+//        table.setWidthPercentage(100.0f);
+//        table.setWidths(new float[] {5.0f, 5.0f});
+//        table.setSpacingBefore(10);
+//
+//        cell = new PdfPCell();
+//        cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+//        cell.setPadding(5);
+//
+//        cell.setPhrase(new Phrase("Total", font));
+//        table.addCell(cell);
+//
+//        cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+//        cell.setPhrase(new Phrase(formatter.format(total)));
+//        table.addCell(cell);
+//
+//        doc.add(table);
 
         List<ReceiptImageObject> images = GreenReceiptUtil.getReceiptImages(receipt.getId());
         for(ReceiptImageObject imageObject : images) {
