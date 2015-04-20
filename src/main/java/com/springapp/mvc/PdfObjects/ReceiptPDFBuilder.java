@@ -47,128 +47,99 @@ public class ReceiptPDFBuilder extends AbstractITextPdf {
         Double total = 0.0;
         PdfPTable table = null;
         PdfPCell cell = null;
-//        for (ReceiptObject receipt : receipts) {
-            table = new PdfPTable(5);
-            table.setWidthPercentage(100.0f);
-            table.setWidths(new float[] {3.0f, 2.0f, 1.0f, 2.0f, 2.0f});
-            table.setSpacingBefore(10);
 
-            // define font for table header row
-            font = FontFactory.getFont(FontFactory.HELVETICA);
-            font.setColor(BaseColor.WHITE);
+        table = new PdfPTable(5);
+        table.setWidthPercentage(100.0f);
+        table.setWidths(new float[] {3.0f, 2.0f, 1.0f, 2.0f, 2.0f});
+        table.setSpacingBefore(10);
 
-            // define table header cell
-            cell = new PdfPCell();
-            cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
-            cell.setPadding(5);
+        // define font for table header row
+        font = FontFactory.getFont(FontFactory.HELVETICA);
+        font.setColor(BaseColor.WHITE);
 
-            // write table header
-            cell.setPhrase(new Phrase("Store Name", font));
-            table.addCell(cell);
+        // define table header cell
+        cell = new PdfPCell();
+        cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        cell.setPadding(5);
 
-            cell.setPhrase(new Phrase("Sub-Total", font));
-            table.addCell(cell);
+        // write table header
+        cell.setPhrase(new Phrase("Store Name", font));
+        table.addCell(cell);
 
-            cell.setPhrase(new Phrase("Total", font));
-            table.addCell(cell);
+        cell.setPhrase(new Phrase("Sub-Total", font));
+        table.addCell(cell);
 
-            cell.setPhrase(new Phrase("Purchased Date", font));
-            table.addCell(cell);
+        cell.setPhrase(new Phrase("Total", font));
+        table.addCell(cell);
 
-            cell.setPhrase(new Phrase("Return Date", font));
-            table.addCell(cell);
+        cell.setPhrase(new Phrase("Purchased Date", font));
+        table.addCell(cell);
 
-            table.addCell(receipt.getStore().getCompany().getName());
-            table.addCell(formatter.format(receipt.getSubTotal()));
-            table.addCell(formatter.format(receipt.getTotal()));
-            table.addCell(receipt.getPurchaseDateString());
-            table.addCell(receipt.getReturnDateString());
-            doc.add(table);
+        cell.setPhrase(new Phrase("Return Date", font));
+        table.addCell(cell);
 
-
-            // Add receipt Items
-            table = new PdfPTable(2);
-            table.setWidthPercentage(100.0f);
-            table.setWidths(new float[] {5.0f, 5.0f});
-            table.setSpacingBefore(10);
-
-            cell = new PdfPCell();
-            cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
-            cell.setPadding(5);
-
-            cell.setPhrase(new Phrase("Item", font));
-            table.addCell(cell);
-
-            cell.setPhrase(new Phrase("Amount", font));
-            table.addCell(cell);
-
-            for(ReceiptItem item: receipt.getReceiptItems()) {
-                table.addCell(item.getItemName());
-                table.addCell(item.getPrice());
-            }
-            doc.add(table);
+        table.addCell(receipt.getStore().getCompany().getName());
+        table.addCell(formatter.format(receipt.getSubTotal()));
+        table.addCell(formatter.format(receipt.getTotal()));
+        table.addCell(receipt.getPurchaseDateString());
+        table.addCell(receipt.getReturnDateString());
+        doc.add(table);
 
 
-            table = new PdfPTable(3);
-            table.setWidthPercentage(100.0f);
-            table.setWidths(new float[] {3.0f, 3.0f, 3.0f});
-            table.setSpacingBefore(10);
+        // Add receipt Items
+        table = new PdfPTable(2);
+        table.setWidthPercentage(100.0f);
+        table.setWidths(new float[] {5.0f, 5.0f});
+        table.setSpacingBefore(10);
 
-            // define font for table header row
-            font = FontFactory.getFont(FontFactory.HELVETICA);
-            font.setColor(BaseColor.WHITE);
+        cell = new PdfPCell();
+        cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        cell.setPadding(5);
 
-            // define table header cell
-            cell = new PdfPCell();
-            cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
-            cell.setPadding(5);
+        cell.setPhrase(new Phrase("Item", font));
+        table.addCell(cell);
 
-            // write table header
-            cell.setPhrase(new Phrase("Card Type", font));
-            table.addCell(cell);
+        cell.setPhrase(new Phrase("Amount", font));
+        table.addCell(cell);
 
-            cell.setPhrase(new Phrase("Last Four Digits", font));
-            table.addCell(cell);
-
-            cell.setPhrase(new Phrase("Barcode", font));
-            table.addCell(cell);
+        for(ReceiptItem item: receipt.getReceiptItems()) {
+            table.addCell(item.getItemName());
+            table.addCell(item.getPrice());
+        }
+        doc.add(table);
 
 
-            table.addCell(receipt.getCardType());
-            table.addCell(receipt.getLastFourCardNumber());
-            table.addCell(receipt.getBarcode());
-            doc.add(table);
+        table = new PdfPTable(3);
+        table.setWidthPercentage(100.0f);
+        table.setWidths(new float[] {3.0f, 3.0f, 3.0f});
+        table.setSpacingBefore(10);
 
-//            List<ReceiptImageObject> images = GreenReceiptUtil.getReceiptImages(receipt.getId());
-//            for(ReceiptImageObject imageObject : images) {
-//
-//                byte[] data = DatatypeConverter.parseBase64Binary(imageObject.getBase64Image());
-//                try  {
-//                    OutputStream stream = new FileOutputStream(imageObject.getFileName());
-//                    stream.write(data);
-//                    stream.close();
-//                } catch (Exception e){
-//
-//                }
-//                Image img = Image.getInstance(imageObject.getFileName());
-//                if (img.getScaledWidth() > 300 || img.getScaledHeight() > 300) {
-//                    img.scaleToFit(300, 300);
-//                }
-//                doc.add(img);
-//
-//                try {
-//                    Files.delete(Paths.get(imageObject.getFileName()));
-//                } catch (NoSuchFileException x) {
-//                    // File doesn't exist, something went wrong with the write
-//                } catch (IOException x) {
-//                    // File permission problems are caught here.
-//                }
-//            }
+        // define font for table header row
+        font = FontFactory.getFont(FontFactory.HELVETICA);
+        font.setColor(BaseColor.WHITE);
+
+        // define table header cell
+        cell = new PdfPCell();
+        cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        cell.setPadding(5);
+
+        // write table header
+        cell.setPhrase(new Phrase("Card Type", font));
+        table.addCell(cell);
+
+        cell.setPhrase(new Phrase("Last Four Digits", font));
+        table.addCell(cell);
+
+        cell.setPhrase(new Phrase("Barcode", font));
+        table.addCell(cell);
 
 
-//            doc.newPage();
-            total += receipt.getTotal();
-//        }
+        table.addCell(receipt.getCardType());
+        table.addCell(receipt.getLastFourCardNumber());
+        table.addCell(receipt.getBarcode());
+        doc.add(table);
+
+        total += receipt.getTotal();
 
         table = new PdfPTable(2);
         table.setWidthPercentage(100.0f);

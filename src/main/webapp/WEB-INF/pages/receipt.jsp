@@ -48,7 +48,6 @@
                 </td>
               </tr>
             </table>
-            <%--<button id="sendEmail" class="btn btn-success col-md-offset-4 receiptButton" onclick="sendEmail();">Send Email</button>--%>
             <button id="deleteReceipt" class="btn btn-danger col-md-offset-4 receiptButton" onclick="deleteReceipt()">Delete</button>
             <button class="btn btn-success col-md-offset-4 receiptButton" onclick="generate()">Download</button>
           </div>
@@ -78,20 +77,6 @@
     }
   }
 
-  function sendEmail() {
-    $.ajax({
-      url : "/sendEmail",
-      data : "receiptId=" + "${receipt.id}",
-      type : "GET",
-
-      success : function(response) {
-        alert( response );
-      },
-      error : function(xhr, status, error) {
-        alert(xhr.responseText);
-      }
-    });
-  }
 
   function deleteReceipt() {
     confirmed = confirm("Are you sure that you want to delete this receipt");
