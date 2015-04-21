@@ -138,51 +138,34 @@ public class ReceiptPDFBuilder extends AbstractITextPdf {
         table.addCell(receipt.getBarcode());
         doc.add(table);
 
-//        total += receipt.getTotal();
-//
-//        table = new PdfPTable(2);
-//        table.setWidthPercentage(100.0f);
-//        table.setWidths(new float[] {5.0f, 5.0f});
-//        table.setSpacingBefore(10);
-//
-//        cell = new PdfPCell();
-//        cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
-//        cell.setPadding(5);
-//
-//        cell.setPhrase(new Phrase("Total", font));
-//        table.addCell(cell);
-//
-//        cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-//        cell.setPhrase(new Phrase(formatter.format(total)));
-//        table.addCell(cell);
-//
-//        doc.add(table);
-
         List<ReceiptImageObject> images = GreenReceiptUtil.getReceiptImages(receipt.getId());
-        for(ReceiptImageObject imageObject : images) {
+        if(images != null) {
+            for(ReceiptImageObject imageObject : images) {
 
-            byte[] data = DatatypeConverter.parseBase64Binary(imageObject.getBase64Image());
-            try  {
-                OutputStream stream = new FileOutputStream(imageObject.getFileName());
-                stream.write(data);
-                stream.close();
-            } catch (Exception e){
+                byte[] data = DatatypeConverter.parseBase64Binary(imageObject.getBase64Image());
+                try  {
+                    OutputStream stream = new FileOutputStream(imageObject.getFileName());
+                    stream.write(data);
+                    stream.close();
+                } catch (Exception e){
 
-            }
-            Image img = Image.getInstance(imageObject.getFileName());
-            if (img.getScaledWidth() > 300 || img.getScaledHeight() > 300) {
-                img.scaleToFit(300, 300);
-            }
-            doc.add(img);
+                }
+                Image img = Image.getInstance(imageObject.getFileName());
+                if (img.getScaledWidth() > 300 || img.getScaledHeight() > 300) {
+                    img.scaleToFit(300, 300);
+                }
+                doc.add(img);
 
-            try {
-                Files.delete(Paths.get(imageObject.getFileName()));
-            } catch (NoSuchFileException x) {
-                // File doesn't exist, something went wrong with the write
-            } catch (IOException x) {
-                // File permission problems are caught here.
+                try {
+                    Files.delete(Paths.get(imageObject.getFileName()));
+                } catch (NoSuchFileException x) {
+                    // File doesn't exist, something went wrong with the write
+                } catch (IOException x) {
+                    // File permission problems are caught here.
+                }
             }
         }
+
     }
 
 }

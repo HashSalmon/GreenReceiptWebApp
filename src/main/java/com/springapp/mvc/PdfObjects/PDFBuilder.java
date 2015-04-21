@@ -140,31 +140,32 @@ public class PDFBuilder extends AbstractITextPdf {
             doc.add(table);
 
             List<ReceiptImageObject> images = GreenReceiptUtil.getReceiptImages(receipt.getId());
-            for(ReceiptImageObject imageObject : images) {
+            if(images != null) {
+                for(ReceiptImageObject imageObject : images) {
 
-                byte[] data = DatatypeConverter.parseBase64Binary(imageObject.getBase64Image());
-                try  {
-                    OutputStream stream = new FileOutputStream(imageObject.getFileName());
-                    stream.write(data);
-                    stream.close();
-                } catch (Exception e){
+                    byte[] data = DatatypeConverter.parseBase64Binary(imageObject.getBase64Image());
+                    try  {
+                        OutputStream stream = new FileOutputStream(imageObject.getFileName());
+                        stream.write(data);
+                        stream.close();
+                    } catch (Exception e){
 
-                }
-                Image img = Image.getInstance(imageObject.getFileName());
-                if (img.getScaledWidth() > 300 || img.getScaledHeight() > 300) {
-                    img.scaleToFit(300, 300);
-                }
-                doc.add(img);
+                    }
+                    Image img = Image.getInstance(imageObject.getFileName());
+                    if (img.getScaledWidth() > 300 || img.getScaledHeight() > 300) {
+                        img.scaleToFit(300, 300);
+                    }
+                    doc.add(img);
 
-                try {
-                    Files.delete(Paths.get(imageObject.getFileName()));
-                } catch (NoSuchFileException x) {
-                    // File doesn't exist, something went wrong with the write
-                } catch (IOException x) {
-                    // File permission problems are caught here.
+                    try {
+                        Files.delete(Paths.get(imageObject.getFileName()));
+                    } catch (NoSuchFileException x) {
+                        // File doesn't exist, something went wrong with the write
+                    } catch (IOException x) {
+                        // File permission problems are caught here.
+                    }
                 }
             }
-
 
             doc.newPage();
             total += receipt.getTotal();
