@@ -617,6 +617,14 @@ public class GreenReceiptUtil {
         return true;
     }
 
+    /**
+     * Create the hash for the card being added
+     * @param firstFour first four digits on the card
+     * @param lastFour last four digits on the card
+     * @param cardName The last name on the card
+     * @return The newly created hash string
+     * @throws NoSuchAlgorithmException
+     */
     public static String hashCard(String firstFour, String lastFour, String cardName) throws NoSuchAlgorithmException {
         MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
         String toHash = firstFour + cardName.toUpperCase() + lastFour;
