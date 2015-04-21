@@ -28,7 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Holds the main utilities for the application.
+ * Holds the main utilities (api calls) for the application.
  *
  * @author Jordan Wanlass
  */
