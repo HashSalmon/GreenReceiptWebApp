@@ -48,16 +48,16 @@ public class AppController {
     @Autowired
     private ReceiptsContainer receiptsContainer;
 
-    @RequestMapping(value = "/protected**", method = RequestMethod.GET)
-    public ModelAndView protectedPage() {
-
-        ModelAndView model = new ModelAndView();
-        model.addObject("title", "Spring Security 3.2.3 Hello World");
-        model.addObject("message", "This is protected page - Only for Administrators !");
-        model.setViewName("protected");
-        return model;
-
-    }
+//    @RequestMapping(value = "/protected**", method = RequestMethod.GET)
+//    public ModelAndView protectedPage() {
+//
+//        ModelAndView model = new ModelAndView();
+//        model.addObject("title", "Spring Security 3.2.3 Hello World");
+//        model.addObject("message", "This is protected page - Only for Administrators !");
+//        model.setViewName("protected");
+//        return model;
+//
+//    }
 
     @RequestMapping(value = "/aboutUs", method = RequestMethod.GET)
     public ModelAndView aboutUs() {
@@ -69,44 +69,44 @@ public class AppController {
         return model;
     }
 
-    //used to test api calls
-    @RequestMapping(value="/restStuff", method = RequestMethod.GET)
-    public ModelAndView restStuff() {
-        ModelAndView model = new ModelAndView();
-        RestTemplate restTemplate = new RestTemplate();
-        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
-        ResponseEntity responseEntity = restTemplate.exchange("https://greenreceipt.net/api/values",
-                HttpMethod.GET, new HttpEntity<Object>(headers), String.class);
-        model.addObject("message", responseEntity.getBody());
-        return model;
-    }
+//    //used to test api calls
+//    @RequestMapping(value="/restStuff", method = RequestMethod.GET)
+//    public ModelAndView restStuff() {
+//        ModelAndView model = new ModelAndView();
+//        RestTemplate restTemplate = new RestTemplate();
+//        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//        headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
+//        ResponseEntity responseEntity = restTemplate.exchange("https://greenreceipt.net/api/values",
+//                HttpMethod.GET, new HttpEntity<Object>(headers), String.class);
+//        model.addObject("message", responseEntity.getBody());
+//        return model;
+//    }
 
-    //used to test api calls
-    @RequestMapping(value="/receiptsTest", method = RequestMethod.GET)
-    public ModelAndView receiptsTest() {
-        ModelAndView model = new ModelAndView();
-        RestTemplate restTemplate = new RestTemplate();
-        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        Gson gson = new Gson();
-
-
-        headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
-        ResponseEntity responseEntity = restTemplate.exchange("https://greenreceipt.net/api/Receipt",
-                HttpMethod.GET, new HttpEntity<Object>(headers), String.class);
-        List<ReceiptObject> receipts = gson.fromJson((String) responseEntity.getBody(), new TypeToken<List<ReceiptObject>>() {
-        }.getType());
-        receiptsContainer.setReceipts(receipts);
-        model.addObject("receipts", receipts);
-        model.addObject("cardTypeTest", receiptsContainer.getReceipts().get(0).getCardType());
-        model.addObject("message", responseEntity.getBody());
-        model.setViewName("restStuff");
-        return model;
-    }
+//    //used to test api calls
+//    @RequestMapping(value="/receiptsTest", method = RequestMethod.GET)
+//    public ModelAndView receiptsTest() {
+//        ModelAndView model = new ModelAndView();
+//        RestTemplate restTemplate = new RestTemplate();
+//        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//        Gson gson = new Gson();
+//
+//
+//        headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
+//        ResponseEntity responseEntity = restTemplate.exchange("https://greenreceipt.net/api/Receipt",
+//                HttpMethod.GET, new HttpEntity<Object>(headers), String.class);
+//        List<ReceiptObject> receipts = gson.fromJson((String) responseEntity.getBody(), new TypeToken<List<ReceiptObject>>() {
+//        }.getType());
+//        receiptsContainer.setReceipts(receipts);
+//        model.addObject("receipts", receipts);
+//        model.addObject("cardTypeTest", receiptsContainer.getReceipts().get(0).getCardType());
+//        model.addObject("message", responseEntity.getBody());
+//        model.setViewName("restStuff");
+//        return model;
+//    }
 
 
     /**
@@ -155,7 +155,14 @@ public class AppController {
         return model;
 
     }
-    
+
+    /**
+     * The registration form, here it validates the dat and makes the call to add the user
+     * @param createAccount object that corresponds to the create user form
+     * @param bindingResult Used to check if the form object has any errors
+     * @param model
+     * @return
+     */
     @RequestMapping(value="/createAccountForm", method=RequestMethod.POST)
     public ModelAndView validateForm(@ModelAttribute("createAccountObject") @Valid CreateAccount createAccount, BindingResult bindingResult, ModelAndView model) {
         if (bindingResult.hasErrors()) {
@@ -184,6 +191,12 @@ public class AppController {
 
     }
 
+    /**
+     * The dashboard controller, initializes the category and trending reports, creates the budget pie chart, gets
+     * a list of the most recent receipts, gets a list of all return notifications
+     * @param session
+     * @return
+     */
     @RequestMapping(value={"/dashboard", "/"}, method = RequestMethod.GET)
     public ModelAndView initializeDashboard(HttpSession session) {
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -265,6 +278,12 @@ public class AppController {
         return model;
     }
 
+    /**
+     * The receipt controller, calls the receipt api, logs out if an error occurs
+     * @param receiptId Id of the receipt trying to be loaded
+     * @param exchange
+     * @return
+     */
     @RequestMapping(value="/receipt", method = RequestMethod.GET)
     public ModelAndView displayReceipt(@RequestParam(defaultValue = "") String receiptId, @RequestParam(defaultValue = "") String exchange) {
         ModelAndView model = new ModelAndView();
@@ -276,11 +295,16 @@ public class AppController {
             model.setViewName("redirect:/login?logout");
         }
 
-        model.addObject("exchange", exchange);
         model.setViewName("receipt");
         return model;
     }
 
+    /**
+     * Category report controller, builds the category report and sets the dates
+     * @param session
+     * @param error if there is an error changing the date range, this parameter will not be null
+     * @return
+     */
     @RequestMapping(value="/category", method = RequestMethod.GET)
     public ModelAndView displayCategoryReport(HttpSession session, @RequestParam(value = "error", required = false) String error){
         ModelAndView model = new ModelAndView();
@@ -309,6 +333,14 @@ public class AppController {
         return model;
     }
 
+    /**
+     * Controller for the category report date form, change the date variables set in the session, return to the category
+     * report controller
+     * @param categoryReportDates Object that matches the categoryReportDates form
+     * @param session
+     * @return
+     * @throws ParseException if the date strings are not in the appropriate format
+     */
     @RequestMapping(value="/categoryDateForm", method = RequestMethod.POST)
     public ModelAndView categoryReportDateChange(@ModelAttribute("categoryReportDates") @Valid CategoryReportDates categoryReportDates, HttpSession session) throws ParseException {
         ModelAndView model = new ModelAndView();
@@ -335,6 +367,15 @@ public class AppController {
         return model;
     }
 
+    /**
+     * Category Receipt Items Controller, create a list of all of the items that are in the given category
+     * @param category The category (ie Groceries, Electronics, Dining, etc)
+     * @param startDate Start date of the range for category
+     * @param endDate End date of the range for the category
+     * @param session
+     * @return
+     * @throws ParseException
+     */
     @RequestMapping(value="/categoryReceiptItems", method = RequestMethod.GET)
     public ModelAndView displayCategoryReceiptItems(@RequestParam(defaultValue = "") String category,
                                                     @RequestParam(defaultValue = "") String startDate,
@@ -361,6 +402,11 @@ public class AppController {
         return model;
     }
 
+    /**
+     * Trending Report controller, creates the trending report data and sets the trending report dates
+     * @param session
+     * @return
+     */
     @RequestMapping(value="/trending", method = RequestMethod.GET)
     public ModelAndView displayTrendingReport( HttpSession session){
         ModelAndView model = new ModelAndView();
@@ -382,6 +428,11 @@ public class AppController {
         return model;
     }
 
+    /**
+     * Budget controller, initializes the data for the budget and creates the colors and data for the budget pie chart
+     * @param session
+     * @return
+     */
     @RequestMapping(value="/budget", method = RequestMethod.GET)
     public ModelAndView displayBudget(HttpSession session){
         ModelAndView model = new ModelAndView();
@@ -425,6 +476,11 @@ public class AppController {
         return model;
     }
 
+    /**
+     * Edit budget controller, retrieves the current budget
+     * @param error If something with setting the new budget doesn't work, this will not be null
+     * @return
+     */
     @RequestMapping(value="/editBudget", method = RequestMethod.GET)
     public ModelAndView displayEditBudget(@RequestParam(value = "error", required = false) String error){
         ModelAndView model = new ModelAndView();
@@ -441,6 +497,12 @@ public class AppController {
         return model;
     }
 
+    /**
+     * Edit budget form controller, updates the current budget with the new values provided by the user
+     * @param editBudget Object that matches the edit budget form
+     * @param result
+     * @return
+     */
     @RequestMapping(value="/editBudgetForm", method = RequestMethod.POST)
     public ModelAndView editBudgetFormSubmit(@ModelAttribute("editBudget") BudgetObject editBudget, BindingResult result) {
         ModelAndView model = new ModelAndView();
@@ -448,6 +510,7 @@ public class AppController {
 
         budget = GreenReceiptUtil.getCurrentBudget();
 
+        // Loop through and set all of the new values
         List<BudgetItem> editBudgetItems = editBudget.getBudgetItems();
         int index = 0;
         for(BudgetItem item: budget.getBudgetItems()) {
@@ -466,6 +529,10 @@ public class AppController {
         return model;
     }
 
+    /**
+     * Select Categories controller, gets a list of categories the user can choose from to add to their budget
+     * @return
+     */
     @RequestMapping(value="/selectCategories", method = RequestMethod.GET)
     public ModelAndView displaySelectCategories(){
         ModelAndView model = new ModelAndView();
@@ -479,6 +546,12 @@ public class AppController {
         return model;
     }
 
+    /**
+     * Select Categories form controller, retrieves all of the categories the user selected to have in their budget
+     * @param categoryList The list of selected categories
+     * @param result
+     * @return
+     */
     @RequestMapping(value="/selectCategoriesForm", method = RequestMethod.POST)
     public ModelAndView selectCategoriesFormSubmit(@ModelAttribute("categoryList") CategoryList categoryList, BindingResult result) {
         ModelAndView model = new ModelAndView();
@@ -490,6 +563,11 @@ public class AppController {
         return model;
     }
 
+    /**
+     * Create budget controller, builds a new budget object with the selected categories
+     * @param selectedCategories The list of selected categories
+     * @return
+     */
     @RequestMapping(value="/createBudget", method = RequestMethod.GET)
     public ModelAndView displayCreateBudget(@RequestParam(defaultValue = "") String[] selectedCategories){
         ModelAndView model = new ModelAndView();
@@ -508,6 +586,12 @@ public class AppController {
         return model;
     }
 
+    /**
+     * Create Budget Form controller, sets all the limits for each category
+     * @param createBudget Object that matches the create budget form
+     * @param result
+     * @return
+     */
     @RequestMapping(value="/createBudgetForm", method = RequestMethod.POST)
     public ModelAndView createBudgetFormSubmit(@ModelAttribute("createBudget") BudgetObject createBudget, BindingResult result) {
         ModelAndView model = new ModelAndView();
@@ -524,6 +608,13 @@ public class AppController {
         return model;
     }
 
+    /**
+     * Add budget item controller, adds a category and limit to the current budget
+     * @param categoryName Name of the category being added
+     * @param amountAllowed Limit for the new category
+     * @param session
+     * @return
+     */
     @RequestMapping(value="/addBudgetItem", method = RequestMethod.GET)
     public ModelAndView addBudgetItem(@RequestParam(defaultValue = "") String categoryName, @RequestParam(defaultValue = "") String amountAllowed, HttpSession session) {
         ModelAndView model = new ModelAndView();
@@ -557,6 +648,11 @@ public class AppController {
         return model;
     }
 
+    /**
+     * Delete Budget Item controller, removes the category from the current budget
+     * @param id the id that corresponds to the category being removed from the budget
+     * @return
+     */
     @RequestMapping(value="/deleteBudgetItem", method = RequestMethod.GET)
     public ModelAndView deleteBudgetItem(@RequestParam(defaultValue = "") String id) {
         ModelAndView model = new ModelAndView();
@@ -569,6 +665,11 @@ public class AppController {
         return model;
     }
 
+    /**
+     * Receipts Controller, retrieves the number of receipts requested by the user
+     * @param session
+     * @return
+     */
     @RequestMapping(value="/receipts", method = RequestMethod.GET)
     public ModelAndView displayReceipts(HttpSession session){
         ModelAndView model = new ModelAndView();
@@ -582,7 +683,6 @@ public class AppController {
         } else {
             receipts = GreenReceiptUtil.getReceipts();
         }
-        //TODO: Get all receipts call
 
         if(receipts != null && !receipts.isEmpty()) {
             model.addObject("receipt", receipts);
@@ -596,6 +696,11 @@ public class AppController {
         return model;
     }
 
+    /**
+     * Receipts Map Controller, retrieves the number of receipts requested by the user for the map view
+     * @param session
+     * @return
+     */
     @RequestMapping(value="/receiptsMap", method = RequestMethod.GET)
     public ModelAndView displayReceiptsMap(HttpSession session){
         ModelAndView model = new ModelAndView();
@@ -623,6 +728,12 @@ public class AppController {
         return model;
     }
 
+    /**
+     * The NumReceipts form controller, gets the number of receipts the user wishes to see and sets it in the session
+     * @param receiptsViewAmount object that matches the numReceipts form
+     * @param session
+     * @return
+     */
     @RequestMapping(value="/numReceiptsForm", method = RequestMethod.POST)
     public ModelAndView numReceiptsForm(@ModelAttribute("receiptViewAmount") @Valid ReceiptsViewAmount receiptsViewAmount, HttpSession session) {
         ModelAndView model = new ModelAndView();
@@ -633,27 +744,32 @@ public class AppController {
         return model;
     }
 
-    @RequestMapping(value="/sendEmail", method = RequestMethod.GET)
-    @ResponseBody
-    public String sendEmail(@RequestParam(defaultValue = "") String receiptId) {
-        ModelAndView model = new ModelAndView();
-        ReceiptObject receipt = GreenReceiptUtil.getReceipt(receiptId);
-        if(receipt != null) {
-            model.addObject("receipt", receipt);
-        } else {
-            return "Receipt could not be sent, please try again later";
-        }
+//    @RequestMapping(value="/sendEmail", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String sendEmail(@RequestParam(defaultValue = "") String receiptId) {
+//        ModelAndView model = new ModelAndView();
+//        ReceiptObject receipt = GreenReceiptUtil.getReceipt(receiptId);
+//        if(receipt != null) {
+//            model.addObject("receipt", receipt);
+//        } else {
+//            return "Receipt could not be sent, please try again later";
+//        }
+//
+//        MailUtility mailUtility = new MailUtility();
+//        try {
+//            mailUtility.sendMail("Green Receipt", receipt);
+//        } catch (Exception e) {
+//            return "Receipt could not be sent, please try again later";
+//        }
+//
+//        return "Receipt successfully sent!";
+//    }
 
-        MailUtility mailUtility = new MailUtility();
-        try {
-            mailUtility.sendMail("Green Receipt", receipt);
-        } catch (Exception e) {
-            return "Receipt could not be sent, please try again later";
-        }
-
-        return "Receipt successfully sent!";
-    }
-
+    /**
+     * Delete Receipt controller, deletes the receipt specified by the user
+     * @param id the id of the receipt to be deleted
+     * @return
+     */
     @RequestMapping(value="/deleteReceipt", method = RequestMethod.GET)
     public ModelAndView deleteReceipt(@RequestParam(defaultValue = "") String id) {
         ModelAndView model = new ModelAndView();
@@ -666,6 +782,16 @@ public class AppController {
         return model;
     }
 
+    /**
+     * Download Pdf controller, gets the list of receipts that belong to the designated category and calls the pdf
+     * generation code
+     * @param categoryId id of the category to get receipts from
+     * @param startDate start date for the category range
+     * @param endDate end date for the category range
+     * @param session
+     * @return
+     * @throws ParseException
+     */
     @RequestMapping(value = "/downloadPDF", method = RequestMethod.GET)
     public ModelAndView downloadExcel(@RequestParam(defaultValue = "") String categoryId,
                                       @RequestParam(defaultValue = "") String startDate,
@@ -679,11 +805,15 @@ public class AppController {
         return new ModelAndView("pdfView", "receipts", receipts);
     }
 
+    /**
+     * Download Receipt pdf controller, retrieves the receipt that the user wishes to download and calls the code
+     * to generate a pdf for a single receipt
+     * @param receiptId if of the receipt to be downloaded
+     * @return
+     * @throws ParseException
+     */
     @RequestMapping(value = "/downloadReceiptPDF", method = RequestMethod.GET)
-    public ModelAndView downloadReceiptPDF(@RequestParam(defaultValue = "") String receiptId,
-                                      @RequestParam(defaultValue = "") String startDate,
-                                      @RequestParam(defaultValue = "") String endDate,
-                                      HttpSession session) throws ParseException {
+    public ModelAndView downloadReceiptPDF(@RequestParam(defaultValue = "") String receiptId) throws ParseException {
 
 
 
@@ -691,6 +821,11 @@ public class AppController {
         return new ModelAndView("receiptPdfView", "receipt", receipt);
     }
 
+    /**
+     * Manage Cards controller, retrieves all of the cards attached to the users account
+     * @param session
+     * @return
+     */
     @RequestMapping(value="/manageCards", method = RequestMethod.GET)
     public ModelAndView manageCards(HttpSession session) {
         ModelAndView model = new ModelAndView();
@@ -713,6 +848,15 @@ public class AppController {
         return model;
     }
 
+    /**
+     * Add Card controller, creates a has id and then adds the card to the users account
+     * @param cardFormObject object that matches the card form
+     * @param result
+     * @param session
+     * @return
+     * @throws NoSuchAlgorithmException
+     * @throws UnsupportedEncodingException
+     */
     @RequestMapping(value="/addCard", method = RequestMethod.POST)
     public ModelAndView addCard(@ModelAttribute("cardFormObject") @Valid CreditCardFormObject cardFormObject, BindingResult result, HttpSession session) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         ModelAndView model = new ModelAndView();
@@ -742,6 +886,14 @@ public class AppController {
         return model;
     }
 
+    /**
+     * Edit Card controller, removes the card from the account then adds a new one with the new information
+     * @param cardFormObject object that matches the card form
+     * @param result
+     * @param session
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
     @RequestMapping(value="/editCard", method = RequestMethod.POST)
     public ModelAndView editCard(@ModelAttribute("cardFormObject") @Valid CreditCardFormObject cardFormObject, BindingResult result, HttpSession session) throws NoSuchAlgorithmException {
         ModelAndView model = new ModelAndView();
@@ -772,6 +924,11 @@ public class AppController {
         return model;
     }
 
+    /**
+     * Delete Card controller, removes the card from the users account
+     * @param id the id of the card to be removed from the account
+     * @return
+     */
     @RequestMapping(value="/deleteCard", method = RequestMethod.GET)
     public ModelAndView deleteCard(@RequestParam(defaultValue = "") String id) {
         ModelAndView model = new ModelAndView();
