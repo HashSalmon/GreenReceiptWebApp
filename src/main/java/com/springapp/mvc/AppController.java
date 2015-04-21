@@ -687,7 +687,6 @@ public class AppController {
 
 
 
-//        List<ReceiptObject> receipts = GreenReceiptUtil.getCategoryReceipts(categoryId, startDate, endDate, session);
         ReceiptObject receipt = GreenReceiptUtil.getReceipt(receiptId);
         return new ModelAndView("receiptPdfView", "receipt", receipt);
     }
