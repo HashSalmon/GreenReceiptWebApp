@@ -34,6 +34,8 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 @Scope("request")
@@ -174,17 +176,33 @@ public class AppController {
             model.setViewName("createAccountForm");
             return model;
         }
+
+        String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        Pattern pattern = Pattern.compile(emailPattern);
+        Matcher matcher = pattern.matcher(createAccount.getEmail());
+        if(!matcher.matches()) {
+            model.addObject("error", "Please enter in a valid email address");
+            model.setViewName("createAccountForm");
+            return model;
+        }
+
         RestTemplate restTemplate = new RestTemplate();
         Gson gson = new Gson();
         String createAccountJson = gson.toJson(createAccount);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        ResponseEntity responseEntity = restTemplate.exchange("https://api.greenreceipt.net/api/Account/Register", HttpMethod.POST, new HttpEntity<Object>(createAccountJson, headers), ResponseEntity.class);
-        if(responseEntity.getStatusCode().value() == 200) {
-            //TODO: MAKE IT SO THE USER KNOWS THEY HAVE SUCCESSFULLY CREATED THEIR ACCOUNT
-            model.setViewName("redirect:/login");
-            return model;
-        } else {
+        try {
+            ResponseEntity responseEntity = restTemplate.exchange("https://api.greenreceipt.net/api/Account/Register", HttpMethod.POST, new HttpEntity<Object>(createAccountJson, headers), ResponseEntity.class);
+            if(responseEntity.getStatusCode().value() == 200) {
+                model.setViewName("redirect:/login");
+                return model;
+            } else {
+                model.setViewName("createAccountForm");
+                return model;
+            }
+
+        } catch(Exception e) {
+            model.addObject("error", "There was an error creating your account. Please check your input and try again");
             model.setViewName("createAccountForm");
             return model;
         }

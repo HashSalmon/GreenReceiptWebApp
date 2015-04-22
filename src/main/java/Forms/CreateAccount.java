@@ -25,6 +25,7 @@ public class CreateAccount {
 
     @Email
     @NotNull
+    @Size(min=1, max=20)
     private String Email;
 
     public CreateAccount() {
