@@ -20,11 +20,16 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(authenticationProvider);
     }
 
+    /**
+     * Sets the view permissions for the application
+     * @param http
+     * @throws Exception
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/createAccountForm").permitAll()
-                .antMatchers("/aboutUs").permitAll()
+                .antMatchers("/createAccountForm").permitAll()// All users can see the create account form
+                .antMatchers("/aboutUs").permitAll()// All users can see the about page
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

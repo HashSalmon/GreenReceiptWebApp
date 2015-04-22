@@ -3,9 +3,7 @@ package com.springapp.mvc;
 
 import Forms.CreateAccount;
 import Utilities.GreenReceiptUtil;
-import Utilities.MailUtility;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.springapp.mvc.BudgetObjects.*;
 import com.springapp.mvc.CategoryReportObjects.CategoryReport;
 import com.springapp.mvc.CategoryReportObjects.CategoryReportDates;
@@ -28,7 +26,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -50,17 +47,10 @@ public class AppController {
     @Autowired
     private ReceiptsContainer receiptsContainer;
 
-//    @RequestMapping(value = "/protected**", method = RequestMethod.GET)
-//    public ModelAndView protectedPage() {
-//
-//        ModelAndView model = new ModelAndView();
-//        model.addObject("title", "Spring Security 3.2.3 Hello World");
-//        model.addObject("message", "This is protected page - Only for Administrators !");
-//        model.setViewName("protected");
-//        return model;
-//
-//    }
-
+    /**
+     * About Us controller, redirects the user to the about page
+     * @return
+     */
     @RequestMapping(value = "/aboutUs", method = RequestMethod.GET)
     public ModelAndView aboutUs() {
         ModelAndView model = new ModelAndView();
@@ -70,46 +60,6 @@ public class AppController {
 
         return model;
     }
-
-//    //used to test api calls
-//    @RequestMapping(value="/restStuff", method = RequestMethod.GET)
-//    public ModelAndView restStuff() {
-//        ModelAndView model = new ModelAndView();
-//        RestTemplate restTemplate = new RestTemplate();
-//        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
-//        ResponseEntity responseEntity = restTemplate.exchange("https://greenreceipt.net/api/values",
-//                HttpMethod.GET, new HttpEntity<Object>(headers), String.class);
-//        model.addObject("message", responseEntity.getBody());
-//        return model;
-//    }
-
-//    //used to test api calls
-//    @RequestMapping(value="/receiptsTest", method = RequestMethod.GET)
-//    public ModelAndView receiptsTest() {
-//        ModelAndView model = new ModelAndView();
-//        RestTemplate restTemplate = new RestTemplate();
-//        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        Gson gson = new Gson();
-//
-//
-//        headers.set("Authorization", "Bearer " + userInfo.getAccess_token());
-//        ResponseEntity responseEntity = restTemplate.exchange("https://greenreceipt.net/api/Receipt",
-//                HttpMethod.GET, new HttpEntity<Object>(headers), String.class);
-//        List<ReceiptObject> receipts = gson.fromJson((String) responseEntity.getBody(), new TypeToken<List<ReceiptObject>>() {
-//        }.getType());
-//        receiptsContainer.setReceipts(receipts);
-//        model.addObject("receipts", receipts);
-//        model.addObject("cardTypeTest", receiptsContainer.getReceipts().get(0).getCardType());
-//        model.addObject("message", responseEntity.getBody());
-//        model.setViewName("restStuff");
-//        return model;
-//    }
-
 
     /**
      * This controllers the mapping of logging in.  Logging in and out and error all direct to the same page
@@ -171,6 +121,7 @@ public class AppController {
             model.setViewName("createAccountForm");
             return model;
         }
+
         if(!createAccount.getPassword().equals(createAccount.getConfirmPassword())) {
             model.addObject("error", "Passwords do not match");
             model.setViewName("createAccountForm");
