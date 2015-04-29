@@ -46,10 +46,26 @@
           <h4>Alex Gritton</h4>
         </div>
         <div class="panel-body">
-          My name is Boya Song.  I was born in China and moved to Salt Lake when I was 11.
-          I'll finish my bachelor's degree in Computer Science this spring and start my master's program this fall.
-          For our GreenReceipt project, I am responsible for designing and implementing the android app.
-          If you have any questions or suggestions, please feel free to contact me.  You can reach me at 801-557-5812, or email me at boya.song0808@gmail.com
+          <ul>
+            <li>I enjoy playing the piano.</li>
+            <li>I love Batman.</li>
+            <li>I'm obsessed with Hans Zimmer.</li>
+            <li>I never miss a Patriots game.</li>
+            <li>I eat way to much candy.</li>
+            <li>I'm an avid sunbather.</li>
+            <li>I'm an adrenaline junkie.</li>
+            <li>I hate the cold, pickles, mushrooms and the smell of cats.</li>
+          </ul>
+          Contribution to this project:
+          <ul>
+            <li>Designed and Implemented RESTful API's</li>
+            <li>Designed and Implemented MySQL database</li>
+            <li>Setup/Maintain RESTful API server and MySQL server</li>
+            <li>Helped manage team tasking and organization</li>
+          </ul>
+
+          Contact Info:
+          u0667623@utah.edu
         </div>
       </div>
 
@@ -70,7 +86,7 @@
             <li>Helped manage team tasking and organization</li>
           </ul>
           Contact Info:
-          Email: jwanlass8@gmail.com Phone: 385-234-0311
+          Email: u0760056@utah.edu
         </div>
       </div>
 

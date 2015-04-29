@@ -31,8 +31,42 @@
             <li><a href="/manageCards">Manage Cards</a></li>
           </ul>
         </li>
+        <li><a href="#" data-toggle="modal" data-target="#tutorialModal">Tutorial</a></li>
       </ul>
     </div>
   </div>
 </nav>
+
+<div class="modal fade" id="tutorialModal">
+  <div class="modal-dialog">
+    <div class="modal-content" style="width: 1080px; margin-left: -250px;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Tutorial</h4>
+      </div>
+      <div class="modal-body">
+        <iframe id="player" type="text/html" width="1050" height="600"
+                src="http://www.youtube.com/embed/yc9zIXMZBmw"
+                frameborder="0"></iframe>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" id="tutorialClose">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+<script type="text/javascript">
+  $(function(){
+    $('.close').click(function(){
+      $('iframe').attr('src', $('iframe').attr('src'));
+    });
+  });
+
+  $(function(){
+    $('#tutorialClose').click(function(){
+      $('iframe').attr('src', $('iframe').attr('src'));
+    });
+  });
+</script>
 
